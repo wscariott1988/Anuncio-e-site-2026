@@ -1,22 +1,22 @@
 # Leads — armazenamento e Google Sheets
 
-> Fonte oficial para o formulário da rota `/landingpage`, o armazenamento primário dos leads e a sincronização com Google Sheets.
+> Fonte oficial para o formulário da rota `/landingpage`, o armazenamento dos leads via Google Apps Script e o Google Sheets como armazenamento único e definitivo.
 
 ## 1. Objetivo
 
-Garantir que nenhum lead confirmado dependa exclusivamente do Google Sheets.
+Garantir que cada lead confirmado seja armazenado de forma durável e auditável no Google Sheets, com confirmação antes de apresentar sucesso ao visitante.
 
 O formulário deve:
 
-1. receber os dados no servidor;
+1. receber os dados no servidor Next.js;
 2. validar e normalizar os campos;
 3. impedir duplicidade;
-4. armazenar o lead em uma base primária durável;
-5. devolver uma confirmação com `lead_id`;
-6. sincronizar o registro com o Google Sheets;
-7. permitir continuidade pelo WhatsApp após o armazenamento primário.
+4. enviar os dados ao Google Apps Script;
+5. receber confirmação com `lead_id`;
+6. devolver a confirmação ao visitante;
+7. permitir continuidade pelo WhatsApp após o sucesso.
 
-O Google Sheets será a visão operacional utilizada por Willian Souza para atendimento. Ele não será o único armazenamento do lead.
+O Google Sheets é o armazenamento único e definitivo dos leads. O Google Apps Script é a camada de integração que recebe, valida e escreve na planilha.
 
 ## 2. Fonte de verdade
 
@@ -26,7 +26,7 @@ Este documento é a única fonte oficial para:
 - esquema das colunas da planilha;
 - nomes técnicos dos campos;
 - normalização dos dados;
-- sincronização com Google Sheets;
+- integração via Google Apps Script;
 - idempotência;
 - tentativas de recuperação;
 - regras dos campos comerciais;
@@ -47,51 +47,47 @@ Em caso de conflito:
 ```text
 Formulário em /landingpage
         ↓
-Endpoint do servidor Next.js
+Endpoint do servidor Next.js (/api/leads)
         ↓
-Validação + normalização + idempotência
+Validação + normalização + geração de lead_id
         ↓
-Base primária durável
+Envio ao Google Apps Script (web app)
         ↓
-Resposta de sucesso com lead_id
+Apps Script valida e escreve na aba Leads
+        ↓
+Confirmação do Apps Script com lead_id
+        ↓
+Resposta de sucesso ao visitante
         ├── generate_lead
         ├── tela de sucesso
         └── Continuar no WhatsApp
-        ↓
-Sincronização com Google Sheets
-        ↓
-Notificação operacional
 ```
 
 ### Regra central
 
-O armazenamento primário confirmado determina o sucesso do formulário.
+O armazenamento confirmado no Google Sheets determina o sucesso do formulário.
 
-Uma indisponibilidade do Google Sheets:
+Uma falha do Apps Script ou do Sheets:
 
-- não pode apagar o lead;
-- não pode criar outro lead;
-- não deve mostrar falha ao visitante quando o armazenamento primário já foi confirmado;
-- deve deixar a sincronização pendente;
-- deve gerar nova tentativa;
-- deve produzir alerta operacional quando não for recuperada.
+- não pode perder o lead (o servidor retém os dados e permite nova tentativa);
+- não pode criar outro lead com o mesmo `lead_id`;
+- deve preservar as respostas do visitante;
+- deve permitir nova tentativa sem preenchimento duplicado;
+- deve gerar registro técnico para recuperação.
 
-### Serviço da base primária
+### Google Apps Script como camada de integração
 
-O fornecedor da base primária deve ser confirmado antes da implementação definitiva.
+O Google Apps Script é um web app implantado no projeto Google do proprietário. Ele:
 
-Não criar conta, contratar serviço ou escolher fornecedor sem aprovação.
-
-A solução escolhida deve:
-
-- funcionar no ambiente de produção existente;
-- aceitar escrita pelo servidor;
-- oferecer persistência durável;
-- permitir consulta por `lead_id`;
-- permitir controle de idempotência;
-- permitir registrar o estado da sincronização com a planilha;
-- manter segredos exclusivamente no servidor;
-- possuir limites e custos conhecidos.
+- recebe POST com os dados normalizados e o `lead_id`;
+- valida o secret compartilhado;
+- valida o esquema das colunas;
+- verifica se o `lead_id` já existe na aba (idempotência);
+- escreve uma linha na aba `Leads`;
+- retorna JSON com `success`, `lead_id` e `row`;
+- utiliza LockService para evitar concorrência;
+- não expõe dados pessoais em logs;
+- versiona o código no repositório em `scripts/apps-script/`.
 
 ## 4. Google Sheets
 
@@ -115,20 +111,42 @@ Não renomear a aba sem atualizar e testar a integração.
 
 ### Finalidade
 
-O Google Sheets será usado para:
+O Google Sheets é o armazenamento único e definitivo dos leads. Ele é usado para:
 
+- armazenar cada lead confirmado;
 - visualizar novos leads;
 - iniciar o atendimento;
 - registrar o andamento comercial;
 - registrar observações;
 - consultar a origem do contato.
 
-O Google Sheets não substitui:
+### Configuração operacional
 
-- a base primária;
-- o controle de idempotência;
-- o mecanismo de recuperação;
-- os registros técnicos de sincronização.
+- congelar a primeira linha;
+- ativar filtro;
+- criar lista suspensa em `status_atendimento`;
+- deixar `observacoes` como texto livre;
+- proteger a linha de cabeçalho;
+- não ordenar somente parte do intervalo;
+- não excluir linhas para corrigir atendimento;
+- não reutilizar uma linha para outro lead.
+
+Podem permanecer visíveis:
+
+```text
+created_at
+nome
+whatsapp
+negocio_servico
+situacao_anuncios
+possui_site_landingpage
+url_atual
+lead_source
+status_atendimento
+observacoes
+```
+
+As demais colunas podem ser ocultadas na interface do Google Sheets, mas não excluídas.
 
 ## 5. Esquema oficial da planilha
 
@@ -239,7 +257,7 @@ Já anuncio nos dois
 Ainda não anuncio, mas pretendo começar
 ```
 
-Não inventar abreviações diferentes entre formulário, base e planilha.
+Não inventar abreviações diferentes entre formulário e planilha.
 
 ### `possui_site_landingpage`
 
@@ -313,15 +331,9 @@ Não inventar valores para parâmetros ausentes.
 
 ### Datas
 
-Na base primária:
-
-- armazenar datas em formato temporal nativo ou ISO 8601;
-- manter referência de fuso confiável.
-
-Na planilha:
-
-- apresentar `created_at` e `consentimento_em` de forma compatível com `America/Sao_Paulo`;
-- não depender do relógio do navegador.
+- armazenar `created_at` e `consentimento_em` em formato compatível com `America/Sao_Paulo`;
+- gerar datas no servidor, não depender do relógio do navegador;
+- enviar ao Apps Script como string ISO 8601.
 
 ### WhatsApp
 
@@ -337,7 +349,7 @@ Na planilha:
 - aplicar limites de tamanho;
 - rejeitar conteúdo inválido;
 - impedir interpretação como fórmula na planilha;
-- enviar valores ao Sheets como dados brutos;
+- enviar valores ao Apps Script como dados brutos;
 - não executar conteúdo informado pelo visitante.
 
 ### URL
@@ -402,21 +414,58 @@ O servidor deve:
 - pode ser usado para deduplicação de conversão;
 - é a chave de reconciliação com a planilha.
 
-## 12. Sincronização com Google Sheets
+### Verificação no Apps Script
+
+Antes de escrever, o Apps Script verifica se o `lead_id` já existe na aba `Leads`. Se existir:
+
+- retorna a confirmação existente;
+- não insere nova linha;
+- preserva a integridade da idempotência.
+
+## 12. Integração via Google Apps Script
 
 ### Método
 
-Usar integração pelo servidor com a API oficial do Google Sheets.
+O servidor Next.js envia os dados normalizados para o endpoint do Google Apps Script via `fetch` com método POST.
 
 Não usar:
 
-- chamada direta do navegador para a planilha;
-- endpoint público de Apps Script como armazenamento exclusivo;
+- chamada direta do navegador para o Apps Script;
 - credenciais no cliente;
 - segredo com prefixo `NEXT_PUBLIC_`;
-- automação que considere sucesso sem verificar o resultado.
+- automação que considere sucesso sem verificar a resposta do Apps Script.
 
-### Escrita
+### Payload enviado pelo servidor
+
+O servidor envia ao Apps Script um JSON com:
+
+- `secret`: valor de `GOOGLE_APPS_SCRIPT_SECRET` para autenticação;
+- `lead_id`: identificador único gerado no servidor;
+- `created_at`: data/hora ISO 8601;
+- os 24 campos da planilha, na ordem exata.
+
+### Resposta do Apps Script
+
+O Apps Script retorna JSON:
+
+```json
+{
+  "success": true,
+  "lead_id": "abc123",
+  "row": 15
+}
+```
+
+Em caso de erro:
+
+```json
+{
+  "success": false,
+  "error": "descrição técnica"
+}
+```
+
+### Escrita na planilha
 
 - usar a aba `Leads`;
 - respeitar exatamente o esquema das 24 colunas;
@@ -426,60 +475,32 @@ Não usar:
 - iniciar `status_atendimento` como `Novo`;
 - iniciar `observacoes` vazio.
 
-### Evitar duplicidade na planilha
+### Segurança do Apps Script
 
-Antes de repetir uma escrita cujo resultado ficou incerto:
-
-1. verificar se o `lead_id` já existe;
-2. se existir, considerar a sincronização concluída;
-3. se não existir, repetir a escrita;
-4. nunca acrescentar outra linha para o mesmo `lead_id`.
-
-Uma nova tentativa de sincronização não pode sobrescrever alterações manuais em:
-
-- `status_atendimento`;
-- `observacoes`.
-
-### Estado interno
-
-A base primária pode manter campos técnicos que não pertencem às 24 colunas da planilha, como:
-
-```text
-sheet_sync_status
-sheet_sync_attempts
-sheet_synced_at
-sheet_last_error_code
-idempotency_key
-```
-
-Esses campos são internos.
-
-Não adicioná-los à planilha sem aprovação.
-
-### Estados sugeridos
-
-```text
-pending
-synced
-failed
-```
+- validar o `secret` recebido antes de qualquer operação;
+- rejeitar requisições sem `secret` válido;
+- não registrar dados pessoais em logs do Apps Script;
+- utilizar LockService para evitar escrita concorrente;
+- retornar apenas informações técnicas necessárias;
+- não expor a estrutura interna da planilha em mensagens de erro.
 
 ### Tentativas
 
-Em erro temporário:
+Em erro temporário do Apps Script:
 
-- usar novas tentativas com espera progressiva;
-- respeitar limites da API;
-- não bloquear o registro primário;
+- o servidor deve retry com espera progressiva;
+- respeitar limites de taxa do Google;
+- não bloquear a resposta ao visitante além do razoável;
 - registrar somente informações técnicas necessárias;
 - não registrar dados pessoais no erro.
 
 Em falha persistente:
 
-- manter o lead como pendente;
-- gerar alerta operacional;
-- permitir reprocessamento seguro;
-- não pedir ao visitante para preencher novamente.
+- o servidor deve retornar erro ao visitante;
+- preservar as respostas do formulário;
+- permitir nova tentativa;
+- não pedir ao visitante para preencher novamente;
+- gerar registro técnico para análise.
 
 ## 13. Notificação
 
@@ -502,36 +523,24 @@ O servidor pode responder sucesso quando:
 
 1. os dados foram validados;
 2. a idempotência foi confirmada;
-3. a base primária armazenou o lead;
+3. o Apps Script confirmou a escrita no Google Sheets;
 4. existe um `lead_id`.
 
 Depois:
 
 - disparar `generate_lead` uma única vez;
 - mostrar a tela de sucesso;
-- oferecer “Continuar no WhatsApp”;
-- tentar ou continuar a sincronização com a planilha.
+- oferecer "Continuar no WhatsApp".
 
-### Falha da base primária
+### Falha do Apps Script ou do Sheets
 
-Se o lead não foi armazenado:
+Se o Apps Script não confirmou a escrita:
 
 - não responder sucesso;
 - não disparar `generate_lead`;
 - preservar respostas;
 - oferecer nova tentativa;
 - usar a contingência definida em `LANDINGPAGE.md` somente após tentativa válida com falha técnica.
-
-### Falha somente do Google Sheets
-
-Se a base primária confirmou o lead e apenas o Sheets falhou:
-
-- manter o sucesso;
-- não disparar `form_error`;
-- não pedir novo envio;
-- não criar outro `generate_lead`;
-- manter a sincronização pendente;
-- recuperar internamente.
 
 ## 15. Operação da planilha
 
@@ -566,13 +575,13 @@ As demais colunas podem ser ocultadas na interface do Google Sheets, mas não ex
 ## 16. Segurança
 
 - Compartilhar a planilha apenas com contas necessárias.
-- Usar credenciais de servidor com privilégio mínimo.
-- Não compartilhar chave privada.
+- Manter o Apps Script com acesso restrito.
+- Não compartilhar secret do Apps Script.
 - Não versionar credenciais.
 - Não colocar segredos em `NEXT_PUBLIC_*`.
 - Não registrar o corpo completo do formulário em logs.
 - Não enviar PII para analytics.
-- Aplicar rate limit.
+- Aplicar rate limit no endpoint `/api/leads`.
 - Aplicar honeypot ou proteção equivalente.
 - Usar HTTPS.
 - Validar origem quando aplicável.
@@ -580,27 +589,34 @@ As demais colunas podem ser ocultadas na interface do Google Sheets, mas não ex
 
 ## 17. Variáveis de ambiente
 
-Os nomes finais devem respeitar o padrão existente do repositório.
-
-Exemplos de variáveis exclusivamente do servidor:
+### Servidor Next.js (variáveis exclusivamente servidor)
 
 ```dotenv
-PRIMARY_DATABASE_URL=
-GOOGLE_SHEETS_SPREADSHEET_ID=
-GOOGLE_SHEETS_TAB_NAME=Leads
-GOOGLE_SERVICE_ACCOUNT_EMAIL=
-GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY=
+GOOGLE_APPS_SCRIPT_WEB_APP_URL=
+GOOGLE_APPS_SCRIPT_SECRET=
+NEXT_PUBLIC_WHATSAPP_NUMBER=
 ```
 
-Não preencher `.env.example` com valores reais.
+- `GOOGLE_APPS_SCRIPT_WEB_APP_URL`: endpoint do Google Apps Script web app para envio dos leads.
+- `GOOGLE_APPS_SCRIPT_SECRET`: secret compartilhado entre o servidor e o Apps Script para autenticação. Nunca expor no cliente.
+- `NEXT_PUBLIC_WHATSAPP_NUMBER`: número do WhatsApp em formato `55DDDNUMERO`. Pode ser usada no cliente.
 
-O fornecedor da base pode exigir variáveis adicionais. Não inventar nomes antes de inspecionar a integração escolhida.
+### Google Apps Script
+
+O Apps Script não utiliza variáveis de ambiente do Next.js. O `secret` é verificado contra valor fixo definido no próprio script.
+
+### Regras
+
+- Não preencher `.env.example` com valores reais.
+- Não usar prefixo `NEXT_PUBLIC_` em segredos.
+- `GOOGLE_APPS_SCRIPT_SECRET` é exclusivamente servidor.
+- `GOOGLE_APPS_SCRIPT_WEB_APP_URL` é exclusivamente servidor.
 
 ## 18. Testes obrigatórios
 
 ### Armazenamento
 
-- envio válido cria um registro;
+- envio válido cria uma linha no Google Sheets;
 - resposta contém `lead_id`;
 - campos obrigatórios chegam corretamente;
 - campos opcionais ausentes permanecem vazios;
@@ -626,14 +642,13 @@ O fornecedor da base pode exigir variáveis adicionais. Não inventar nomes ante
 - valores livres não viram fórmulas;
 - campos manuais não são sobrescritos;
 - falha temporária é recuperada;
-- falha persistente gera alerta.
+- falha persistente gera registro técnico.
 
 ### Conversão
 
-- `generate_lead` dispara após a base primária;
+- `generate_lead` dispara após a confirmação do Apps Script;
 - dispara uma única vez;
-- falha somente do Sheets não duplica a conversão;
-- falha da base primária não gera conversão;
+- falha do Apps Script não gera conversão;
 - WhatsApp não gera outro lead.
 
 ### Privacidade
@@ -648,13 +663,13 @@ O fornecedor da base pode exigir variáveis adicionais. Não inventar nomes ante
 
 Confirmar:
 
-- fornecedor da base primária;
-- conta responsável pela base;
-- limites e custos;
-- política de retenção;
-- identificador da planilha;
-- aba `Leads`;
-- acesso da identidade de servidor à planilha;
+- projeto Google com Apps Script implantado;
+- endpoint do Apps Script web app;
+- secret do Apps Script definido e testado;
+- planilha `Leads — Anúncio & Site` criada;
+- aba `Leads` com as 24 colunas oficiais;
+- Apps Script com acesso de edição na planilha;
+- LockService habilitado no Apps Script;
 - canal de notificação;
 - número oficial do WhatsApp;
 - Política de Privacidade aprovada.
@@ -663,10 +678,10 @@ Confirmar:
 
 A captação de leads somente está concluída quando:
 
-- um lead real foi armazenado na base primária;
-- o mesmo `lead_id` chegou uma única vez ao Google Sheets;
+- um lead real foi armazenado no Google Sheets via Apps Script;
+- o mesmo `lead_id` chegou uma única vez à planilha;
 - a linha respeita as 24 colunas;
-- uma falha de Sheets foi simulada e não perdeu o lead;
+- uma falha do Apps Script foi simulada e não perdeu o lead;
 - o reprocessamento foi validado;
 - Willian recebeu a notificação configurada;
 - `generate_lead` disparou uma única vez;

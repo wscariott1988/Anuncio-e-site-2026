@@ -77,17 +77,25 @@ export function trackFormError(errorType: string, stepName: string, errorCount: 
   });
 }
 
-export function trackGenerateLead(_leadId: string, _leadSource: string, _ctaLocation: CtaLocation) {
-  // NOT called in Phase 1 - requires server-side storage confirmation
-  void _leadId;
-  void _leadSource;
-  void _ctaLocation;
+export function trackGenerateLead(leadId: string, leadSource: string, ctaLocation: CtaLocation) {
+  push({
+    event: "generate_lead",
+    form_id: FORM_ID,
+    lead_source: leadSource,
+    source_cta: ctaLocation,
+    event_version: EVENT_VERSION,
+  });
+  void leadId;
 }
 
-export function trackWhatsappAfterLead(_leadId: string, _ctaLocation: CtaLocation) {
-  // NOT called in Phase 1 - requires confirmed lead
-  void _leadId;
-  void _ctaLocation;
+export function trackWhatsappAfterLead(leadId: string, ctaLocation: CtaLocation) {
+  push({
+    event: "whatsapp_after_lead",
+    form_id: FORM_ID,
+    source_cta: ctaLocation,
+    event_version: EVENT_VERSION,
+  });
+  void leadId;
 }
 
 export function trackWhatsappFormError(errorType: string) {

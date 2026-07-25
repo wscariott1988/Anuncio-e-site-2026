@@ -764,39 +764,38 @@ Não criar uma segunda lista de colunas neste documento.
 Formulário
 → endpoint do servidor Next.js
 → validação, normalização e idempotência
-→ base primária durável
+→ envio ao Google Apps Script
+→ Google Apps Script escreve na aba Leads
 → confirmação com lead_id
-→ sincronização com Google Sheets
 → notificação
 ```
 
 O Google Sheets:
 
+- é o armazenamento único e definitivo dos leads;
 - usa a aba `Leads`;
-- é a visão operacional de Willian Souza;
-- não é o único armazenamento;
 - recebe exatamente as 24 colunas de `LEADS.md`;
 - não é acessado diretamente pelo navegador.
 
 ### Regra de sucesso
 
-Não simular envio e não apresentar sucesso sem armazenamento real na base primária.
+Não simular envio e não apresentar sucesso sem confirmação do Google Apps Script.
 
 O sucesso acontece quando:
 
 1. os dados foram aceitos;
 2. o servidor validou e normalizou os campos;
 3. a idempotência foi confirmada;
-4. a base primária armazenou o lead;
+4. o Apps Script confirmou a escrita no Google Sheets;
 5. o servidor devolveu um `lead_id`.
 
-Uma falha somente do Google Sheets:
+Uma falha do Apps Script:
 
-- não apaga o registro primário;
+- não perde o lead (o servidor retém os dados);
 - não transforma o sucesso em erro;
 - não dispara outro `generate_lead`;
 - não pede ao visitante para enviar novamente;
-- deixa a sincronização pendente para recuperação interna.
+- permite nova tentativa com preservação das respostas.
 
 ### Implementação
 
@@ -804,11 +803,11 @@ Antes de desenvolver:
 
 - inspecionar a infraestrutura existente;
 - verificar variáveis de ambiente;
-- confirmar o fornecedor da base primária;
-- confirmar custos, limites e retenção;
+- confirmar o endpoint do Apps Script web app;
+- confirmar o secret do Apps Script;
 - confirmar o identificador da planilha;
-- confirmar a aba `Leads`;
-- confirmar a identidade de servidor autorizada;
+- confirmar a aba `Leads` com as 24 colunas;
+- confirmar que o Apps Script possui acesso de edição na planilha;
 - confirmar o canal de notificação;
 - não criar conta externa ou contratar serviço sem aprovação.
 
@@ -827,27 +826,27 @@ O endpoint deve:
 - registrar o consentimento do formulário;
 - aplicar idempotência;
 - criar ou confirmar um `lead_id` opaco;
-- armazenar na base primária;
+- enviar os dados ao Google Apps Script;
 - iniciar `status_atendimento` como `Novo`;
 - iniciar `observacoes` vazio;
 - devolver resposta clara;
 - não expor detalhes internos.
 
-### Sincronização
+### Integração via Apps Script
 
 A integração com Google Sheets deve:
 
-- acontecer no servidor;
-- usar a API oficial;
+- acontecer via Google Apps Script (web app);
+- receber POST com secret para autenticação;
+- usar LockService para evitar concorrência;
+- verificar idempotência por `lead_id` antes de escrever;
 - gravar uma única linha por `lead_id`;
 - preservar a ordem das 24 colunas;
 - não inventar valores ausentes;
 - não sobrescrever alterações manuais em `status_atendimento` e `observacoes`;
-- reconhecer escrita já concluída antes de repetir uma operação incerta;
+- retornar JSON com `success`, `lead_id` e `row`;
 - usar tentativas progressivas em falhas temporárias;
-- gerar alerta em falha persistente.
-
-Não usar endpoint público de Apps Script como armazenamento exclusivo.
+- gerar registro técnico em falha persistente.
 
 Não implementar sincronização bidirecional na primeira versão.
 
@@ -1191,12 +1190,13 @@ Não implementar nesta fase:
 Os itens abaixo devem ser confirmados:
 
 - número oficial do WhatsApp;
-- fornecedor, conta e acesso da base primária;
-- custos, limites e retenção da base;
+- endpoint do Apps Script web app;
+- secret do Apps Script;
 - identificador da planilha;
 - aba `Leads` com as 24 colunas de `docs/LEADS.md`;
-- identidade de servidor autorizada no Google Sheets;
-- sincronização, idempotência e recuperação;
+- Apps Script com acesso de edição na planilha;
+- LockService habilitado no Apps Script;
+- idempotência e recuperação testadas;
 - método de notificação;
 - IDs de GTM, GA4, Google Ads e Meta Pixel;
 - configuração de consentimento;
@@ -1224,11 +1224,11 @@ A Landing Page somente pode ser considerada concluída quando:
 - todos os CTAs abrem o mesmo formulário;
 - não existe WhatsApp antes do formulário;
 - o formulário valida e envia;
-- o lead é armazenado na base primária;
+- o lead é armazenado no Google Sheets via Apps Script;
 - o mesmo `lead_id` chega uma única vez ao Google Sheets;
 - a linha possui as 24 colunas na ordem de `docs/LEADS.md`;
 - uma falha do Sheets não perde nem duplica o lead;
-- o sucesso depende do armazenamento primário real;
+- o sucesso depende da confirmação do Apps Script;
 - `generate_lead` não duplica;
 - o WhatsApp pós-envio funciona;
 - a contingência não é contabilizada como lead;

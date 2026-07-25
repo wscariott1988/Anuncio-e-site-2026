@@ -298,31 +298,27 @@ Fluxo oficial:
 ```text
 Formulário
 → endpoint Next.js no servidor
-→ base primária durável
+→ envio ao Google Apps Script
+→ Apps Script escreve na planilha
 → confirmação com lead_id
-→ sincronização com Google Sheets
 → notificação
 ```
 
 Decisões:
 
-- a base primária é o armazenamento que confirma o lead;
-- a aba `Leads` do Google Sheets é a visão operacional;
-- o Sheets não é o único armazenamento;
+- o Google Sheets é o armazenamento único e confirma o lead;
+- o Google Apps Script é a camada de integração que escreve na planilha;
 - o esquema da planilha possui exatamente 24 colunas;
-- o navegador não envia diretamente para a planilha;
-- Apps Script público não será usado como armazenamento exclusivo;
-- uma falha do Sheets deixa a sincronização pendente sem perder o lead;
+- o navegador não envia diretamente para o Apps Script;
+- uma falha do Apps Script permite nova tentativa sem perder o lead;
 - `status_atendimento` e `observacoes` são mantidos manualmente na planilha na primeira versão;
 - não existe sincronização bidirecional na primeira versão.
 
 Ainda devem ser confirmados antes da implementação definitiva:
 
-- fornecedor e conta da base primária;
-- custos e limites;
-- política de retenção;
+- endpoint do Apps Script web app;
+- secret do Apps Script;
 - identificador e acesso da planilha;
-- identidade de servidor autorizada no Sheets;
 - canal de notificação.
 
 Não simular envio nem escolher fornecedor externo sem aprovação.
@@ -423,14 +419,9 @@ Serviços do formulário podem exigir variáveis exclusivas do servidor.
 Exemplos previstos pela arquitetura de leads:
 
 ```dotenv
-PRIMARY_DATABASE_URL=
-GOOGLE_SHEETS_SPREADSHEET_ID=
-GOOGLE_SHEETS_TAB_NAME=Leads
-GOOGLE_SERVICE_ACCOUNT_EMAIL=
-GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY=
+GOOGLE_APPS_SCRIPT_WEB_APP_URL=
+GOOGLE_APPS_SCRIPT_SECRET=
 ```
-
-Os nomes finais devem ser ajustados ao fornecedor e às convenções já existentes. Não criar credenciais fictícias.
 
 Nunca:
 
@@ -473,8 +464,8 @@ Ordem recomendada:
 5. Processar as imagens.
 6. Implementar a estrutura da página.
 7. Implementar os modais.
-8. Implementar a base primária conforme `docs/LEADS.md`.
-9. Implementar a sincronização com a aba `Leads`.
+8. Implementar a integração com Google Apps Script conforme `docs/LEADS.md`.
+9. Implementar notificação e recuperação de falhas.
 10. Implementar notificação e recuperação de falhas.
 11. Implementar rastreamento e consentimento.
 12. Validar acessibilidade e responsividade.
@@ -488,7 +479,7 @@ Ordem recomendada:
 Confirmar:
 
 - número oficial do WhatsApp;
-- fornecedor e acesso da base primária;
+- endpoint e secret do Apps Script;
 - planilha e aba `Leads`;
 - esquema oficial das 24 colunas;
 - sincronização e reprocessamento;
@@ -550,7 +541,7 @@ Depois:
 - abrir o domínio real;
 - testar celular e desktop;
 - testar formulário;
-- confirmar armazenamento na base primária;
+- confirmar armazenamento no Google Sheets;
 - confirmar uma única linha no Google Sheets;
 - simular falha do Sheets e validar recuperação;
 - testar WhatsApp;
@@ -572,7 +563,7 @@ Uma implementação somente pode ser considerada concluída quando:
 - os eventos correspondem a `docs/TRACKING.md`;
 - o checklist foi executado;
 - o formulário foi testado de verdade;
-- o lead chegou à base primária e à planilha;
+- o lead chegou ao Google Sheets via Apps Script;
 - o build foi concluído;
 - não existem erros relevantes no console;
 - todas as pendências foram informadas.

@@ -26,7 +26,7 @@ A medição deve responder:
 ## 2. Princípios
 
 1. O servidor confirma a conversão.
-2. Somente armazenamento real na base primária definida em `docs/LEADS.md` gera `generate_lead`.
+2. Somente a confirmação do Google Apps Script em `docs/LEADS.md` gera `generate_lead`.
 3. Um envio confirmado gera no máximo um lead.
 4. Nenhum dado pessoal entra no `dataLayer` ou nas plataformas de mídia.
 5. A escolha de consentimento controla as tags.
@@ -78,12 +78,12 @@ Disparar somente depois que:
 
 1. o visitante enviar o formulário;
 2. o servidor validar os campos;
-3. o servidor armazenar o lead na base primária;
+3. o servidor receber a confirmação do Apps Script com a linha escrita no Google Sheets;
 4. o servidor devolver confirmação com identificador único.
 
 A sincronização com Google Sheets não cria uma segunda conversão.
 
-Se a base primária confirmou o lead e somente o Sheets falhou:
+Se o Apps Script confirmou o lead e somente a notificação falhou:
 
 - manter `generate_lead`;
 - não disparar `form_error`;
@@ -351,7 +351,7 @@ Não enviar:
 
 ### Disparo
 
-Somente no callback de sucesso real do servidor, depois do armazenamento na base primária definida em `docs/LEADS.md`.
+Somente no callback de sucesso real do servidor, depois da confirmação do Apps Script em `docs/LEADS.md`.
 
 ### Parâmetros
 
@@ -1057,7 +1057,7 @@ Testar:
 - timeout seguido de resposta;
 - fechamento e reabertura;
 - atualização da página;
-- armazenamento na base primária;
+- confirmação do Apps Script;
 - uma única linha no Google Sheets;
 - falha somente do Google Sheets após armazenamento;
 - recuperação da sincronização sem novo `generate_lead`;
@@ -1111,7 +1111,7 @@ O rastreamento somente pode ser considerado concluído quando:
 - a configuração de consentimento ocorre antes das tags;
 - todos os eventos previstos foram testados;
 - `generate_lead` depende do servidor;
-- `generate_lead` depende da base primária e não do espelho no Sheets;
+- `generate_lead` depende da confirmação do Apps Script;
 - `generate_lead` não duplica;
 - a confirmação posterior do Sheets não cria nova conversão;
 - falha somente do Sheets não gera `form_error`;
