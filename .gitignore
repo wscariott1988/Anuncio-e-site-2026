@@ -1,0 +1,50 @@
+# dependencies
+node_modules/
+
+# next.js
+.next/
+out/
+
+# build
+build/
+dist/
+
+# env files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# originals (local only, never published)
+originals/
+
+# npm debug
+npm-debug.log*
+
+# vercel
+.vercel/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# temp
+tmp/
+temp/
+*.tmp
+
+# visual review captures
+artifacts/
+
+# playwright test results
+test-results/
+
+# typescript cache
+tsconfig.tsbuildinfo
