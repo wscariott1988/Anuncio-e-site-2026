@@ -51,7 +51,8 @@ export type FormState =
   | "submitting"
   | "error_validation"
   | "error_server"
-  | "pending_integration";
+  | "pending_integration"
+  | "success";
 
 export interface TrackingEvent {
   event: string;

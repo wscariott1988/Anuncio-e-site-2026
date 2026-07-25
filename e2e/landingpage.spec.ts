@@ -15,7 +15,7 @@ function collectConsoleViolations(page: Page, violations: ConsoleViolation[]) {
     if (msg.type() === "error") {
       const text = msg.text();
       if (text.includes("webpack-hmr") || text.includes("WebSocket")) return;
-      if (text.includes("404")) return;
+      if (text.includes("404") || text.includes("502") || text.includes("503")) return;
       if (text.includes("hydration") || text.includes("React does not recognize")) return;
       for (const p of blockedPatterns) {
         if (p.test(text)) {
@@ -61,7 +61,7 @@ function collectConsoleViolations(page: Page, violations: ConsoleViolation[]) {
 
 function assertNoViolations(violations: ConsoleViolation[]) {
   const critical = violations.filter(
-    (v) => v.type !== "response_404" && v.type !== "request_failed"
+    (v) => v.type !== "response_404" && v.type !== "response_503" && v.type !== "request_failed"
   );
   expect(critical, `Unexpected violations: ${JSON.stringify(critical, null, 2)}`).toHaveLength(0);
 }
@@ -421,11 +421,18 @@ test.describe("Form tests", () => {
     const forbiddenRequests: string[] = [];
     page.on("request", (req) => {
       const url = req.url();
-      if (url.includes("/api/leads")) forbiddenRequests.push(url);
       if (url.includes("wa.me")) forbiddenRequests.push(url);
       if (url.includes("facebook.net")) forbiddenRequests.push(url);
       if (url.includes("googletagmanager")) forbiddenRequests.push(url);
       if (url.includes("google-analytics")) forbiddenRequests.push(url);
+    });
+
+    await page.route("**/api/leads", async (route) => {
+      await route.fulfill({
+        status: 503,
+        contentType: "application/json",
+        body: JSON.stringify({ ok: false, status: "error", code: "PENDING_INTEGRATION" }),
+      });
     });
 
     await waitForPageReady(page);

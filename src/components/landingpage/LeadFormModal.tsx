@@ -7,9 +7,11 @@ import {
   trackFormStep,
   trackFormSubmitAttempt,
   trackFormError,
+  trackGenerateLead,
+  trackWhatsappAfterLead,
   trackWhatsappFormError,
 } from "@/lib/tracking";
-import { getWhatsappErrorUrl } from "@/lib/whatsapp";
+import { getWhatsappAfterLeadUrl, getWhatsappErrorUrl } from "@/lib/whatsapp";
 import { SITUACAO_OPCOES } from "@/lib/constants";
 import type { CtaLocation, FormData, FormState, FormStepName, SituacaoAnuncios, PossuiSite } from "@/types";
 
@@ -58,8 +60,10 @@ export function LeadFormModal({ isOpen, ctaLocation, onClose }: LeadFormModalPro
   const [data, setData] = useState<FormData>(INITIAL_DATA);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [failedAttempts, setFailedAttempts] = useState(0);
+  const [leadId, setLeadId] = useState<string | null>(null);
   const firstFieldRef = useRef<HTMLInputElement>(null);
   const submitButtonRef = useRef<HTMLButtonElement>(null);
+  const honeypotRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (state === "step_1" && firstFieldRef.current) {
@@ -71,6 +75,7 @@ export function LeadFormModal({ isOpen, ctaLocation, onClose }: LeadFormModalPro
     setState("idle");
     setErrors({});
     setFailedAttempts(0);
+    setLeadId(null);
     onClose();
   }, [onClose]);
 
@@ -138,24 +143,86 @@ export function LeadFormModal({ isOpen, ctaLocation, onClose }: LeadFormModalPro
     trackFormSubmitAttempt(ctaLocation);
     setState("submitting");
 
-    try {
-      // Phase 1: no server endpoint exists — show pending integration state
-      // The fetch to /api/leads will be enabled when the integration is implemented.
-      setState("pending_integration");
-      return;
-    } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : "unknown";
+    const params = new URLSearchParams();
+    if (typeof window !== "undefined") {
+      const url = new URL(window.location.href);
+      for (const key of ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content", "gclid", "gbraid", "wbraid", "fbclid"]) {
+        const val = url.searchParams.get(key);
+        if (val) params.set(key, val);
+      }
+      params.set("entry_path", window.location.pathname);
+      const referrer = document.referrer;
+      if (referrer) {
+        try {
+          params.set("referrer_hostname", new URL(referrer).hostname);
+        } catch {
+          // ignore
+        }
+      }
+    }
 
-      if (message === "pending_integration") {
+    const payload = {
+      nome: data.nome.trim(),
+      whatsapp: data.whatsapp,
+      negocioServico: data.negocioServico.trim(),
+      situacaoAnuncios: data.situacaoAnuncios,
+      possuiSite: data.possuiSite,
+      urlAtual: data.urlAtual.trim(),
+      consentimento: data.consentimento,
+      leadSource: "direct",
+      sourceCta: ctaLocation,
+      utmSource: params.get("utm_source") || "",
+      utmMedium: params.get("utm_medium") || "",
+      utmCampaign: params.get("utm_campaign") || "",
+      utmTerm: params.get("utm_term") || "",
+      utmContent: params.get("utm_content") || "",
+      gclid: params.get("gclid") || "",
+      gbraid: params.get("gbraid") || "",
+      wbraid: params.get("wbraid") || "",
+      fbclid: params.get("fbclid") || "",
+      entryPath: params.get("entry_path") || "/landingpage",
+      referrerHostname: params.get("referrer_hostname") || "",
+      honeypot: honeypotRef.current?.value || "",
+    };
+
+    try {
+      const response = await fetch("/api/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const result = await response.json();
+
+      if (result.ok && (result.status === "created" || result.status === "duplicate")) {
+        setLeadId(result.lead_id);
+        trackGenerateLead(result.lead_id, result.status, ctaLocation);
+        setState("success");
+        return;
+      }
+
+      if (result.code === "PENDING_INTEGRATION") {
         setState("pending_integration");
         return;
       }
 
       setFailedAttempts((prev) => prev + 1);
       setState("error_server");
-      trackFormError("server_error", STEP_NAMES[currentStepIndex] || "unknown", 1);
+      trackFormError("server_error", STEP_NAMES[currentStepIndex] || "unknown", failedAttempts + 1);
+    } catch {
+      setFailedAttempts((prev) => prev + 1);
+      setState("error_server");
+      trackFormError("network_error", STEP_NAMES[currentStepIndex] || "unknown", failedAttempts + 1);
     }
-  }, [ctaLocation, data, currentStepIndex]);
+  }, [ctaLocation, data, currentStepIndex, failedAttempts]);
+
+  const openWhatsappAfterLead = useCallback(() => {
+    const url = getWhatsappAfterLeadUrl();
+    if (url && leadId && ctaLocation) {
+      trackWhatsappAfterLead(leadId, ctaLocation);
+      window.open(url, "_blank", "noopener,noreferrer");
+    }
+  }, [leadId, ctaLocation]);
 
   const openWhatsappError = useCallback(() => {
     const url = getWhatsappErrorUrl();
@@ -193,6 +260,19 @@ export function LeadFormModal({ isOpen, ctaLocation, onClose }: LeadFormModalPro
 
         <div className="flex-1 flex items-start md:items-center justify-center px-5 py-3 md:px-8 md:py-6">
           <div className="w-full max-w-[480px] space-y-6">
+            {/* Honeypot — hidden from humans, visible to screen readers and bots */}
+            <div className="absolute -left-[9999px] opacity-0 h-0 overflow-hidden" aria-hidden="true">
+              <label htmlFor="form-hp" className="sr-only">Não preencha este campo</label>
+              <input
+                ref={honeypotRef}
+                id="form-hp"
+                name="website"
+                type="text"
+                tabIndex={-1}
+                autoComplete="off"
+              />
+            </div>
+
             {/* IDLE / INTRO */}
             {state === "idle" && (
               <div className="space-y-6 text-center">
@@ -460,6 +540,33 @@ export function LeadFormModal({ isOpen, ctaLocation, onClose }: LeadFormModalPro
               <div className="space-y-4 text-center" role="status">
                 <p className="text-base text-[var(--text-primary)] font-medium">Enviando informações…</p>
                 <p className="text-sm text-[var(--text-secondary)]">Suas informações estão sendo enviadas. Aguarde.</p>
+              </div>
+            )}
+
+            {/* SUCCESS */}
+            {state === "success" && (
+              <div className="space-y-6 text-center">
+                <div className="space-y-2">
+                  <span className="text-xs font-medium text-green-600 uppercase tracking-wider">Informações enviadas</span>
+                  <h2 className="text-xl font-bold text-[var(--text-primary)]">Recebi suas informações!</h2>
+                  <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
+                    Obrigado por responder. Vou analisar e entrar em contato pelo WhatsApp em breve.
+                  </p>
+                </div>
+                <div className="flex flex-col gap-3">
+                  <button
+                    onClick={openWhatsappAfterLead}
+                    className="h-12 px-6 text-base font-medium bg-green-600 text-white rounded-xl hover:bg-green-700 transition-colors"
+                  >
+                    Continuar no WhatsApp
+                  </button>
+                  <button
+                    onClick={handleClose}
+                    className="h-12 px-6 text-base font-medium border border-[var(--border)] text-[var(--text-primary)] rounded-xl hover:bg-gray-50 transition-colors"
+                  >
+                    Voltar para a página
+                  </button>
+                </div>
               </div>
             )}
 

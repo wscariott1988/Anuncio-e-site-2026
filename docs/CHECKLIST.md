@@ -234,29 +234,20 @@
 ## 12. Formulário — servidor e armazenamento
 
 - [ ] O endpoint real está definido.
-- [ ] O fornecedor da base primária está confirmado.
-- [ ] A conta responsável pela base está confirmada.
-- [ ] O armazenamento primário é durável.
-- [ ] O Google Sheets não é o único armazenamento.
-- [ ] A planilha correta está confirmada.
+- [ ] O endpoint do Apps Script web app está confirmado.
+- [ ] O secret do Apps Script está definido e testado.
+- [ ] A planilha `Leads — Anúncio & Site` está confirmada.
 - [ ] A aba possui o nome exato `Leads`.
 - [ ] Os 24 cabeçalhos correspondem exatamente a `docs/LEADS.md`.
 - [ ] Os 24 cabeçalhos estão na ordem oficial.
 - [ ] Não existem colunas inseridas entre as colunas oficiais.
-- [ ] A identidade de servidor possui o acesso necessário à planilha.
-- [ ] O navegador não envia diretamente para o Google Sheets.
-- [ ] Apps Script público não é o armazenamento exclusivo.
+- [ ] O Apps Script possui acesso de edição na planilha.
+- [ ] O Apps Script utiliza LockService.
+- [ ] O navegador não envia diretamente para o Apps Script.
 - [ ] A forma de notificação está definida.
-- [ ] Custos e limites estão documentados.
 - [ ] A política de retenção está definida.
 - [ ] Existe contingência operacional.
-- [ ] Existe estado interno de sincronização.
-- [ ] Existe reprocessamento seguro.
-- [ ] Falha do Sheets mantém o lead na base primária.
-- [ ] Falha somente do Sheets não pede novo envio ao visitante.
-- [ ] Falha persistente do Sheets gera alerta operacional.
-- [ ] O servidor aceita somente campos previstos.
-- [ ] O servidor valida todos os dados.
+- [ ] O servidor valida todos os dados antes de enviar ao Apps Script.
 - [ ] O servidor normaliza o telefone.
 - [ ] O servidor sanitiza conteúdo.
 - [ ] Valores livres não são interpretados como fórmulas no Sheets.
@@ -285,7 +276,7 @@
 - [ ] A largura do botão permanece estável.
 - [ ] `form_submit_attempt` não é conversão.
 - [ ] O sucesso aparece somente após confirmação do servidor.
-- [ ] O sucesso depende do armazenamento na base primária.
+- [ ] O sucesso depende da confirmação do Apps Script.
 - [ ] A confirmação do Sheets não dispara um segundo sucesso.
 - [ ] Falha somente do Sheets não dispara `form_error`.
 - [ ] O sucesso acontece dentro do modal.
@@ -576,7 +567,7 @@
 - [ ] Fechar e reabrir.
 - [ ] Voltar e editar.
 - [ ] Atualizar a página.
-- [ ] Lead armazenado uma única vez na base primária.
+- [ ] Lead confirmado pelo Apps Script uma única vez.
 - [ ] Mesmo `lead_id` gravado uma única vez na planilha.
 - [ ] Linha possui exatamente 24 colunas na ordem oficial.
 - [ ] UTMs presentes foram preservadas.
@@ -602,7 +593,7 @@
 - [ ] HTTPS funciona no domínio real.
 - [ ] `/landingpage` funciona no domínio real.
 - [ ] Formulário foi testado no domínio real.
-- [ ] Lead chegou à base primária no teste real.
+- [ ] Lead confirmado pelo Apps Script no teste real.
 - [ ] Lead chegou uma única vez à aba `Leads`.
 - [ ] WhatsApp foi testado no domínio real.
 - [ ] Eventos foram testados no domínio real.
@@ -616,13 +607,13 @@
 ## 31. Dependências finais
 
 - [ ] Número oficial do WhatsApp.
-- [ ] Fornecedor e conta da base primária.
-- [ ] Limites e custos da base primária.
+- [ ] Endpoint do Apps Script web app.
+- [ ] Secret do Apps Script.
 - [ ] Política de retenção.
 - [ ] Identificador da planilha.
-- [ ] Aba `Leads`.
-- [ ] Acesso da identidade de servidor.
-- [ ] Sincronização e reprocessamento.
+- [ ] Aba `Leads` com 24 colunas.
+- [ ] Apps Script com acesso de edição na planilha.
+- [ ] Idempotência e reprocessamento testados.
 - [ ] Notificação dos leads.
 - [ ] GTM.
 - [ ] GA4.
@@ -658,7 +649,7 @@ A Landing Page somente está pronta quando:
 
 - [ ] Willian aprovou a versão.
 - [ ] Todos os itens críticos foram validados.
-- [ ] O formulário armazenou um lead real na base primária.
+- [ ] O formulário armazenou um lead real no Google Sheets via Apps Script.
 - [ ] O mesmo `lead_id` chegou uma única vez ao Google Sheets.
 - [ ] A linha respeitou o esquema das 24 colunas de `docs/LEADS.md`.
 - [ ] Uma falha de Sheets foi simulada sem perda do lead.

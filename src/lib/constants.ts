@@ -10,7 +10,7 @@ export const PRICE_INSTALLMENT = "R$ 498,50";
 export const DEADLINE = "até 7 dias úteis";
 export const ROUNDS = "até 2 rodadas de ajustes";
 
-export const WHATSAPP_NUMBER = "";
+export const WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "";
 
 export const PROJECTS: Project[] = [
   {

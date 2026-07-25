@@ -269,28 +269,25 @@ A arquitetura aprovada é:
 ```text
 Formulário
 → endpoint do servidor
-→ base primária durável
+→ Google Apps Script → Google Sheets
 → confirmação com lead_id
-→ sincronização com Google Sheets
 → notificação
 ```
 
 Regras:
 
-- a base primária determina o sucesso;
-- o Google Sheets é a visão operacional e não o único armazenamento;
-- uma falha do Sheets não pode apagar nem duplicar o lead;
-- uma falha somente do Sheets não deve pedir novo envio ao visitante;
+- o Google Sheets é o armazenamento único e confirma o lead;
+- o Google Apps Script é a camada de integração que escreve na planilha;
+- uma falha do Apps Script permite nova tentativa sem perder o lead;
 - o esquema da aba `Leads` possui exatamente as 24 colunas de `docs/LEADS.md`;
 - não criar uma segunda lista de colunas em outro documento;
-- não usar chamada direta do navegador para a planilha;
-- não usar Apps Script público como armazenamento exclusivo;
+- não usar chamada direta do navegador para o Apps Script;
 - não implementar sincronização bidirecional na primeira versão;
 - `status_atendimento` começa como `Novo`;
 - `observacoes` começa vazio;
 - alterações manuais nessas duas colunas não podem ser sobrescritas por uma repetição técnica.
 
-O fornecedor da base primária, as credenciais, os custos, a retenção e o canal de notificação ainda devem ser confirmados antes da implementação definitiva.
+O endpoint do Apps Script, o secret e a planilha devem ser confirmados antes da implementação definitiva.
 
 Se uma dependência real não estiver definida:
 
@@ -468,7 +465,7 @@ generate_lead
 
 Disparar somente depois do armazenamento confirmado pelo servidor.
 
-O armazenamento confirmado é o registro na base primária durável. A sincronização com o Google Sheets pode continuar internamente sem criar outra conversão.
+O armazenamento confirmado é a confirmação do Apps Script de que a linha foi escrita no Google Sheets.
 
 ### Eventos
 
@@ -644,7 +641,10 @@ Não sacrificar desempenho por efeitos decorativos.
 - Não guardar dados pessoais em URL.
 - Evitar logs desnecessários.
 - Não mostrar detalhes internos.
-- Não expor credenciais do banco ou do Google Sheets.
+- Não expor credenciais do Apps Script ou do Google Sheets.
+- `GOOGLE_APPS_SCRIPT_WEB_APP_URL` e `GOOGLE_APPS_SCRIPT_SECRET` são exclusivamente servidor.
+- `NEXT_PUBLIC_WHATSAPP_NUMBER` é público intencionalmente.
+- `SHARED_SECRET` e `SPREADSHEET_ID` ficam nas Script Properties do Apps Script.
 - Não usar prefixo `NEXT_PUBLIC_` em segredos.
 - Não permitir que valores do formulário sejam interpretados como fórmulas na planilha.
 - Não usar nome ou telefone para gerar `lead_id`.
@@ -699,7 +699,7 @@ Não implementar nesta fase:
 Confirmar antes da publicação:
 
 - número oficial do WhatsApp;
-- fornecedor e acesso da base primária;
+- endpoint e secret do Apps Script;
 - identificador e acesso da planilha;
 - aba `Leads` com as 24 colunas oficiais;
 - sincronização e recuperação do Google Sheets;
@@ -735,7 +735,7 @@ Antes de considerar a implementação concluída:
 6. testar `/landingpage` no celular;
 7. testar teclado e foco;
 8. testar formulário real;
-9. confirmar armazenamento na base primária;
+9. confirmar armazenamento no Google Sheets;
 10. confirmar uma única linha no Google Sheets;
 11. validar as 24 colunas na ordem oficial;
 12. simular falha do Sheets e validar recuperação sem perda;
@@ -754,7 +754,7 @@ Antes de considerar a implementação concluída:
 Não declarar sucesso quando:
 
 - build falhou;
-- formulário não foi armazenado na base primária;
+- formulário não foi armazenado no Google Sheets;
 - sincronização com a planilha não foi testada;
 - eventos não foram validados;
 - dependência real está ausente;
