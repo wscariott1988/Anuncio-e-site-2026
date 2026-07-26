@@ -13,9 +13,6 @@ export function FaqSection() {
           <h2 className="text-[28px] md:text-[40px] font-bold text-[var(--text-primary)] leading-tight">
             O que você precisa saber antes de iniciar
           </h2>
-          <p className="text-base text-[var(--text-secondary)] leading-relaxed">
-            Confira as respostas para as principais dúvidas sobre escopo, prazo, anúncios, ajustes e publicação.
-          </p>
         </div>
         <Accordion items={FAQ_ITEMS} onItemOpen={trackFaqOpen} />
       </div>

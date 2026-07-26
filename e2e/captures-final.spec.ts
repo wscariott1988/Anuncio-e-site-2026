@@ -44,7 +44,8 @@ test("tablet-investimento-final.png — 768x1024", async ({ page }) => {
 test("mobile-portfolio-viewer-final.png — 390x844", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await waitForPageReady(page);
-  const card = page.locator('[aria-label="Ver projeto Mecânica Auto Brum por dentro"]');
+  const mobileStrip = page.locator(".md\\:hidden .overflow-x-auto");
+  const card = mobileStrip.locator('[aria-label="Ver projeto Mecânica Auto Brum por dentro"]');
   await card.scrollIntoViewIfNeeded();
   await card.click();
   await expect(page.locator("dialog[open]")).toBeVisible({ timeout: 10_000 });

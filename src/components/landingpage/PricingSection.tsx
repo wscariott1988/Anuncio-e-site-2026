@@ -10,8 +10,7 @@ interface PricingSectionProps {
 
 export function PricingSection({ onCtaClick }: PricingSectionProps) {
   const included = [
-    "Estratégia e organização da página",
-    "Copy completa",
+    "Estratégia e copy",
     "Design responsivo",
     "Desenvolvimento em Next.js",
     "Formulário com continuidade pelo WhatsApp",
@@ -22,12 +21,9 @@ export function PricingSection({ onCtaClick }: PricingSectionProps) {
 
   const excluded = [
     "Gestão de Google Ads ou Meta Ads",
-    "Produção de fotos e vídeos",
-    "Criação de identidade visual completa",
-    "Páginas adicionais",
-    "Manutenção mensal",
-    "Testes A/B contínuos",
-    "Automações ou integrações não previstas",
+    "Produção de fotos, vídeos ou identidade visual completa",
+    "Páginas, automações ou integrações adicionais",
+    "Manutenção mensal e testes A/B contínuos",
   ];
 
   return (
@@ -39,7 +35,7 @@ export function PricingSection({ onCtaClick }: PricingSectionProps) {
             Sua Landing Page completa por <span className="whitespace-nowrap">{PRICE}</span>
           </h2>
           <p className="text-base text-[var(--text-secondary)] leading-relaxed">
-            Esse é o valor do projeto padrão para desenvolver uma Landing Page completa, adaptada à sua oferta e preparada para receber campanhas de Google Ads ou Meta Ads.
+            Projeto completo, adaptado à sua oferta e preparado para campanhas de Google Ads ou Meta Ads.
           </p>
         </div>
 
@@ -82,7 +78,7 @@ export function PricingSection({ onCtaClick }: PricingSectionProps) {
             </div>
 
             <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
-              Domínio, hospedagem e ferramentas de terceiros não estão incluídos automaticamente no valor de <span className="whitespace-nowrap">{PRICE}</span>. Quando forem necessários, os custos, as contas utilizadas e as responsabilidades serão informados antes da contratação.
+              Domínio, hospedagem e ferramentas de terceiros não estão incluídos automaticamente. Quando necessários, os custos e as responsabilidades são informados antes da contratação.
             </p>
           </div>
         </div>
@@ -91,19 +87,19 @@ export function PricingSection({ onCtaClick }: PricingSectionProps) {
           <div className="space-y-2">
             <button
               onClick={() => {
-                trackCtaClick("pricing", "Quero solicitar meu projeto", "pricing_primary");
+                trackCtaClick("pricing", "Quero minha Landing Page", "pricing_primary");
                 onCtaClick("pricing");
               }}
               className="h-12 px-6 text-base font-medium bg-[var(--brand)] text-white rounded-xl hover:bg-[var(--brand-hover)] transition-colors"
             >
-              Quero solicitar meu projeto
+              Quero minha Landing Page
             </button>
             <p className="text-sm text-[var(--text-secondary)]">
-              Preencha o formulário para eu conhecer sua necessidade e confirmar se ela se encaixa no escopo de <span className="whitespace-nowrap">{PRICE}</span>.
+              Preencha o formulário para eu avaliar sua necessidade e confirmar o escopo.
             </p>
           </div>
           <p className="text-sm text-[var(--text-secondary)] leading-relaxed italic">
-            A Landing Page organiza a experiência depois do clique, mas não existe garantia de vendas, leads ou desempenho da campanha.
+            A Landing Page organiza a experiência depois do clique, mas não garante vendas, leads ou desempenho da campanha.
           </p>
         </div>
       </div>

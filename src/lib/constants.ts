@@ -19,7 +19,7 @@ export const PROJECTS: Project[] = [
     segment: "Socorro mecânico 24 horas",
     slug: "mecanica-auto-brum",
     description:
-      "Landing Page desenvolvida para apresentar os atendimentos emergenciais e facilitar o contato rápido pelo WhatsApp.",
+      "Página para apresentar atendimentos emergenciais e facilitar o contato.",
   },
   {
     id: "zarq_planejados",
@@ -27,7 +27,7 @@ export const PROJECTS: Project[] = [
     segment: "Móveis planejados",
     slug: "zarq-planejados",
     description:
-      "Página desenvolvida para apresentar o trabalho da ZARQ Planejados e direcionar interessados para solicitar atendimento.",
+      "Página para apresentar a oferta e direcionar pedidos de atendimento.",
   },
   {
     id: "agafarma_mario_quintana",
@@ -35,7 +35,7 @@ export const PROJECTS: Project[] = [
     segment: "Farmácia local",
     slug: "agafarma-mario-quintana",
     description:
-      "Página desenvolvida para apresentar a unidade, seus principais serviços e os canais de atendimento disponíveis ao público local.",
+      "Página para apresentar a unidade, seus serviços e canais de atendimento.",
   },
   {
     id: "bs_montagem",
@@ -43,7 +43,7 @@ export const PROJECTS: Project[] = [
     segment: "Montagem de móveis",
     slug: "bs-montagem",
     description:
-      "Landing Page voltada ao atendimento em Porto Alegre e região, com apresentação dos serviços e solicitação de orçamento pelo WhatsApp.",
+      "Página para apresentar os serviços e receber pedidos de orçamento.",
   },
   {
     id: "artur_montador",
@@ -51,7 +51,7 @@ export const PROJECTS: Project[] = [
     segment: "Montagem de móveis",
     slug: "artur-montador",
     description:
-      "Landing Page criada para apresentar o profissional, explicar os serviços e facilitar a solicitação de orçamento.",
+      "Página para apresentar o profissional e facilitar a solicitação de orçamento.",
   },
 ];
 
@@ -65,80 +65,50 @@ export const SITUACAO_OPCOES = [
 export const FAQ_ITEMS: FaqItem[] = [
   {
     id: "faq_01",
-    question: "O projeto custa R$ 997?",
+    question: "Quanto custa e como funciona o pagamento?",
     answer:
-      "Sim. R$ 997 é o valor do projeto padrão apresentado nesta página. Se sua necessidade incluir outra página, integração, funcionalidade ou serviço fora do escopo, eu explico antes e envio um orçamento adicional. Nada é acrescentado sem sua aprovação.",
+      "O projeto padrão custa R$ 997: R$ 498,50 na contratação e R$ 498,50 após a página ser publicada e estar funcionando. Serviços fora do escopo são apresentados separadamente antes de qualquer execução.",
   },
   {
     id: "faq_02",
-    question: "O que está incluído?",
+    question: "Em quanto tempo a página fica pronta?",
     answer:
-      "O projeto inclui estratégia e estrutura, copy, design responsivo, desenvolvimento em Next.js, formulário, continuidade pelo WhatsApp, configuração de rastreamento, publicação, testes e até duas rodadas de ajustes dentro do escopo aprovado.",
+      "O prazo é de até 7 dias úteis após a entrada, o briefing completo e o recebimento dos materiais necessários. Pendências pausam a contagem.",
   },
   {
     id: "faq_03",
-    question: "Em quanto tempo a página fica pronta?",
+    question: "Preciso já estar anunciando?",
     answer:
-      "O prazo padrão é de até sete dias úteis. A contagem começa após a confirmação do pagamento inicial, o preenchimento completo do briefing e o recebimento de todas as informações e materiais necessários.",
+      "Não. A página pode ser desenvolvida antes da campanha, desde que você tenha uma oferta definida e um plano real para anunciar.",
   },
   {
     id: "faq_04",
-    question: "Preciso já estar anunciando?",
+    question: "Já tenho um site. Ainda preciso de uma Landing Page?",
     answer:
-      "Não. Você pode desenvolver a Landing Page antes de iniciar sua campanha. É importante, porém, ter uma oferta definida e um plano real para anunciar no Google Ads ou Meta Ads.",
+      "Depende. Um site normalmente oferece vários caminhos; a Landing Page concentra uma oferta e uma ação principal. Eu avalio seu caso antes da contratação.",
   },
   {
     id: "faq_05",
-    question: "Já tenho um site. Ainda preciso de uma Landing Page?",
+    question: "A gestão dos anúncios está incluída?",
     answer:
-      "Depende da sua campanha e da estrutura do seu site. Um site institucional normalmente apresenta a empresa e oferece diferentes caminhos. A Landing Page concentra a atenção em uma oferta e em uma ação principal. Antes da contratação, eu posso avaliar se uma página específica faz sentido para o que você pretende anunciar.",
+      "Não. O valor de R$ 997 contempla a criação da Landing Page. A gestão de Google Ads ou Meta Ads é um serviço separado.",
   },
   {
     id: "faq_06",
-    question: "A gestão de Google Ads ou Meta Ads está incluída?",
+    question: "Domínio e hospedagem estão incluídos?",
     answer:
-      "Não. O projeto de R$ 997 contempla a criação da Landing Page. A gestão das campanhas é um serviço separado e só será incluída quando estiver descrita em outra proposta.",
+      "Não automaticamente. A infraestrutura, as contas, os custos e as responsabilidades são definidos antes do início.",
   },
   {
     id: "faq_07",
-    question: "Domínio e hospedagem estão incluídos?",
+    question: "Posso solicitar alterações e manutenção?",
     answer:
-      "Não estão incluídos automaticamente. A infraestrutura é definida antes do início do projeto. Você saberá qual conta será utilizada, quem será responsável pelo pagamento, pelas renovações e pelo funcionamento depois da entrega.",
+      "O projeto inclui até 2 rodadas de ajustes dentro do escopo. Manutenção recorrente, novas seções, páginas, integrações ou funcionalidades são avaliadas separadamente.",
   },
   {
     id: "faq_08",
-    question: "Posso solicitar alterações?",
+    question: "A página terá rastreamento e garante resultados?",
     answer:
-      "Sim. O projeto inclui até duas rodadas de ajustes. Cada rodada corresponde a uma lista consolidada de solicitações. Correções, pequenos ajustes de texto, troca de imagens e refinamentos dentro do escopo podem ser incluídos. Mudanças de oferta, público, página, funcionalidade ou integração podem exigir um novo orçamento.",
-  },
-  {
-    id: "faq_09",
-    question: "A página terá rastreamento?",
-    answer:
-      "Sim. Os eventos previstos no projeto podem ser configurados para acompanhar ações como o envio confirmado do formulário e a continuidade pelo WhatsApp. A integração com Google Tag Manager, Google Analytics 4, Google Ads e Meta Pixel depende do fornecimento das contas, dos acessos e dos consentimentos necessários.",
-  },
-  {
-    id: "faq_10",
-    question: "Você garante vendas ou leads?",
-    answer:
-      "Não. Nenhuma Landing Page pode garantir vendas, quantidade de contatos ou desempenho de campanha. Os resultados também dependem da oferta, dos anúncios, do orçamento, da demanda, da concorrência, do atendimento e de outros fatores. Meu compromisso é entregar uma página funcional, responsiva, rastreável e de acordo com o escopo aprovado.",
-  },
-  {
-    id: "faq_11",
-    question: "Quais materiais preciso enviar?",
-    answer:
-      "No briefing, eu solicito as informações sobre sua empresa, oferta, público, diferenciais, serviços, contatos e condições comerciais. Você também deverá fornecer os materiais disponíveis, como logotipo, fotos, identidade visual e acessos necessários. Se algum material importante não existir, alinhamos antes como ele será substituído ou contratado.",
-  },
-  {
-    id: "faq_12",
-    question: "O projeto inclui manutenção mensal?",
-    answer:
-      "Não. A entrega padrão não inclui manutenção recorrente. Depois da entrega, correções técnicas relacionadas ao projeto seguem as condições da proposta. Novos textos, imagens, seções, integrações ou funcionalidades podem ser avaliados separadamente.",
-  },
-  {
-    id: "faq_13",
-    question: "Como funciona o pagamento?",
-    answer:
-      "O pagamento é dividido em duas etapas: 50% na contratação e 50% depois que a Landing Page estiver publicada e funcionando. O prazo de produção começa após a confirmação da entrada, o briefing completo e o recebimento dos materiais necessários.",
+      "Os eventos previstos podem ser configurados quando os acessos necessários forem fornecidos. A página não garante vendas ou leads, pois o resultado também depende da oferta, da campanha, do orçamento, da demanda e do atendimento.",
   },
 ];

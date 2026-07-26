@@ -177,16 +177,15 @@ Preservar a ordem definida em `docs/LANDINGPAGE.md`:
 1. Cabeçalho.
 2. Hero.
 3. Faixa de clareza.
-4. Problema pós-clique.
-5. Apresentação da solução.
-6. O que está incluído.
-7. Projetos desenvolvidos.
-8. Como funciona.
-9. Quem é Willian Souza.
-10. Investimento.
-11. Perguntas frequentes.
-12. CTA final.
-13. Rodapé.
+4. Problema e solução.
+5. O que está incluído.
+6. Projetos desenvolvidos.
+7. Como funciona.
+8. Quem é Willian Souza.
+9. Investimento.
+10. Perguntas frequentes.
+11. CTA final.
+12. Rodapé.
 
 O formulário é modal. Não criar uma seção de formulário aberto no final.
 
@@ -198,9 +197,7 @@ Localizações:
 
 - `header`;
 - `hero`;
-- `included`;
 - `portfolio`;
-- `about`;
 - `pricing`;
 - `final`.
 

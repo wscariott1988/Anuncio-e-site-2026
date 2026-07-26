@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { trackCtaClick } from "@/lib/tracking";
-import { PRICE, DEADLINE, ROUNDS } from "@/lib/constants";
+import { PRICE } from "@/lib/constants";
 import type { CtaLocation } from "@/types";
 
 interface HeroProps {
@@ -29,13 +29,13 @@ export function Hero({ onCtaClick }: HeroProps) {
             </h1>
             <p className="text-lg text-[var(--text-secondary)] leading-relaxed max-w-[520px]">
               Estratégia, copy, design, desenvolvimento e rastreamento em uma
-              página rápida, responsiva e preparada para conduzir o visitante até
-              o contato.
+              página rápida, responsiva e preparada para conduzir o visitante ao
+              contato.
             </p>
             <div className="space-y-1 text-[var(--text-primary)]">
               <p className="text-lg font-semibold">Projeto completo por <span className="whitespace-nowrap">{PRICE}</span></p>
               <p className="text-sm text-[var(--text-secondary)]">
-                {DEADLINE} • {ROUNDS}
+                Até 7 dias úteis após briefing e materiais • Até 2 rodadas de ajustes
               </p>
             </div>
             <div className="space-y-3">
@@ -49,8 +49,7 @@ export function Hero({ onCtaClick }: HeroProps) {
                 Quero minha Landing Page
               </button>
               <p className="text-sm text-[var(--text-secondary)]">
-                Você me explica seu negócio. Eu cuido da página, do planejamento à
-                publicação.
+                Você me explica seu negócio. Eu cido do planejamento à publicação.
               </p>
             </div>
           </div>

@@ -5,7 +5,7 @@ import { Header } from "@/components/landingpage/Header";
 import { Hero } from "@/components/landingpage/Hero";
 import { ClarityStrip } from "@/components/landingpage/ClarityStrip";
 import { ProblemSection } from "@/components/landingpage/ProblemSection";
-import { SolutionSection } from "@/components/landingpage/SolutionSection";
+
 import { IncludedSection } from "@/components/landingpage/IncludedSection";
 import { PortfolioSection } from "@/components/landingpage/PortfolioSection";
 import { HowItWorksSection } from "@/components/landingpage/HowItWorksSection";
@@ -53,11 +53,10 @@ export function LandingPageClient() {
         <Hero onCtaClick={handleCtaClick} />
         <ClarityStrip />
         <ProblemSection />
-        <SolutionSection />
-        <IncludedSection onCtaClick={handleCtaClick} />
+        <IncludedSection />
         <PortfolioSection onCtaClick={handleCtaClick} onOpenProject={handleOpenProject} />
         <HowItWorksSection />
-        <AboutSection onCtaClick={handleCtaClick} />
+        <AboutSection />
         <PricingSection onCtaClick={handleCtaClick} />
         <FaqSection />
         <FinalCta onCtaClick={handleCtaClick} />

@@ -68,8 +68,7 @@
 - [ ] Cabeçalho.
 - [ ] Hero.
 - [ ] Faixa de clareza.
-- [ ] Problema pós-clique.
-- [ ] Apresentação da solução.
+- [ ] Problema e solução.
 - [ ] O que está incluído.
 - [ ] Projetos desenvolvidos.
 - [ ] Como funciona.
@@ -90,9 +89,7 @@
 - [ ] A marca leva ao topo da própria página.
 - [ ] O CTA do cabeçalho abre o formulário.
 - [ ] O CTA da hero abre o formulário.
-- [ ] O CTA de itens incluídos abre o formulário.
 - [ ] O CTA do portfólio abre o formulário.
-- [ ] O CTA da seção sobre Willian abre o formulário.
 - [ ] O CTA de investimento abre o formulário.
 - [ ] O CTA final abre o formulário.
 - [ ] Todos abrem a mesma instância lógica do formulário.
@@ -500,6 +497,17 @@
 - [ ] O teclado não cobre a ação.
 - [ ] Áreas seguras do aparelho foram respeitadas.
 - [ ] Elementos fixos não cobrem conteúdo.
+- [ ] Portfólio usa faixa horizontal com scroll-snap no mobile.
+- [ ] Portfólio usa grid no desktop.
+- [ ] Portfólio não possui autoplay nem animação automática.
+- [ ] Texto sr-only de orientação ao swipe está presente.
+- [ ] "O que está incluído" usa painel compacto com divide-y no mobile.
+- [ ] "O que está incluído" usa Bento Box grid no desktop.
+- [ ] "Quem é Willian Souza" usa grid-cols-2 (2×2) no mobile.
+- [ ] "Quem é Willian Souza" usa grid-cols-4 no desktop.
+- [ ] "Como funciona" possui gaps reduzidos no mobile.
+- [ ] Todos os textos e CTAs estão preservados nos padrões compactos.
+- [ ] Desktop não foi afetado pelos padrões compactos.
 
 ## 26. Desempenho
 

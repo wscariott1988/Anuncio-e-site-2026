@@ -255,6 +255,17 @@ Não depender apenas de breakpoints fixos. Evitar:
 - mockup maior que a viewport;
 - teclado cobrindo a ação do formulário.
 
+### Comportamento compacto no mobile
+
+Em viewports abaixo de `768px`, aplicar padrões compactos para reduzir a altura total da página sem remover conteúdo nem alterar o desktop:
+
+- **Portfólio**: faixa horizontal com `scroll-snap` (`snap-x snap-mandatory`), cards com `min-w-[85%]`, `scroll-snap-align: start`. Sem autoplay, sem animação. Incluir `<p className="sr-only">Deslize para ver outros projetos</p>` para acessibilidade. O grid `md:grid md:grid-cols-2 lg:grid-cols-3` continua visível no desktop.
+- **O que está incluído**: painel compacto com `divide-y` mostrando 6 linhas (título + descrição), visível apenas no mobile. O Bento Box (`hidden md:grid`) continua visível no desktop.
+- **Quem é Willian Souza**: grid `grid-cols-2` por padrão (2×2 no mobile), `lg:grid-cols-4` no desktop. Tamanhos de fonte reduzidos com `text-base sm:text-lg` e `text-xs sm:text-sm`.
+- **Como funciona**: gaps reduzidos (`space-y-4 md:space-y-8`, `gap-4 md:gap-6`), número do passo com `w-9 h-9 md:w-10 md:h-10`.
+
+Esses padrões são **somente mobile**. O desktop não pode ser afetado.
+
 ## 17. Acessibilidade
 
 - Contraste mínimo compatível com WCAG AA.

@@ -281,7 +281,7 @@ export function LeadFormModal({ isOpen, ctaLocation, onClose }: LeadFormModalPro
                   Antes de continuar, preciso entender sua necessidade
                 </h2>
                 <p className="text-[var(--text-secondary)] leading-relaxed">
-                  Responda algumas perguntas rápidas para eu entender seu projeto e confirmar se ele se encaixa na proposta de R$ 997.
+                  Responda algumas perguntas rápidas para eu avaliar seu projeto e confirmar se ele se encaixa na proposta de R$ 997.
                 </p>
                 <p className="text-sm text-[var(--text-secondary)]">Leva cerca de 40 segundos.</p>
                 <button
@@ -547,10 +547,10 @@ export function LeadFormModal({ isOpen, ctaLocation, onClose }: LeadFormModalPro
             {state === "success" && (
               <div className="space-y-6 text-center">
                 <div className="space-y-2">
-                  <span className="text-xs font-medium text-green-600 uppercase tracking-wider">Informações enviadas</span>
-                  <h2 className="text-xl font-bold text-[var(--text-primary)]">Recebi suas informações!</h2>
+                  <span className="text-xs font-medium text-green-600 uppercase tracking-wider">Informações recebidas</span>
+                  <h2 className="text-xl font-bold text-[var(--text-primary)]">Obrigado, {data.nome}. Recebi os dados do seu projeto.</h2>
                   <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
-                    Obrigado por responder. Vou analisar e entrar em contato pelo WhatsApp em breve.
+                    Agora você pode continuar a conversa comigo pelo WhatsApp. As informações enviadas já estarão registradas para minha análise.
                   </p>
                 </div>
                 <div className="flex flex-col gap-3">

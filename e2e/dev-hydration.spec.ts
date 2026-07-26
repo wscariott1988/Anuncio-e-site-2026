@@ -49,7 +49,8 @@ test("DEV hydration diagnostic: React attaches to DOM", async ({ page }) => {
   console.log("FAQ aria-expanded before:", beforeClick, "after:", afterClick);
 
   // 5. Open portfolio
-  const card = page.locator('[aria-label="Ver projeto Mecânica Auto Brum por dentro"]');
+  const desktopGrid = page.locator(".hidden.md\\:grid.md\\:grid-cols-2");
+  const card = desktopGrid.locator('[aria-label="Ver projeto Mecânica Auto Brum por dentro"]');
   await card.scrollIntoViewIfNeeded();
   await card.click();
   await page.waitForTimeout(1000);

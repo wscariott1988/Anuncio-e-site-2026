@@ -251,7 +251,7 @@ test.describe("Form submission flow", () => {
     await fillStep2(page);
     await checkConsentAndSubmit(page);
 
-    await expect(page.locator("text=Recebi suas informações!")).toBeVisible({ timeout: 10_000 });
+    await expect(page.locator("text=Recebi os dados do seu projeto")).toBeVisible({ timeout: 10_000 });
     await expect(page.locator("text=Continuar no WhatsApp")).toBeVisible();
   });
 
@@ -303,7 +303,7 @@ test.describe("Form submission flow", () => {
     await expect(page.locator("text=Não foi possível enviar agora")).toBeVisible({ timeout: 10_000 });
 
     await page.getByRole("button", { name: "Tentar novamente" }).click();
-    await expect(page.locator("text=Recebi suas informações!")).toBeVisible({ timeout: 10_000 });
+    await expect(page.locator("text=Recebi os dados do seu projeto")).toBeVisible({ timeout: 10_000 });
   });
 
   test("generate_lead fires after successful submission", async () => {
@@ -325,7 +325,7 @@ test.describe("Form submission flow", () => {
     await fillStep1(page);
     await fillStep2(page);
     await checkConsentAndSubmit(page);
-    await expect(page.locator("text=Recebi suas informações!")).toBeVisible({ timeout: 10_000 });
+    await expect(page.locator("text=Recebi os dados do seu projeto")).toBeVisible({ timeout: 10_000 });
 
     const dataLayer = await page.evaluate(() => {
       return (window as unknown as { dataLayer: Record<string, unknown>[] }).dataLayer || [];
@@ -355,7 +355,7 @@ test.describe("Form submission flow", () => {
     await fillStep1(page);
     await fillStep2(page);
     await checkConsentAndSubmit(page);
-    await expect(page.locator("text=Recebi suas informações!")).toBeVisible({ timeout: 10_000 });
+    await expect(page.locator("text=Recebi os dados do seu projeto")).toBeVisible({ timeout: 10_000 });
 
     const whatsappBtn = page.getByRole("button", { name: "Continuar no WhatsApp" });
     const [newPage] = await Promise.all([
@@ -392,7 +392,7 @@ test.describe("Form submission flow", () => {
     await fillStep1(page, "Maria Silva", "11999887766");
     await fillStep2(page);
     await checkConsentAndSubmit(page);
-    await expect(page.locator("text=Recebi suas informações!")).toBeVisible({ timeout: 10_000 });
+    await expect(page.locator("text=Recebi os dados do seu projeto")).toBeVisible({ timeout: 10_000 });
 
     const dataLayer = await page.evaluate(() => {
       return (window as unknown as { dataLayer: Record<string, unknown>[] }).dataLayer || [];
@@ -426,7 +426,7 @@ test.describe("Form submission flow", () => {
     await expect(page.locator("text=Enviando informações")).toBeVisible();
 
     resolveApi();
-    await expect(page.locator("text=Recebi suas informações!")).toBeVisible({ timeout: 10_000 });
+    await expect(page.locator("text=Recebi os dados do seu projeto")).toBeVisible({ timeout: 10_000 });
   });
 
   test("form shows pending_integration when env vars missing", async () => {

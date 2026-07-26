@@ -15,9 +15,7 @@ const ALLOWED_POSSUI_SITE = ["Sim", "Não"] as const;
 const ALLOWED_SOURCE_CTA = [
   "header",
   "hero",
-  "included",
   "portfolio",
-  "about",
   "pricing",
   "final",
 ] as const;

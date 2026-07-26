@@ -167,7 +167,7 @@ test.describe("Route tests", () => {
     expect(body).not.toContain("Exemplo visual de estrutura");
   });
 
-  test("13 sections present in order via h2 elements", async () => {
+  test("sections present in order via h2 elements", async () => {
     await waitForPageReady(page);
     const h2s = page.locator("h2");
     const count = await h2s.count();
@@ -227,7 +227,8 @@ test.describe("Route tests", () => {
   test("Hero composition mobile: phone frame visible below CTA", async () => {
     await page.setViewportSize({ width: 390, height: 844 });
     await waitForPageReady(page);
-    const mobileFrame = page.locator('.md\\:hidden img');
+    const heroSection = page.locator("section").first();
+    const mobileFrame = heroSection.locator('.md\\:hidden img');
     await expect(mobileFrame).toBeVisible();
   });
 
@@ -280,7 +281,8 @@ test.describe("Route tests", () => {
     await page.setViewportSize({ width: 390, height: 844 });
     await waitForPageReady(page);
 
-    const card = page.locator('[aria-label="Ver projeto Mecânica Auto Brum por dentro"]');
+    const mobileStrip = page.locator(".md\\:hidden .overflow-x-auto");
+    const card = mobileStrip.locator('[aria-label="Ver projeto Mecânica Auto Brum por dentro"]');
     await card.scrollIntoViewIfNeeded();
     await card.click();
 
@@ -312,7 +314,8 @@ test.describe("Route tests", () => {
     await page.setViewportSize({ width: 390, height: 844 });
     await waitForPageReady(page);
 
-    const card = page.locator('[aria-label="Ver projeto Mecânica Auto Brum por dentro"]');
+    const mobileStrip = page.locator(".md\\:hidden .overflow-x-auto");
+    const card = mobileStrip.locator('[aria-label="Ver projeto Mecânica Auto Brum por dentro"]');
     await card.scrollIntoViewIfNeeded();
     await card.click();
 
@@ -338,10 +341,8 @@ test.describe("Route tests", () => {
 const CTA_BUTTONS: { label: string; location: string }[] = [
   { label: "Quero minha Landing Page", location: "header" },
   { label: "Quero minha Landing Page", location: "hero" },
-  { label: "Quero minha Landing Page", location: "included" },
-  { label: "Quero uma Landing Page para meu negócio", location: "portfolio" },
-  { label: "Quero desenvolver minha página com Willian", location: "about" },
-  { label: "Quero solicitar meu projeto", location: "pricing" },
+  { label: "Quero minha Landing Page", location: "portfolio" },
+  { label: "Quero minha Landing Page", location: "pricing" },
   { label: "Quero minha Landing Page", location: "final" },
 ];
 
@@ -579,14 +580,15 @@ test.describe("Portfolio tests", () => {
 
     await waitForPageReady(page);
 
+    const desktopGrid = page.locator(".hidden.md\\:grid.md\\:grid-cols-2");
     for (const project of PROJECTS) {
-      const card = page.locator(`[aria-label="Ver projeto ${project.name} por dentro"]`);
+      const card = desktopGrid.locator(`[aria-label="Ver projeto ${project.name} por dentro"]`);
       await card.scrollIntoViewIfNeeded();
       await card.click();
 
       const dialog = page.locator("dialog[open]");
       await expect(dialog).toBeVisible({ timeout: 10_000 });
-      await expect(page.getByText(project.name).first()).toBeVisible();
+      await expect(dialog.getByText(project.name).first()).toBeVisible();
 
       await page.keyboard.press("Escape");
       await expect(dialog).not.toBeVisible();
@@ -611,7 +613,8 @@ test.describe("Portfolio tests", () => {
       if (url.includes("-desktop.webp")) desktopRequests.push(url);
     });
 
-    const card = page.locator('[aria-label="Ver projeto Mecânica Auto Brum por dentro"]');
+    const mobileStrip = page.locator(".md\\:hidden .overflow-x-auto");
+    const card = mobileStrip.locator('[aria-label="Ver projeto Mecânica Auto Brum por dentro"]');
     await card.scrollIntoViewIfNeeded();
     await card.click();
 
@@ -659,7 +662,8 @@ test.describe("Portfolio tests", () => {
       if (url.includes("-desktop.webp")) desktopRequests.push(url);
     });
 
-    const card = page.locator('[aria-label="Ver projeto Mecânica Auto Brum por dentro"]');
+    const desktopGrid = page.locator(".hidden.md\\:grid.md\\:grid-cols-2");
+    const card = desktopGrid.locator('[aria-label="Ver projeto Mecânica Auto Brum por dentro"]');
     await card.scrollIntoViewIfNeeded();
     await card.click();
 
@@ -687,7 +691,8 @@ test.describe("Portfolio tests", () => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await waitForPageReady(page);
 
-    const card = page.locator('[aria-label="Ver projeto Mecânica Auto Brum por dentro"]');
+    const desktopGrid = page.locator(".hidden.md\\:grid.md\\:grid-cols-2");
+    const card = desktopGrid.locator('[aria-label="Ver projeto Mecânica Auto Brum por dentro"]');
     await card.scrollIntoViewIfNeeded();
     await card.click();
 
@@ -725,9 +730,9 @@ test.describe("Portfolio tests", () => {
 /* ------------------------------------------------------------------ */
 
 test.describe("FAQ tests", () => {
-  const FAQ_IDS = Array.from({ length: 13 }, (_, i) => `faq_${String(i + 1).padStart(2, "0")}`);
+  const FAQ_IDS = Array.from({ length: 8 }, (_, i) => `faq_${String(i + 1).padStart(2, "0")}`);
 
-  test("All 13 FAQs: click toggles, aria-expanded correct, keyboard works", async ({ page }) => {
+  test("All 8 FAQs: click toggles, aria-expanded correct, keyboard works", async ({ page }) => {
     const violations: ConsoleViolation[] = [];
     collectConsoleViolations(page, violations);
 
@@ -778,15 +783,15 @@ test.describe("Visual captures", () => {
     await page.screenshot({ path: "artifacts/visual-review/desktop-hero.png", fullPage: false });
 
     // Problema e solução
-    await scrollToH2(page, "anúncio leva o visitante");
+    await scrollToH2(page, "anúncio traz o visitante");
     await page.screenshot({ path: "artifacts/visual-review/desktop-problema-solucao.png", fullPage: false });
 
     // Itens incluídos
-    await scrollToH2(page, "planejamento à publicação, tudo");
+    await scrollToH2(page, "tudo o que sua landing page");
     await page.screenshot({ path: "artifacts/visual-review/desktop-incluido.png", fullPage: false });
 
     // Portfólio
-    await scrollToH2(page, "Alguns projetos");
+    await scrollToH2(page, "Algumas Landing Pages");
     await page.screenshot({ path: "artifacts/visual-review/desktop-portfolio.png", fullPage: false });
 
     // Processo
@@ -814,12 +819,12 @@ test.describe("Visual captures", () => {
     // Hero
     await page.screenshot({ path: "artifacts/visual-review/mobile-hero.png", fullPage: false });
 
-    // Solução
-    await scrollToH2(page, "oferta organizada");
+    // Problema e solução
+    await scrollToH2(page, "anúncio traz o visitante");
     await page.screenshot({ path: "artifacts/visual-review/mobile-solucao.png", fullPage: false });
 
     // Portfólio
-    await scrollToH2(page, "Alguns projetos");
+    await scrollToH2(page, "Algumas Landing Pages");
     await page.screenshot({ path: "artifacts/visual-review/mobile-portfolio.png", fullPage: false });
 
     // Investimento
@@ -850,7 +855,8 @@ test.describe("Visual captures", () => {
     await page.keyboard.press("Escape");
 
     // Portfolio viewer
-    const card = page.locator('[aria-label="Ver projeto Mecânica Auto Brum por dentro"]');
+    const mobileStrip = page.locator(".md\\:hidden .overflow-x-auto");
+    const card = mobileStrip.locator('[aria-label="Ver projeto Mecânica Auto Brum por dentro"]');
     await card.scrollIntoViewIfNeeded();
     await card.click();
     await expect(page.locator("dialog[open]")).toBeVisible({ timeout: 10_000 });
@@ -872,7 +878,7 @@ test.describe("Visual captures", () => {
     await page.screenshot({ path: "artifacts/visual-review/tablet-hero.png", fullPage: false });
 
     // Portfólio
-    await scrollToH2(page, "Alguns projetos");
+    await scrollToH2(page, "Algumas Landing Pages");
     await page.screenshot({ path: "artifacts/visual-review/tablet-portfolio.png", fullPage: false });
 
     // Investimento
@@ -915,7 +921,8 @@ test.describe("Console and network integrity", () => {
     await openFormFromHero(page);
     await page.keyboard.press("Escape");
 
-    const card = page.locator('[aria-label="Ver projeto ZARQ Planejados por dentro"]');
+    const desktopGrid = page.locator(".hidden.md\\:grid.md\\:grid-cols-2");
+    const card = desktopGrid.locator('[aria-label="Ver projeto ZARQ Planejados por dentro"]');
     await card.scrollIntoViewIfNeeded();
     await card.click();
     await expect(page.locator("dialog[open]")).toBeVisible({ timeout: 10_000 });
@@ -954,5 +961,665 @@ test.describe("Console and network integrity", () => {
     const dlString = JSON.stringify(dataLayer);
     expect(dlString).not.toContain("Maria Silva");
     expect(dlString).not.toContain("11999998888");
+  });
+});
+
+/* ------------------------------------------------------------------ */
+/*  CONTENT.md CONFORMITY TESTS                                       */
+/* ------------------------------------------------------------------ */
+
+test.describe("CONTENT.md conformity", () => {
+  test("New phrases present and old phrases absent in rendered page", async ({ page }) => {
+    const violations: ConsoleViolation[] = [];
+    collectConsoleViolations(page, violations);
+
+    await waitForPageReady(page);
+
+    const body = await page.textContent("body");
+
+    // New phrases — must be present
+    expect(body).toContain("Não é curso, template ou ferramenta.");
+    expect(body).toContain("conduzir o visitante ao contato");
+    expect(body).toContain("visualizar a página por dentro");
+    expect(body).toContain("Algumas Landing Pages que desenvolvi");
+    expect(body).toContain("Cada projeto recebe uma estrutura adequada à oferta e ao público do negócio.");
+    expect(body).toContain("não garante vendas, leads ou desempenho da campanha");
+    expect(body).toContain("Projeto completo, adaptado à sua oferta e preparado para campanhas de Google Ads ou Meta Ads.");
+    expect(body).toContain("Preencha o formulário para eu avaliar sua necessidade e confirmar o escopo.");
+    expect(body).toContain("Desenvolvida diretamente por mim");
+    expect(body).toContain("Preparada para celular e desktop");
+    expect(body).toContain("Eu cido do planejamento à publicação");
+    expect(body).toContain("Até 7 dias úteis após briefing e materiais");
+
+    // Old phrases — must be absent
+    expect(body).not.toMatch(/Alguns projetos que desenvolvi/i);
+    expect(body).not.toMatch(/Landing Pages criadas para diferentes/i);
+    expect(body).not.toMatch(/Cada negócio possui uma oferta/i);
+    expect(body).not.toMatch(/Esse é o valor do projeto padrão/i);
+    expect(body).not.toMatch(/Confira as respostas para as principais/i);
+    expect(body).not.toMatch(/Você não precisa montar nada sozinho/i);
+    expect(body).not.toMatch(/Conduzida diretamente por mim/i);
+    expect(body).not.toMatch(/Entregue pronta para sua campanha/i);
+    expect(body).not.toMatch(/não existe garantia/i);
+    expect(body).not.toMatch(/Eu civo da página, do planejamento/i);
+    expect(body).not.toMatch(/Quero uma Landing Page para meu negócio/i);
+    expect(body).not.toMatch(/Quero solicitar meu projeto/i);
+    expect(body).not.toMatch(/conhecer a página por dentro/i);
+    expect(body).not.toMatch(/Conte sobre sua empresa e eu avalio/i);
+
+    assertNoViolations(violations);
+  });
+
+  test("Form intro: 'avaliar' instead of 'entender'", async ({ page }) => {
+    const violations: ConsoleViolation[] = [];
+    collectConsoleViolations(page, violations);
+
+    await waitForPageReady(page);
+    await openFormFromHero(page);
+
+    const body = await page.locator("dialog[open]").textContent();
+    expect(body).toContain("avaliar seu projeto");
+    expect(body).not.toMatch(/entender seu projeto/i);
+
+    await page.keyboard.press("Escape");
+    assertNoViolations(violations);
+  });
+
+  test("Success screen: personalized title with lead name", async ({ page }) => {
+    const violations: ConsoleViolation[] = [];
+    collectConsoleViolations(page, violations);
+
+    const forbiddenRequests: string[] = [];
+    page.on("request", (req) => {
+      const url = req.url();
+      if (url.includes("wa.me")) forbiddenRequests.push(url);
+      if (url.includes("facebook.net")) forbiddenRequests.push(url);
+      if (url.includes("googletagmanager")) forbiddenRequests.push(url);
+      if (url.includes("google-analytics")) forbiddenRequests.push(url);
+    });
+
+    await page.route("**/api/leads", async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({ ok: true, status: "created", lead_id: "test-lead-conformity-001" }),
+      });
+    });
+
+    await waitForPageReady(page);
+    await openFormFromHero(page);
+
+    await page.getByRole("button", { name: "Começar" }).click();
+
+    await page.fill("#form-nome", "Ana Beatriz");
+    await page.fill("#form-whatsapp", "11999998888");
+    await page.getByRole("button", { name: "Continuar" }).click();
+
+    await page.fill("#form-negocio", "Clínica odontológica");
+    await page.getByLabel("Já anuncio no Google Ads").check();
+    await page.getByLabel("Não", { exact: false }).last().check();
+    await page.getByRole("button", { name: "Continuar" }).click();
+
+    await page.locator('input[type="checkbox"]').check();
+    await page.getByRole("button", { name: "Enviar informações" }).click();
+
+    await expect(page.getByText("Informações recebidas")).toBeVisible({ timeout: 10_000 });
+    await expect(page.getByText("Obrigado, Ana Beatriz. Recebi os dados do seu projeto.")).toBeVisible();
+    await expect(page.getByText("Agora você pode continuar a conversa comigo pelo WhatsApp")).toBeVisible();
+
+    await expect(page.getByText("Informações enviadas", { exact: true })).not.toBeVisible();
+    await expect(page.getByText("Recebi suas informações!", { exact: true })).not.toBeVisible();
+    await expect(page.getByText("entender seu projeto", { exact: true })).not.toBeVisible();
+
+    expect(forbiddenRequests).toHaveLength(0);
+
+    const hasGenerateLead = await page.evaluate(() => {
+      const dl = window.dataLayer ?? [];
+      return dl.some((e) => (e as Record<string, unknown>).event === "generate_lead");
+    });
+    expect(hasGenerateLead).toBe(true);
+
+    await page.getByRole("button", { name: "Voltar para a página" }).click();
+
+    assertNoViolations(violations);
+  });
+
+  test("No WhatsApp links visible before form submission", async ({ page }) => {
+    const violations: ConsoleViolation[] = [];
+    collectConsoleViolations(page, violations);
+
+    await waitForPageReady(page);
+
+    const whatsappLinks = page.locator('a[href*="wa.me"], a[href*="api.whatsapp.com"], a[href*="whatsapp"]');
+    await expect(whatsappLinks).toHaveCount(0);
+
+    assertNoViolations(violations);
+  });
+});
+
+/* ------------------------------------------------------------------ */
+/*  RESPONSIVE COMPACT TESTS                                           */
+/* ------------------------------------------------------------------ */
+
+test.describe("Responsive compact layout", () => {
+  const ALL_MOBILE_VIEWPORTS = [
+    { width: 360, height: 800 },
+    { width: 375, height: 812 },
+    { width: 390, height: 844 },
+  ];
+
+  test("All 5 projects present on mobile and desktop", async ({ page }) => {
+    const violations: ConsoleViolation[] = [];
+    collectConsoleViolations(page, violations);
+
+    await waitForPageReady(page);
+
+    const projectNames = [
+      "Mecânica Auto Brum",
+      "ZARQ Planejados",
+      "Agafarma Mário Quintana",
+      "BS Montagem de Móveis",
+      "Artur Montador",
+    ];
+
+    // Desktop: check the grid container
+    const desktopGrid = page.locator(".hidden.md\\:grid");
+    for (const name of projectNames) {
+      const card = desktopGrid.locator(`[aria-label="Ver projeto ${name} por dentro"]`);
+      await expect(card).toHaveCount(1);
+    }
+
+    // Mobile: check the scroll container
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.waitForTimeout(300);
+    const mobileStrip = page.locator(".md\\:hidden .overflow-x-auto");
+    for (const name of projectNames) {
+      const card = mobileStrip.locator(`[aria-label="Ver projeto ${name} por dentro"]`);
+      await expect(card).toHaveCount(1);
+    }
+
+    assertNoViolations(violations);
+  });
+
+  test("Portfolio has horizontal scroll on mobile (scroll-snap)", async ({ page }) => {
+    const violations: ConsoleViolation[] = [];
+    collectConsoleViolations(page, violations);
+
+    await page.setViewportSize({ width: 390, height: 844 });
+    await waitForPageReady(page);
+
+    const scrollContainer = page.locator(".md\\:hidden .overflow-x-auto");
+    await expect(scrollContainer).toBeVisible();
+
+    const scrollBehavior = await scrollContainer.evaluate((el) => {
+      const s = window.getComputedStyle(el);
+      return {
+        overflowX: s.overflowX,
+        scrollSnapType: s.scrollSnapType,
+        display: s.display,
+      };
+    });
+    expect(scrollBehavior.overflowX).toBe("auto");
+    expect(scrollBehavior.scrollSnapType).toContain("x");
+
+    const cards = scrollContainer.locator("[role='button']");
+    const count = await cards.count();
+    expect(count).toBe(5);
+
+    const firstSnap = await cards.first().evaluate((el) => {
+      return window.getComputedStyle(el).scrollSnapAlign;
+    });
+    expect(firstSnap).toBe("start");
+
+    assertNoViolations(violations);
+  });
+
+  test("No global horizontal scroll at any mobile viewport", async ({ page }) => {
+    const violations: ConsoleViolation[] = [];
+    collectConsoleViolations(page, violations);
+
+    await waitForPageReady(page);
+
+    for (const vp of ALL_MOBILE_VIEWPORTS) {
+      await page.setViewportSize({ width: vp.width, height: vp.height });
+      await page.waitForTimeout(300);
+      const scrollWidth = await page.evaluate(() => document.documentElement.scrollWidth);
+      const clientWidth = await page.evaluate(() => document.documentElement.clientWidth);
+      expect(scrollWidth).toBeLessThanOrEqual(clientWidth + 1);
+    }
+
+    assertNoViolations(violations);
+  });
+
+  test("First and last portfolio projects are reachable on mobile", async ({ page }) => {
+    const violations: ConsoleViolation[] = [];
+    collectConsoleViolations(page, violations);
+
+    await page.setViewportSize({ width: 390, height: 844 });
+    await waitForPageReady(page);
+
+    const mobileStrip = page.locator(".md\\:hidden .overflow-x-auto");
+    const first = mobileStrip.locator('[aria-label="Ver projeto Mecânica Auto Brum por dentro"]');
+    await first.scrollIntoViewIfNeeded();
+    await expect(first).toBeVisible();
+
+    const last = mobileStrip.locator('[aria-label="Ver projeto Artur Montador por dentro"]');
+    await last.scrollIntoViewIfNeeded();
+    await expect(last).toBeVisible();
+
+    assertNoViolations(violations);
+  });
+
+  test("Each portfolio button opens the correct project modal", async ({ page }) => {
+    const violations: ConsoleViolation[] = [];
+    collectConsoleViolations(page, violations);
+
+    await page.setViewportSize({ width: 390, height: 844 });
+    await waitForPageReady(page);
+
+    const mobileStrip = page.locator(".md\\:hidden .overflow-x-auto");
+    const projects = [
+      "Mecânica Auto Brum",
+      "ZARQ Planejados",
+      "Agafarma Mário Quintana",
+      "BS Montagem de Móveis",
+      "Artur Montador",
+    ];
+
+    for (const name of projects) {
+      const card = mobileStrip.locator(`[aria-label="Ver projeto ${name} por dentro"]`);
+      await card.scrollIntoViewIfNeeded();
+      await card.click();
+
+      const dialog = page.locator("dialog[open]");
+      await expect(dialog).toBeVisible({ timeout: 10_000 });
+      await expect(page.getByText(name).first()).toBeVisible();
+
+      await page.keyboard.press("Escape");
+      await expect(dialog).not.toBeVisible();
+    }
+
+    assertNoViolations(violations);
+  });
+
+  test("Portfolio keyboard navigation works on mobile", async ({ page }) => {
+    const violations: ConsoleViolation[] = [];
+    collectConsoleViolations(page, violations);
+
+    await page.setViewportSize({ width: 390, height: 844 });
+    await waitForPageReady(page);
+
+    const mobileStrip = page.locator(".md\\:hidden .overflow-x-auto");
+    const firstCard = mobileStrip.locator('[aria-label="Ver projeto Mecânica Auto Brum por dentro"]');
+    await firstCard.scrollIntoViewIfNeeded();
+    await firstCard.focus();
+    await page.keyboard.press("Enter");
+
+    const dialog = page.locator("dialog[open]");
+    await expect(dialog).toBeVisible({ timeout: 10_000 });
+    await page.keyboard.press("Escape");
+    await expect(dialog).not.toBeVisible();
+
+    assertNoViolations(violations);
+  });
+
+  test("No autoplay or auto-animation in portfolio", async ({ page }) => {
+    const violations: ConsoleViolation[] = [];
+    collectConsoleViolations(page, violations);
+
+    await page.setViewportSize({ width: 390, height: 844 });
+    await waitForPageReady(page);
+
+    const scrollContainer = page.locator(".md\\:hidden .overflow-x-auto");
+    const scrollLeft = await scrollContainer.evaluate((el) => el.scrollLeft);
+
+    await page.waitForTimeout(3000);
+
+    const scrollLeftAfter = await scrollContainer.evaluate((el) => el.scrollLeft);
+    expect(scrollLeftAfter).toBe(scrollLeft);
+
+    assertNoViolations(violations);
+  });
+
+  test("Desktop portfolio still uses grid layout", async ({ page }) => {
+    const violations: ConsoleViolation[] = [];
+    collectConsoleViolations(page, violations);
+
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await waitForPageReady(page);
+
+    const section = page.locator("section").filter({ hasText: "Algumas Landing Pages que desenvolvi" });
+    const grid = section.locator(".hidden.md\\:grid");
+    await expect(grid).toBeVisible();
+
+    const display = await grid.evaluate((el) => window.getComputedStyle(el).display);
+    expect(display).toBe("grid");
+
+    const mobileStrip = section.locator(".md\\:hidden .overflow-x-auto");
+    await expect(mobileStrip).not.toBeVisible();
+
+    assertNoViolations(violations);
+  });
+
+  test("IncludedSection mobile: compact panel with 6 items and dividers", async ({ page }) => {
+    const violations: ConsoleViolation[] = [];
+    collectConsoleViolations(page, violations);
+
+    await page.setViewportSize({ width: 390, height: 844 });
+    await waitForPageReady(page);
+
+    const section = page.locator("section").filter({ hasText: "Tudo o que sua Landing Page" });
+    const compactPanel = section.locator(".md\\:hidden.divide-y");
+    await compactPanel.scrollIntoViewIfNeeded();
+    await expect(compactPanel).toBeVisible();
+
+    const rows = compactPanel.locator("> div");
+    await expect(rows).toHaveCount(6);
+
+    const titles = [
+      "Estratégia e copy",
+      "Design responsivo",
+      "Desenvolvimento em Next.js",
+      "Formulário e WhatsApp",
+      "Configuração de rastreamento",
+      "Publicação e testes",
+    ];
+
+    for (const title of titles) {
+      await expect(compactPanel.getByText(title, { exact: true })).toBeVisible();
+    }
+
+    const bentoGrid = section.locator(".hidden.md\\:grid");
+    await expect(bentoGrid).not.toBeVisible();
+
+    assertNoViolations(violations);
+  });
+
+  test("IncludedSection desktop: Bento Box grid preserved", async ({ page }) => {
+    const violations: ConsoleViolation[] = [];
+    collectConsoleViolations(page, violations);
+
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await waitForPageReady(page);
+
+    const section = page.locator("section").filter({ hasText: "Tudo o que sua Landing Page" });
+    const bentoGrid = section.locator(".hidden.md\\:grid");
+    await bentoGrid.scrollIntoViewIfNeeded();
+    await expect(bentoGrid).toBeVisible();
+
+    const display = await bentoGrid.evaluate((el) => window.getComputedStyle(el).display);
+    expect(display).toBe("grid");
+
+    const compactPanel = section.locator(".md\\:hidden.divide-y");
+    await expect(compactPanel).not.toBeVisible();
+
+    assertNoViolations(violations);
+  });
+
+  test("AboutSection mobile: 2×2 grid with all 4 indicators", async ({ page }) => {
+    const violations: ConsoleViolation[] = [];
+    collectConsoleViolations(page, violations);
+
+    await page.setViewportSize({ width: 390, height: 844 });
+    await waitForPageReady(page);
+
+    const grid = page.locator("section").filter({ hasText: "Seu projeto é desenvolvido" }).locator(".grid");
+    await grid.scrollIntoViewIfNeeded();
+
+    const gridStyles = await grid.evaluate((el) => {
+      const s = window.getComputedStyle(el);
+      return { display: s.display, gridTemplateColumns: s.gridTemplateColumns };
+    });
+    expect(gridStyles.display).toBe("grid");
+
+    const columns = gridStyles.gridTemplateColumns.split(" ").length;
+    expect(columns).toBe(2);
+
+    const indicators = grid.locator("> div");
+    await expect(indicators).toHaveCount(4);
+
+    await expect(page.getByText("Mais de 5 anos")).toBeVisible();
+    await expect(page.getByText("Cerca de R$ 40 mil")).toBeVisible();
+    await expect(page.getByText("Mais de 7 mil clientes")).toBeVisible();
+    await expect(page.getByText("Execução direta").first()).toBeVisible();
+
+    assertNoViolations(violations);
+  });
+
+  test("No copy was removed from compressed sections", async ({ page }) => {
+    const violations: ConsoleViolation[] = [];
+    collectConsoleViolations(page, violations);
+
+    await waitForPageReady(page);
+
+    const body = await page.textContent("body");
+
+    expect(body).toContain("Tudo o que sua Landing Page precisa para entrar no ar");
+    expect(body).toContain("Estratégia e copy");
+    expect(body).toContain("Design responsivo");
+    expect(body).toContain("Desenvolvimento em Next.js");
+    expect(body).toContain("Formulário e WhatsApp");
+    expect(body).toContain("Configuração de rastreamento");
+    expect(body).toContain("Publicação e testes");
+    expect(body).toContain("O projeto inclui até 2 rodadas de ajustes dentro do escopo aprovado.");
+
+    expect(body).toContain("Seu projeto é desenvolvido diretamente por mim");
+    expect(body).toContain("Mais de 5 anos");
+    expect(body).toContain("Cerca de R$ 40 mil");
+    expect(body).toContain("Mais de 7 mil clientes");
+    expect(body).toContain("Trabalhando com Google Ads e negócios locais.");
+    expect(body).toContain("Investidos em minhas próprias campanhas.");
+    expect(body).toContain("Atendidos a partir de contatos conquistados pelo Google.");
+    expect(body).toContain("Estratégia, copy, design e desenvolvimento conduzidos por mim.");
+
+    expect(body).toContain("Do briefing à publicação em quatro etapas");
+    expect(body).toContain("Briefing e materiais");
+    expect(body).toContain("Copy, design e desenvolvimento");
+    expect(body).toContain("Revisão e ajustes");
+    expect(body).toContain("Aprovação e publicação");
+    expect(body).toContain("Até 7 dias úteis");
+
+    expect(body).toContain("Algumas Landing Pages que desenvolvi");
+
+    assertNoViolations(violations);
+  });
+
+  test("Modals, form and integrations still work after compression", async ({ page }) => {
+    const violations: ConsoleViolation[] = [];
+    collectConsoleViolations(page, violations);
+
+    await page.setViewportSize({ width: 390, height: 844 });
+    await waitForPageReady(page);
+
+    await openFormFromHero(page);
+    await expect(page.locator("dialog[open]")).toBeVisible();
+    await page.getByRole("button", { name: "Começar" }).click();
+    await expect(page.locator("#form-nome")).toBeVisible();
+    await page.keyboard.press("Escape");
+    await expect(page.locator("dialog[open]")).not.toBeVisible();
+
+    const mobileStrip = page.locator(".md\\:hidden .overflow-x-auto");
+    const card = mobileStrip.locator('[aria-label="Ver projeto ZARQ Planejados por dentro"]');
+    await card.scrollIntoViewIfNeeded();
+    await card.click();
+    await expect(page.locator("dialog[open]")).toBeVisible({ timeout: 10_000 });
+    await expect(page.getByText("ZARQ Planejados").first()).toBeVisible();
+    await page.keyboard.press("Escape");
+
+    await page.locator("#trigger-faq_01").scrollIntoViewIfNeeded();
+    await page.locator("#trigger-faq_01").click();
+    await expect(page.locator("#trigger-faq_01")).toHaveAttribute("aria-expanded", "true");
+
+    assertNoViolations(violations);
+  });
+
+  const PORTFOLIO_VIEWPORTS = [
+    { width: 360, height: 800 },
+    { width: 375, height: 812 },
+    { width: 390, height: 844 },
+  ];
+
+  for (const vp of PORTFOLIO_VIEWPORTS) {
+    test(`Portfolio card at ${vp.width}px: fully visible, no text overflow, cover uncropped, peek of second card`, async ({ page }) => {
+      const violations: ConsoleViolation[] = [];
+      collectConsoleViolations(page, violations);
+
+      await page.setViewportSize({ width: vp.width, height: vp.height });
+      await waitForPageReady(page);
+
+      const scrollContainer = page.locator(".md\\:hidden .overflow-x-auto");
+      await expect(scrollContainer).toBeVisible();
+
+      const firstCard = scrollContainer.locator('[aria-label="Ver projeto Mecânica Auto Brum por dentro"]');
+      await firstCard.scrollIntoViewIfNeeded();
+
+      const containerBox = await scrollContainer.boundingBox();
+      expect(containerBox).not.toBeNull();
+
+      const firstBox = await firstCard.boundingBox();
+      expect(firstBox).not.toBeNull();
+
+      if (containerBox && firstBox) {
+        expect(firstBox.x).toBeGreaterThanOrEqual(containerBox.x - 1);
+        expect(firstBox.x + firstBox.width).toBeLessThanOrEqual(containerBox.x + containerBox.width + 1);
+        expect(firstBox.width).toBeGreaterThan(firstBox.width * 0.8);
+      }
+
+      const textOverflow = await firstCard.evaluate((el) => {
+        return el.scrollWidth > el.clientWidth + 2;
+      });
+      expect(textOverflow).toBe(false);
+
+      const secondCard = scrollContainer.locator('[aria-label="Ver projeto ZARQ Planejados por dentro"]');
+      const secondBox = await secondCard.boundingBox();
+      expect(secondBox).not.toBeNull();
+
+      if (containerBox && secondBox) {
+        const peek = (containerBox.x + containerBox.width) - secondBox.x;
+        expect(peek).toBeGreaterThanOrEqual(10);
+        expect(peek).toBeLessThanOrEqual(80);
+      }
+
+      assertNoViolations(violations);
+    });
+
+    test(`Portfolio card at ${vp.width}px: cover image not cropped horizontally`, async ({ page }) => {
+      const violations: ConsoleViolation[] = [];
+      collectConsoleViolations(page, violations);
+
+      await page.setViewportSize({ width: vp.width, height: vp.height });
+      await waitForPageReady(page);
+
+      const scrollContainer = page.locator(".md\\:hidden .overflow-x-auto");
+      const firstCard = scrollContainer.locator('[aria-label="Ver projeto Mecânica Auto Brum por dentro"]');
+      await firstCard.scrollIntoViewIfNeeded();
+
+      const img = firstCard.locator("img");
+      await expect(img).toBeVisible();
+
+      const imgBox = await img.boundingBox();
+      const cardBox = await firstCard.boundingBox();
+      expect(imgBox).not.toBeNull();
+      expect(cardBox).not.toBeNull();
+
+      if (imgBox && cardBox) {
+        expect(imgBox.x).toBeGreaterThanOrEqual(cardBox.x - 1);
+        expect(imgBox.x + imgBox.width).toBeLessThanOrEqual(cardBox.x + cardBox.width + 1);
+      }
+
+      const hasObjectCover = await img.evaluate((el) => {
+        return window.getComputedStyle(el).objectFit;
+      });
+      expect(hasObjectCover).not.toBe("cover");
+
+      assertNoViolations(violations);
+    });
+
+    test(`Portfolio at ${vp.width}px: last card completely reachable`, async ({ page }) => {
+      const violations: ConsoleViolation[] = [];
+      collectConsoleViolations(page, violations);
+
+      await page.setViewportSize({ width: vp.width, height: vp.height });
+      await waitForPageReady(page);
+
+      const scrollContainer = page.locator(".md\\:hidden .overflow-x-auto");
+      const lastCard = scrollContainer.locator('[aria-label="Ver projeto Artur Montador por dentro"]');
+      await lastCard.scrollIntoViewIfNeeded();
+
+      const containerBox = await scrollContainer.boundingBox();
+      const lastBox = await lastCard.boundingBox();
+      expect(containerBox).not.toBeNull();
+      expect(lastBox).not.toBeNull();
+
+      if (containerBox && lastBox) {
+        expect(lastBox.x + lastBox.width).toBeLessThanOrEqual(containerBox.x + containerBox.width + 2);
+      }
+
+      assertNoViolations(violations);
+    });
+
+    test(`Portfolio at ${vp.width}px: no global horizontal scroll`, async ({ page }) => {
+      const violations: ConsoleViolation[] = [];
+      collectConsoleViolations(page, violations);
+
+      await page.setViewportSize({ width: vp.width, height: vp.height });
+      await waitForPageReady(page);
+
+      const scrollWidth = await page.evaluate(() => document.documentElement.scrollWidth);
+      const clientWidth = await page.evaluate(() => document.documentElement.clientWidth);
+      expect(scrollWidth).toBeLessThanOrEqual(clientWidth + 1);
+
+      assertNoViolations(violations);
+    });
+
+    test(`Portfolio at ${vp.width}px: modal opens for correct project`, async ({ page }) => {
+      const violations: ConsoleViolation[] = [];
+      collectConsoleViolations(page, violations);
+
+      await page.setViewportSize({ width: vp.width, height: vp.height });
+      await waitForPageReady(page);
+
+      const mobileStrip = page.locator(".md\\:hidden .overflow-x-auto");
+      const card = mobileStrip.locator('[aria-label="Ver projeto Agafarma Mário Quintana por dentro"]');
+      await card.scrollIntoViewIfNeeded();
+      await card.click();
+
+      const dialog = page.locator("dialog[open]");
+      await expect(dialog).toBeVisible({ timeout: 10_000 });
+      await expect(dialog.getByText("Agafarma Mário Quintana").first()).toBeVisible();
+
+      await page.keyboard.press("Escape");
+      await expect(dialog).not.toBeVisible();
+
+      assertNoViolations(violations);
+    });
+  }
+
+  test("Desktop portfolio unchanged after mobile fix", async ({ page }) => {
+    const violations: ConsoleViolation[] = [];
+    collectConsoleViolations(page, violations);
+
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await waitForPageReady(page);
+
+    const section = page.locator("section").filter({ hasText: "Algumas Landing Pages que desenvolvi" });
+    const grid = section.locator(".hidden.md\\:grid");
+    await expect(grid).toBeVisible();
+
+    const display = await grid.evaluate((el) => window.getComputedStyle(el).display);
+    expect(display).toBe("grid");
+
+    const cards = grid.locator("[role='button']");
+    await expect(cards).toHaveCount(5);
+
+    const firstCard = cards.first();
+    const img = firstCard.locator("img");
+    const objectFit = await img.evaluate((el) => window.getComputedStyle(el).objectFit);
+    expect(objectFit).toBe("cover");
+
+    const mobileStrip = section.locator(".md\\:hidden .overflow-x-auto");
+    await expect(mobileStrip).not.toBeVisible();
+
+    assertNoViolations(violations);
   });
 });

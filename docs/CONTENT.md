@@ -1,26 +1,26 @@
 # Copy oficial — Landing Page
 
-> Status da copy comercial: aprovada para implementação  
-> Rota: `/landingpage`  
-> Marca: Anúncio & Site  
+> Status da copy comercial: aprovada para implementação
+> Rota: `/landingpage`
+> Marca: Anúncio & Site
 > Responsável: Willian Souza
 
 ## 1. Regras permanentes de conteúdo
 
-- Escrever em primeira pessoa do singular.
-- Usar “eu” e “meu”; nunca apresentar uma equipe inexistente.
-- Oferta padrão: projeto completo por R$ 997.
-- Forma de pagamento: 50% na contratação e 50% após a Landing Page ser publicada e estar funcionando.
-- Prazo: até 7 dias úteis após confirmação da entrada, briefing completo e recebimento dos materiais necessários.
-- Incluir até 2 rodadas de ajustes dentro do escopo aprovado.
-- Não exibir preço anterior, preço riscado, desconto ou condição de lançamento.
-- Não prometer vendas, leads, faturamento, ROAS ou desempenho de campanha.
-- Não inventar depoimentos, avaliações, clientes, resultados, certificações ou selos.
-- Todos os CTAs comerciais abrem o mesmo formulário modal.
-- Não oferecer contato direto pelo WhatsApp antes do envio do formulário.
-- O WhatsApp aparece somente após o envio confirmado ou como contingência depois de uma tentativa válida que falhe tecnicamente.
-- Não adicionar Instagram, blog, menu institucional ou links externos desnecessários.
-- Política de Privacidade e Termos de Uso podem aparecer no rodapé.
+* Escrever em primeira pessoa do singular.
+* Usar “eu” e “meu”; nunca apresentar uma equipe inexistente.
+* Oferta padrão: projeto completo por R$ 997.
+* Forma de pagamento: 50% na contratação e 50% após a Landing Page ser publicada e estar funcionando.
+* Prazo: até 7 dias úteis após confirmação da entrada, briefing completo e recebimento dos materiais necessários.
+* Incluir até 2 rodadas de ajustes dentro do escopo aprovado.
+* Não exibir preço anterior, preço riscado, desconto ou condição de lançamento.
+* Não prometer vendas, leads, faturamento, ROAS ou desempenho de campanha.
+* Não inventar depoimentos, avaliações, clientes, resultados, certificações ou selos.
+* Todos os CTAs comerciais abrem o mesmo formulário modal.
+* Não oferecer contato direto pelo WhatsApp antes do envio do formulário.
+* O WhatsApp aparece somente após o envio confirmado ou como contingência depois de uma tentativa válida que falhe tecnicamente.
+* Não adicionar Instagram, blog, menu institucional ou links externos desnecessários.
+* Política de Privacidade e Termos de Uso podem aparecer no rodapé.
 
 ---
 
@@ -52,7 +52,7 @@ O CTA abre o formulário modal.
 
 ### Subheadline
 
-Estratégia, copy, design, desenvolvimento e rastreamento em uma página rápida, responsiva e preparada para conduzir o visitante até o contato.
+Estratégia, copy, design, desenvolvimento e rastreamento em uma página rápida, responsiva e preparada para conduzir o visitante ao contato.
 
 ### Bloco comercial
 
@@ -66,7 +66,7 @@ Até 7 dias úteis após briefing e materiais • Até 2 rodadas de ajustes
 
 ### Microcopy
 
-Você me explica seu negócio. Eu cuido da página, do planejamento à publicação.
+Você me explica seu negócio. Eu cuido do planejamento à publicação.
 
 ---
 
@@ -74,21 +74,21 @@ Você me explica seu negócio. Eu cuido da página, do planejamento à publicaç
 
 ### Título
 
-> **Você não precisa montar nada sozinho.**
+> **Não é curso, template ou ferramenta.**
 
 ### Texto
 
-Não é curso, template ou ferramenta. Eu desenvolvo sua Landing Page completa, da estratégia e dos textos ao código, rastreamento e publicação.
+Eu desenvolvo sua Landing Page completa e entrego pronta para receber sua campanha.
 
 ### Apoios
 
-- Criada para sua oferta
-- Conduzida diretamente por mim
-- Entregue pronta para sua campanha
+* Criada para sua oferta
+* Desenvolvida diretamente por mim
+* Preparada para celular e desktop
 
 ---
 
-## 5. Problema pós-clique
+## 5. Problema e solução
 
 ### Etiqueta
 
@@ -96,95 +96,33 @@ Não é curso, template ou ferramenta. Eu desenvolvo sua Landing Page completa, 
 
 ### Título
 
-> **O anúncio leva o visitante até você. A página precisa continuar o caminho.**
+> **O anúncio traz o visitante. A Landing Page conduz até o contato.**
 
-### Texto principal
+### Texto
 
-Google Ads e Meta Ads podem colocar sua empresa diante de pessoas interessadas. Mas o clique, sozinho, não explica sua oferta, não responde às dúvidas e não conduz o próximo passo.
-
-### Texto complementar
-
-Quando a mensagem está dispersa, existem caminhos demais ou o contato exige várias etapas, o visitante pode sair sem avançar. E, sem rastreamento, fica mais difícil entender o que aconteceu depois do anúncio.
+Eu organizo sua oferta em uma página focada: a mensagem do anúncio continua, as informações aparecem na ordem certa e o visitante encontra uma ação principal.
 
 ### Ponto 1
 
-**Mensagem desalinhada**
+**Mensagem alinhada**
 
-O visitante clica em uma oferta, mas não encontra rapidamente a mesma mensagem na página.
+O visitante encontra a mesma oferta que despertou seu interesse no anúncio.
 
 ### Ponto 2
 
-**Caminhos demais**
+**Foco em uma ação**
 
-Menus, links e informações concorrentes desviam a atenção da ação principal.
+Sem menus e caminhos concorrentes, a atenção permanece no próximo passo.
 
 ### Ponto 3
 
-**Contato com atrito**
+**Contato e medição**
 
-Botões pouco claros, formulários confusos ou uma experiência ruim no celular dificultam o próximo passo.
-
-### Ponto 4
-
-**Falta de visibilidade**
-
-Sem eventos configurados, você não sabe quais ações aconteceram depois do clique.
-
-### Transição
-
-Uma Landing Page organiza esse caminho em torno de uma oferta e de uma ação principal.
+O formulário organiza os dados do interessado e os eventos mostram as ações importantes.
 
 ---
 
-## 6. Apresentação da solução
-
-### Etiqueta
-
-**Uma jornada mais clara**
-
-### Título
-
-> **Sua oferta organizada em um caminho direto até o contato**
-
-### Texto principal
-
-Eu desenvolvo uma página específica para o serviço que você deseja anunciar. A mensagem do anúncio continua na Landing Page, as informações aparecem na ordem certa e o visitante encontra um próximo passo claro.
-
-### Texto complementar
-
-Em vez de distribuir a atenção entre diferentes páginas, menus e serviços, a Landing Page concentra a experiência em uma oferta e em uma ação principal.
-
-### Etapa 1
-
-**Anúncio**
-
-A pessoa encontra sua oferta no Google ou nas redes sociais.
-
-### Etapa 2
-
-**Continuidade**
-
-A Landing Page apresenta a mesma mensagem que despertou o interesse.
-
-### Etapa 3
-
-**Decisão**
-
-Benefícios, diferenciais, informações e respostas ajudam o visitante a avaliar a oferta.
-
-### Etapa 4
-
-**Contato**
-
-Um formulário objetivo reúne as informações necessárias e orienta o próximo passo.
-
-### Fechamento
-
-Cada seção possui uma função: apresentar, esclarecer, reduzir dúvidas e orientar a ação.
-
----
-
-## 7. O que está incluído
+## 6. O que está incluído
 
 ### Etiqueta
 
@@ -192,75 +130,55 @@ Cada seção possui uma função: apresentar, esclarecer, reduzir dúvidas e ori
 
 ### Título
 
-> **Do planejamento à publicação, tudo em um único projeto**
+> **Tudo o que sua Landing Page precisa para entrar no ar**
 
-### Texto principal
+### Texto
 
-Eu cuido de cada etapa necessária para transformar as informações do seu negócio em uma Landing Page clara, responsiva e pronta para receber sua campanha.
+Eu cuido da estratégia, da criação e da parte técnica em um único projeto.
 
 ### Item 1
 
-**Estratégia e estrutura**
+**Estratégia e copy**
 
-Organizo sua oferta, o público, a ação principal e a ordem das informações para construir um caminho coerente até o contato.
+Organizo sua oferta, o público, os argumentos e os textos da página.
 
 ### Item 2
 
-**Copy**
+**Design responsivo**
 
-Produzo os textos da página a partir das informações do seu negócio, apresentando a oferta, os benefícios e as respostas para as principais dúvidas.
+Crio uma interface própria, com prioridade para a experiência no celular.
 
 ### Item 3
 
-**Design responsivo**
+**Desenvolvimento em Next.js**
 
-Crio uma interface própria para sua oferta, com prioridade para a experiência no celular e adaptação para tablets e computadores.
+Desenvolvo uma página rápida, acessível e adaptada para diferentes telas.
 
 ### Item 4
 
-**Desenvolvimento em Next.js**
+**Formulário e WhatsApp**
 
-Transformo o design em uma página funcional, com atenção à velocidade, estabilidade visual, acessibilidade e experiência de navegação.
+O interessado envia as informações e pode continuar a conversa pelo WhatsApp.
 
 ### Item 5
 
-**Formulário e continuidade pelo WhatsApp**
+**Configuração de rastreamento**
 
-Configuro um formulário para captar e organizar as informações do interessado. Após o envio confirmado, ele poderá continuar a conversa pelo WhatsApp.
+Configuro os eventos previstos quando as contas e os acessos necessários forem fornecidos.
 
 ### Item 6
 
-**Rastreamento**
-
-Configuro os eventos previstos para acompanhar ações importantes, como envio confirmado do formulário e continuidade pelo WhatsApp, quando as contas e os acessos necessários forem fornecidos.
-
-### Item 7
-
 **Publicação e testes**
 
-Após sua aprovação, publico a Landing Page na infraestrutura combinada e testo o funcionamento no celular e no desktop.
+Após sua aprovação, publico e testo a página no celular e no desktop.
 
-### Item 8
+### Condição
 
-**Até 2 rodadas de ajustes**
-
-Você revisa as informações e reúne suas solicitações. O projeto inclui até duas rodadas de alterações dentro do escopo aprovado.
-
-### Fechamento
-
-Você me fornece as informações e os materiais do negócio. Eu organizo, desenvolvo, testo e publico a página.
-
-### CTA
-
-**Quero minha Landing Page**
-
-### Microcopy
-
-Projeto completo por R$ 997.
+O projeto inclui até 2 rodadas de ajustes dentro do escopo aprovado.
 
 ---
 
-## 8. Projetos desenvolvidos
+## 7. Projetos desenvolvidos
 
 ### Etiqueta
 
@@ -268,15 +186,11 @@ Projeto completo por R$ 997.
 
 ### Título
 
-> **Alguns projetos que desenvolvi**
+> **Algumas Landing Pages que desenvolvi**
 
-### Texto principal
+### Texto
 
-Landing Pages criadas para diferentes serviços e negócios, sempre considerando a oferta, o público e a ação principal de cada projeto.
-
-### Orientação
-
-Selecione um projeto para conhecer a página por dentro.
+Selecione um projeto para visualizar a página por dentro.
 
 ### Projeto 1
 
@@ -284,7 +198,7 @@ Selecione um projeto para conhecer a página por dentro.
 
 *Socorro mecânico 24 horas*
 
-Landing Page desenvolvida para apresentar os atendimentos emergenciais e facilitar o contato rápido pelo WhatsApp.
+Página para apresentar atendimentos emergenciais e facilitar o contato.
 
 Botão: **Ver projeto por dentro**
 
@@ -294,7 +208,7 @@ Botão: **Ver projeto por dentro**
 
 *Móveis planejados*
 
-Página desenvolvida para apresentar o trabalho da ZARQ Planejados e direcionar interessados para solicitar atendimento.
+Página para apresentar a oferta e direcionar pedidos de atendimento.
 
 Botão: **Ver projeto por dentro**
 
@@ -304,7 +218,7 @@ Botão: **Ver projeto por dentro**
 
 *Farmácia local*
 
-Página desenvolvida para apresentar a unidade, seus principais serviços e os canais de atendimento disponíveis ao público local.
+Página para apresentar a unidade, seus serviços e canais de atendimento.
 
 Botão: **Ver projeto por dentro**
 
@@ -314,7 +228,7 @@ Botão: **Ver projeto por dentro**
 
 *Montagem de móveis*
 
-Landing Page voltada ao atendimento em Porto Alegre e região, com apresentação dos serviços e solicitação de orçamento pelo WhatsApp.
+Página para apresentar os serviços e receber pedidos de orçamento.
 
 Botão: **Ver projeto por dentro**
 
@@ -324,25 +238,21 @@ Botão: **Ver projeto por dentro**
 
 *Montagem de móveis*
 
-Landing Page criada para apresentar o profissional, explicar os serviços e facilitar a solicitação de orçamento.
+Página para apresentar o profissional e facilitar a solicitação de orçamento.
 
 Botão: **Ver projeto por dentro**
 
-### Fechamento
-
-Cada negócio possui uma oferta, um público e uma forma diferente de atender. Por isso, cada página recebe uma estrutura e uma apresentação próprias.
-
 ### CTA
 
-**Quero uma Landing Page para meu negócio**
+**Quero minha Landing Page**
 
 ### Microcopy
 
-Conte sobre sua empresa e eu avalio o que o projeto precisa.
+Cada projeto recebe uma estrutura adequada à oferta e ao público do negócio.
 
 ---
 
-## 9. Como funciona
+## 8. Como funciona
 
 ### Etiqueta
 
@@ -350,89 +260,55 @@ Conte sobre sua empresa e eu avalio o que o projeto precisa.
 
 ### Título
 
-> **Do briefing à publicação, você acompanha cada etapa**
-
-### Texto principal
-
-O projeto segue um processo organizado para que você saiba o que será feito, quais informações precisa enviar e em que momento poderá solicitar ajustes.
+> **Do briefing à publicação em quatro etapas**
 
 ### Etapa 1
 
 **Briefing e materiais**
 
-Você me apresenta seu negócio, a oferta que deseja anunciar, o público, os diferenciais e os materiais disponíveis.
-
-Também definimos os canais de contato, a infraestrutura e o que será necessário para iniciar.
+Você envia as informações da oferta, do público, dos diferenciais e os materiais disponíveis.
 
 ### Etapa 2
 
-**Estratégia e copy**
+**Copy, design e desenvolvimento**
 
-Eu organizo a estrutura da página e produzo os textos com base nas informações do briefing.
-
-A oferta, os argumentos, as principais dúvidas e a ação esperada são distribuídos em uma jornada clara.
+Eu organizo a estrutura, produzo os textos e desenvolvo a página responsiva.
 
 ### Etapa 3
 
-**Design e desenvolvimento**
+**Revisão e ajustes**
 
-Transformo a estratégia em uma interface responsiva e desenvolvo a Landing Page com prioridade para a experiência no celular.
-
-Também preparo o formulário, a continuidade pelo WhatsApp e os eventos previstos no projeto.
+Você revisa a página e reúne as solicitações. Estão incluídas até 2 rodadas dentro do escopo.
 
 ### Etapa 4
 
-**Revisão e ajustes**
-
-Você recebe a página em um ambiente de revisão, confere as informações e reúne suas solicitações em uma lista.
-
-O projeto inclui até duas rodadas de ajustes dentro do escopo aprovado.
-
-### Etapa 5
-
 **Aprovação e publicação**
 
-Depois da sua aprovação final, publico a página na infraestrutura combinada e testo o funcionamento no celular e no desktop.
+Após sua aprovação, publico a página e testo formulário, WhatsApp, links e eventos configurados.
 
-Também verifico o formulário, a continuidade pelo WhatsApp, os links e os eventos configurados.
-
-### Prazo do projeto
+### Prazo
 
 **Até 7 dias úteis**
 
-A contagem começa após a confirmação do pagamento inicial, o preenchimento completo do briefing e o recebimento dos materiais necessários.
-
-### Observação
-
-Se alguma informação ou material ficar pendente, o prazo fica pausado até que o projeto possa continuar.
+A contagem começa após a entrada, o briefing completo e o recebimento dos materiais necessários.
 
 ---
 
-## 10. Quem é Willian Souza
+## 9. Quem é Willian Souza
 
 ### Etiqueta
 
-**Quem desenvolve seu projeto**
+**Execução direta**
 
 ### Título
 
-> **Seu projeto é conduzido diretamente por mim**
+> **Seu projeto é desenvolvido diretamente por mim**
 
-### Texto principal
+### Texto
 
-Sou Willian Souza. Minha experiência com tráfego pago não começou dentro de uma agência, mas anunciando o meu próprio trabalho como prestador de serviço.
+Sou Willian Souza. Há mais de cinco anos uso o Google Ads para anunciar meu próprio trabalho, testar páginas e acompanhar o que acontece depois do clique.
 
-Há mais de cinco anos, uso o Google Ads para conquistar clientes, testar páginas, acompanhar contatos e entender o que acontece depois que uma pessoa clica no anúncio.
-
-### Texto complementar
-
-Ao longo desse período, investi cerca de R$ 40 mil em minhas próprias campanhas e atendi mais de 7 mil clientes que chegaram por meio do Google.
-
-Essa experiência prática orienta a forma como desenvolvo cada Landing Page: mensagem clara, boa experiência no celular, contato fácil e rastreamento das ações importantes.
-
-### Fechamento
-
-Na Anúncio & Site, eu acompanho diretamente a estratégia, a copy, o design, o desenvolvimento e a publicação do seu projeto.
+Essa experiência prática orienta cada projeto da Anúncio & Site: mensagem clara, boa experiência no celular, contato simples e rastreamento das ações importantes.
 
 ### Indicador 1
 
@@ -456,15 +332,11 @@ Atendidos a partir de contatos conquistados pelo Google.
 
 **Execução direta**
 
-Seu projeto não é repassado para uma equipe desconhecida.
-
-### CTA
-
-**Quero desenvolver minha página com Willian**
+Estratégia, copy, design e desenvolvimento conduzidos por mim.
 
 ---
 
-## 11. Investimento
+## 10. Investimento
 
 ### Etiqueta
 
@@ -474,75 +346,57 @@ Seu projeto não é repassado para uma equipe desconhecida.
 
 > **Sua Landing Page completa por R$ 997**
 
-### Texto principal
+### Texto
 
-Esse é o valor do projeto padrão para desenvolver uma Landing Page completa, adaptada à sua oferta e preparada para receber campanhas de Google Ads ou Meta Ads.
+Projeto completo, adaptado à sua oferta e preparado para campanhas de Google Ads ou Meta Ads.
 
-### Incluído no projeto
+### Incluído
 
-- Estratégia e organização da página
-- Copy completa
-- Design responsivo
-- Desenvolvimento em Next.js
-- Formulário com continuidade pelo WhatsApp
-- Configuração de rastreamento
-- Publicação e testes
-- Até 2 rodadas de ajustes
+* Estratégia e copy
+* Design responsivo
+* Desenvolvimento em Next.js
+* Formulário com continuidade pelo WhatsApp
+* Configuração de rastreamento
+* Publicação e testes
+* Até 2 rodadas de ajustes
 
 ### Forma de pagamento
 
 **50% na contratação e 50% após a Landing Page ser publicada e estar funcionando.**
 
-- Entrada: R$ 498,50
-- Saldo após a publicação: R$ 498,50
+* Entrada: R$ 498,50
+* Saldo após a publicação: R$ 498,50
 
 ### Prazo
 
-Até 7 dias úteis após a confirmação do pagamento inicial, o preenchimento do briefing e o recebimento dos materiais necessários.
-
-### Ajustes
-
-Até duas rodadas de alterações dentro do escopo aprovado.
-
-### Publicação
-
-A página é publicada na infraestrutura definida antes do início do projeto.
+Até 7 dias úteis após a entrada, o briefing completo e o recebimento dos materiais necessários.
 
 ### Custos externos
 
-Domínio, hospedagem e ferramentas de terceiros não estão incluídos automaticamente no valor de R$ 997.
+Domínio, hospedagem e ferramentas de terceiros não estão incluídos automaticamente. Quando necessários, os custos e as responsabilidades são informados antes da contratação.
 
-Quando forem necessários, os custos, as contas utilizadas e as responsabilidades serão informados antes da contratação.
+### Não incluído
 
-### O projeto padrão não inclui
-
-- Gestão de Google Ads ou Meta Ads
-- Produção de fotos e vídeos
-- Criação de identidade visual completa
-- Páginas adicionais
-- Manutenção mensal
-- Testes A/B contínuos
-- Automações ou integrações não previstas
-
-### Transparência
-
-Antes do início, você recebe uma proposta com o escopo, a forma de pagamento, a infraestrutura e as responsabilidades do projeto.
+* Gestão de Google Ads ou Meta Ads
+* Produção de fotos, vídeos ou identidade visual completa
+* Páginas, automações ou integrações adicionais
+* Manutenção mensal e testes A/B contínuos
 
 ### CTA
 
-**Quero solicitar meu projeto**
+**Quero minha Landing Page**
 
 ### Microcopy
 
-Preencha o formulário para eu conhecer sua necessidade e confirmar se ela se encaixa no escopo de R$ 997.
+Preencha o formulário para eu avaliar sua necessidade e confirmar o escopo.
 
 ### Aviso
 
-A Landing Page organiza a experiência depois do clique, mas não existe garantia de vendas, leads ou desempenho da campanha.
+A Landing Page organiza a experiência depois do clique, mas não garante vendas, leads ou desempenho da campanha.
 
 ---
 
-## 12. Perguntas frequentes
+## 11. Perguntas frequentes
 
 ### Etiqueta
 
@@ -552,97 +406,41 @@ A Landing Page organiza a experiência depois do clique, mas não existe garanti
 
 > **O que você precisa saber antes de iniciar**
 
-### Texto principal
+### 1. Quanto custa e como funciona o pagamento?
 
-Confira as respostas para as principais dúvidas sobre escopo, prazo, anúncios, ajustes e publicação.
+O projeto padrão custa R$ 997: R$ 498,50 na contratação e R$ 498,50 após a página ser publicada e estar funcionando. Serviços fora do escopo são apresentados separadamente antes de qualquer execução.
 
-### 1. O projeto custa R$ 997?
+### 2. Em quanto tempo a página fica pronta?
 
-Sim. R$ 997 é o valor do projeto padrão apresentado nesta página.
+O prazo é de até 7 dias úteis após a entrada, o briefing completo e o recebimento dos materiais necessários. Pendências pausam a contagem.
 
-Se sua necessidade incluir outra página, integração, funcionalidade ou serviço fora do escopo, eu explico antes e envio um orçamento adicional. Nada é acrescentado sem sua aprovação.
+### 3. Preciso já estar anunciando?
 
-### 2. O que está incluído?
+Não. A página pode ser desenvolvida antes da campanha, desde que você tenha uma oferta definida e um plano real para anunciar.
 
-O projeto inclui estratégia e estrutura, copy, design responsivo, desenvolvimento em Next.js, formulário, continuidade pelo WhatsApp, configuração de rastreamento, publicação, testes e até duas rodadas de ajustes dentro do escopo aprovado.
+### 4. Já tenho um site. Ainda preciso de uma Landing Page?
 
-### 3. Em quanto tempo a página fica pronta?
+Depende. Um site normalmente oferece vários caminhos; a Landing Page concentra uma oferta e uma ação principal. Eu avalio seu caso antes da contratação.
 
-O prazo padrão é de até sete dias úteis.
+### 5. A gestão dos anúncios está incluída?
 
-A contagem começa após a confirmação do pagamento inicial, o preenchimento completo do briefing e o recebimento de todas as informações e materiais necessários.
+Não. O valor de R$ 997 contempla a criação da Landing Page. A gestão de Google Ads ou Meta Ads é um serviço separado.
 
-### 4. Preciso já estar anunciando?
+### 6. Domínio e hospedagem estão incluídos?
 
-Não. Você pode desenvolver a Landing Page antes de iniciar sua campanha.
+Não automaticamente. A infraestrutura, as contas, os custos e as responsabilidades são definidos antes do início.
 
-É importante, porém, ter uma oferta definida e um plano real para anunciar no Google Ads ou Meta Ads.
+### 7. Posso solicitar alterações e manutenção?
 
-### 5. Já tenho um site. Ainda preciso de uma Landing Page?
+O projeto inclui até 2 rodadas de ajustes dentro do escopo. Manutenção recorrente, novas seções, páginas, integrações ou funcionalidades são avaliadas separadamente.
 
-Depende da sua campanha e da estrutura do seu site.
+### 8. A página terá rastreamento e garante resultados?
 
-Um site institucional normalmente apresenta a empresa e oferece diferentes caminhos. A Landing Page concentra a atenção em uma oferta e em uma ação principal.
-
-Antes da contratação, eu posso avaliar se uma página específica faz sentido para o que você pretende anunciar.
-
-### 6. A gestão de Google Ads ou Meta Ads está incluída?
-
-Não. O projeto de R$ 997 contempla a criação da Landing Page.
-
-A gestão das campanhas é um serviço separado e só será incluída quando estiver descrita em outra proposta.
-
-### 7. Domínio e hospedagem estão incluídos?
-
-Não estão incluídos automaticamente.
-
-A infraestrutura é definida antes do início do projeto. Você saberá qual conta será utilizada, quem será responsável pelo pagamento, pelas renovações e pelo funcionamento depois da entrega.
-
-### 8. Posso solicitar alterações?
-
-Sim. O projeto inclui até duas rodadas de ajustes.
-
-Cada rodada corresponde a uma lista consolidada de solicitações. Correções, pequenos ajustes de texto, troca de imagens e refinamentos dentro do escopo podem ser incluídos.
-
-Mudanças de oferta, público, página, funcionalidade ou integração podem exigir um novo orçamento.
-
-### 9. A página terá rastreamento?
-
-Sim. Os eventos previstos no projeto podem ser configurados para acompanhar ações como o envio confirmado do formulário e a continuidade pelo WhatsApp.
-
-A integração com Google Tag Manager, Google Analytics 4, Google Ads e Meta Pixel depende do fornecimento das contas, dos acessos e dos consentimentos necessários.
-
-### 10. Você garante vendas ou leads?
-
-Não. Nenhuma Landing Page pode garantir vendas, quantidade de contatos ou desempenho de campanha.
-
-Os resultados também dependem da oferta, dos anúncios, do orçamento, da demanda, da concorrência, do atendimento e de outros fatores.
-
-Meu compromisso é entregar uma página funcional, responsiva, rastreável e de acordo com o escopo aprovado.
-
-### 11. Quais materiais preciso enviar?
-
-No briefing, eu solicito as informações sobre sua empresa, oferta, público, diferenciais, serviços, contatos e condições comerciais.
-
-Você também deverá fornecer os materiais disponíveis, como logotipo, fotos, identidade visual e acessos necessários.
-
-Se algum material importante não existir, alinhamos antes como ele será substituído ou contratado.
-
-### 12. O projeto inclui manutenção mensal?
-
-Não. A entrega padrão não inclui manutenção recorrente.
-
-Depois da entrega, correções técnicas relacionadas ao projeto seguem as condições da proposta. Novos textos, imagens, seções, integrações ou funcionalidades podem ser avaliados separadamente.
-
-### 13. Como funciona o pagamento?
-
-O pagamento é dividido em duas etapas: 50% na contratação e 50% depois que a Landing Page estiver publicada e funcionando.
-
-O prazo de produção começa após a confirmação da entrada, o briefing completo e o recebimento dos materiais necessários.
+Os eventos previstos podem ser configurados quando os acessos necessários forem fornecidos. A página não garante vendas ou leads, pois o resultado também depende da oferta, da campanha, do orçamento, da demanda e do atendimento.
 
 ---
 
-## 13. CTA final
+## 12. CTA final
 
 ### Etiqueta
 
@@ -650,11 +448,11 @@ O prazo de produção começa após a confirmação da entrada, o briefing compl
 
 ### Título
 
-> **Sua empresa precisa de uma Landing Page para tráfego pago?**
+> **Quer uma Landing Page pronta para anunciar?**
 
 ### Texto
 
-Responda algumas perguntas rápidas para eu entender sua necessidade e confirmar se ela se encaixa no projeto de R$ 997.
+Responda algumas perguntas para eu avaliar sua necessidade e confirmar se ela se encaixa no projeto de R$ 997.
 
 ### CTA
 
@@ -662,13 +460,13 @@ Responda algumas perguntas rápidas para eu entender sua necessidade e confirmar
 
 ### Microcopy
 
-Leva cerca de 40 segundos. Após o envio, você poderá continuar a conversa comigo pelo WhatsApp.
+Leva cerca de 40 segundos. Após o envio, você poderá continuar pelo WhatsApp.
 
 ---
 
-## 14. Formulário modal
+## 13. Formulário modal
 
-### 14.1. Tela inicial
+### 13.1. Tela inicial
 
 #### Etiqueta
 
@@ -680,7 +478,7 @@ Leva cerca de 40 segundos. Após o envio, você poderá continuar a conversa com
 
 #### Texto
 
-Responda algumas perguntas rápidas para eu entender seu projeto e confirmar se ele se encaixa na proposta de R$ 997.
+Responda algumas perguntas rápidas para eu avaliar seu projeto e confirmar se ele se encaixa na proposta de R$ 997.
 
 #### Estimativa
 
@@ -690,13 +488,13 @@ Leva cerca de 40 segundos.
 
 **Começar**
 
-### 14.2. Indicador de progresso
+### 13.2. Indicador de progresso
 
 1. Contato
 2. Sobre o projeto
 3. Confirmar
 
-### 14.3. Pergunta sobre o nome
+### 13.3. Pergunta sobre o nome
 
 #### Pergunta
 
@@ -718,7 +516,7 @@ Seu nome
 
 Informe seu nome para continuar.
 
-### 14.4. Pergunta sobre o WhatsApp
+### 13.4. Pergunta sobre o WhatsApp
 
 #### Pergunta
 
@@ -738,14 +536,14 @@ Usarei esse número apenas para analisar sua solicitação e entrar em contato s
 
 #### Botões
 
-- **Continuar**
-- **Voltar**
+* **Continuar**
+* **Voltar**
 
 #### Validação
 
 Informe um número de WhatsApp válido com DDD.
 
-### 14.5. Pergunta sobre o negócio
+### 13.5. Pergunta sobre o negócio
 
 #### Pergunta
 
@@ -765,14 +563,14 @@ Descreva em poucas palavras o que sua empresa oferece.
 
 #### Botões
 
-- **Continuar**
-- **Voltar**
+* **Continuar**
+* **Voltar**
 
 #### Validação
 
 Informe qual é o seu negócio ou serviço.
 
-### 14.6. Pergunta sobre anúncios
+### 13.6. Pergunta sobre anúncios
 
 #### Pergunta
 
@@ -780,21 +578,21 @@ Informe qual é o seu negócio ou serviço.
 
 #### Opções
 
-- Já anuncio no Google Ads
-- Já anuncio no Meta Ads
-- Já anuncio nos dois
-- Ainda não anuncio, mas pretendo começar
+* Já anuncio no Google Ads
+* Já anuncio no Meta Ads
+* Já anuncio nos dois
+* Ainda não anuncio, mas pretendo começar
 
 #### Botões
 
-- **Continuar**
-- **Voltar**
+* **Continuar**
+* **Voltar**
 
 #### Validação
 
 Selecione uma opção para continuar.
 
-### 14.7. Pergunta sobre site ou Landing Page
+### 13.7. Pergunta sobre site ou Landing Page
 
 #### Pergunta
 
@@ -802,19 +600,19 @@ Selecione uma opção para continuar.
 
 #### Opções
 
-- Sim
-- Não
+* Sim
+* Não
 
 #### Botões
 
-- **Continuar**
-- **Voltar**
+* **Continuar**
+* **Voltar**
 
 #### Validação
 
 Selecione uma opção para continuar.
 
-### 14.8. URL atual
+### 13.8. URL atual
 
 Exibir somente quando a pessoa responder “Sim” à pergunta anterior.
 
@@ -836,14 +634,14 @@ Esse campo é opcional. Se preferir, você poderá continuar sem informar o ende
 
 #### Botões
 
-- **Continuar**
-- **Voltar**
+* **Continuar**
+* **Voltar**
 
 #### Validação
 
 Quando preenchido, informe um endereço válido.
 
-### 14.9. Revisão
+### 13.9. Revisão
 
 #### Título
 
@@ -855,12 +653,12 @@ Revise os dados antes de enviar. Você pode voltar e corrigir qualquer resposta.
 
 #### Rótulos do resumo
 
-- Nome
-- WhatsApp
-- Negócio ou serviço
-- Situação dos anúncios
-- Site ou Landing Page atual
-- URL atual
+* Nome
+* WhatsApp
+* Negócio ou serviço
+* Situação dos anúncios
+* Site ou Landing Page atual
+* URL atual
 
 #### Ação por item
 
@@ -872,14 +670,14 @@ Li e concordo com a Política de Privacidade e autorizo o uso destas informaçõ
 
 #### Botões
 
-- **Enviar informações**
-- **Voltar**
+* **Enviar informações**
+* **Voltar**
 
 #### Validação do consentimento
 
 Confirme que leu a Política de Privacidade para enviar.
 
-### 14.10. Estado de envio
+### 13.10. Estado de envio
 
 #### Botão
 
@@ -889,7 +687,7 @@ Confirme que leu a Política de Privacidade para enviar.
 
 Suas informações estão sendo enviadas. Aguarde.
 
-### 14.11. Sucesso
+### 13.11. Sucesso
 
 #### Etiqueta
 
@@ -901,7 +699,7 @@ Suas informações estão sendo enviadas. Aguarde.
 
 #### Texto
 
-Agora você pode continuar a conversa comigo pelo WhatsApp. As informações que enviou já estarão registradas para minha análise.
+Agora você pode continuar a conversa comigo pelo WhatsApp. As informações enviadas já estarão registradas para minha análise.
 
 #### CTA
 
@@ -915,7 +713,7 @@ Agora você pode continuar a conversa comigo pelo WhatsApp. As informações que
 
 Olá, Willian. Acabei de enviar as informações do meu projeto pela página da Anúncio & Site.
 
-### 14.12. Erro de validação
+### 13.12. Erro de validação
 
 #### Título
 
@@ -925,7 +723,7 @@ Olá, Willian. Acabei de enviar as informações do meu projeto pela página da 
 
 Alguns campos precisam ser corrigidos antes do envio.
 
-### 14.13. Falha técnica no envio
+### 13.13. Falha técnica no envio
 
 #### Título
 
@@ -943,7 +741,7 @@ Suas respostas foram preservadas. Tente enviar novamente.
 
 **Voltar e revisar**
 
-### 14.14. Contingência após tentativa válida
+### 13.14. Contingência após tentativa válida
 
 Exibir somente depois que uma tentativa válida de envio falhar tecnicamente.
 
@@ -961,7 +759,7 @@ Olá, Willian. Preenchi o formulário da Anúncio & Site, mas ocorreu um erro no
 
 ---
 
-## 15. Consentimento de medição
+## 14. Consentimento de medição
 
 > Este texto operacional deve permanecer alinhado à Política de Privacidade publicada.
 
@@ -975,9 +773,9 @@ Esta página utiliza recursos necessários para funcionar. Com sua autorização
 
 ### Ações
 
-- **Aceitar medição**
-- **Recusar recursos não essenciais**
-- **Configurar preferências**
+* **Aceitar medição**
+* **Recusar recursos não essenciais**
+* **Configurar preferências**
 
 ### Preferências
 
@@ -1001,7 +799,7 @@ Ajudam a medir campanhas e atribuir conversões às respectivas origens.
 
 ---
 
-## 16. Rodapé
+## 15. Rodapé
 
 ### Marca
 
@@ -1013,8 +811,8 @@ Landing Pages para tráfego pago, desenvolvidas diretamente por Willian Souza.
 
 ### Links
 
-- Política de Privacidade
-- Termos de Uso
+* Política de Privacidade
+* Termos de Uso
 
 ### Direitos
 

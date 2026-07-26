@@ -146,9 +146,7 @@ event_version: 1
 |---|---|
 | Cabeçalho | `header` |
 | Hero | `hero` |
-| O que está incluído | `included` |
 | Projetos desenvolvidos | `portfolio` |
-| Quem é Willian | `about` |
 | Investimento | `pricing` |
 | CTA final | `final` |
 
@@ -489,11 +487,6 @@ faq_05
 faq_06
 faq_07
 faq_08
-faq_09
-faq_10
-faq_11
-faq_12
-faq_13
 ```
 
 Não enviar a pergunta ou a resposta completa como parâmetro.
