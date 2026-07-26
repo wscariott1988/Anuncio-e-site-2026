@@ -45,6 +45,10 @@ artifacts/
 
 # playwright test results
 test-results/
+playwright-report/
+
+# visual review captures
+e2e/captures/
 
 # typescript cache
 tsconfig.tsbuildinfo

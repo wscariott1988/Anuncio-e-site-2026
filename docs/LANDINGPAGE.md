@@ -978,8 +978,8 @@ Usar integralmente a copy de `CONTENT.md`.
 
 ### Links permitidos
 
-* Política de Privacidade.
-* Termos de Uso.
+* Política de Privacidade (`/politica-de-privacidade`).
+* Termos de Uso (`/termos`).
 * Voltar ao topo, se necessário.
 
 ### Links proibidos

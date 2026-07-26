@@ -988,7 +988,7 @@ test.describe("CONTENT.md conformity", () => {
     expect(body).toContain("Preencha o formulário para eu avaliar sua necessidade e confirmar o escopo.");
     expect(body).toContain("Desenvolvida diretamente por mim");
     expect(body).toContain("Preparada para celular e desktop");
-    expect(body).toContain("Eu cido do planejamento à publicação");
+    expect(body).toContain("Eu cuido do planejamento à publicação");
     expect(body).toContain("Até 7 dias úteis após briefing e materiais");
 
     // Old phrases — must be absent

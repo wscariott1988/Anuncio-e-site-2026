@@ -162,12 +162,14 @@ Se `typecheck` ou `test` não existirem:
 
 ### Rotas jurídicas
 
-As rotas abaixo devem ser confirmadas no projeto antes de criar ou alterar:
+As rotas jurídicas implementadas são:
 
 ```text
 /politica-de-privacidade
 /termos
 ```
+
+O conteúdo é definido em `docs/PRIVACY.md` e `docs/TERMS.md`.
 
 ### Rota que não deve existir
 

@@ -460,6 +460,27 @@
 - [ ] Não existe blog no rodapé.
 - [ ] Não existe portfólio externo no rodapé.
 
+## 23a. Páginas jurídicas
+
+- [ ] `/politica-de-privacidade` retorna status 200.
+- [ ] `/termos` retorna status 200.
+- [ ] Cada página possui uma única `h1`.
+- [ ] Cada página possui data de última atualização visível.
+- [ ] As datas correspondem a `docs/PRIVACY.md` e `docs/TERMS.md`.
+- [ ] O e-mail contato@grupows.com está presente com link `mailto:`.
+- [ ] Não existem dados fictícios de CPF, CNPJ ou responsável.
+- [ ] Não existe texto provisório ou placeholder.
+- [ ] O layout usa o componente `LegalPageLayout`.
+- [ ] O cabeçalho contém somente marca e link "Voltar para a Landing Page".
+- [ ] O rodapé contém marca, links para ambas as páginas jurídicas, e-mail e link para `/landingpage`.
+- [ ] Não existe link para `/` no cabeçalho ou rodapé das páginas jurídicas.
+- [ ] As páginas possuem `noindex` e `follow`.
+- [ ] A canonical está correta para cada página.
+- [ ] Não existem scripts ou dependências externas adicionadas.
+- [ ] Não existe `dangerouslySetInnerHTML`.
+- [ ] Não existe rolagem horizontal em 360, 390, 768 e 1440 px.
+- [ ] Não existem erros no console ao carregar cada página.
+
 ## 24. Acessibilidade
 
 - [ ] A página pode ser navegada por teclado.

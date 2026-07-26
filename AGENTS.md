@@ -518,13 +518,22 @@ Não publicar tags de publicidade ignorando a preferência do visitante.
 
 ## 17. Privacidade e documentos jurídicos
 
+Rotas jurídicas implementadas:
+
+```text
+/politica-de-privacidade
+/termos
+```
+
+As páginas jurídicas são rotas auxiliares autorizadas. Não transformar em rotas comerciais.
+
 Links permitidos:
 
 - Política de Privacidade;
 - Termos de Uso;
 - voltar ao topo, quando necessário.
 
-Não inventar texto jurídico.
+Não inventar texto jurídico. O conteúdo é definido em `docs/PRIVACY.md` e `docs/TERMS.md`.
 
 Se as páginas jurídicas não existirem ou não estiverem aprovadas:
 
