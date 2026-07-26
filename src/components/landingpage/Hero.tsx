@@ -49,7 +49,7 @@ export function Hero({ onCtaClick }: HeroProps) {
                 Quero minha Landing Page
               </button>
               <p className="text-sm text-[var(--text-secondary)]">
-                Você me explica seu negócio. Eu cido do planejamento à publicação.
+                Você me explica seu negócio. Eu cuido do planejamento à publicação.
               </p>
             </div>
           </div>
