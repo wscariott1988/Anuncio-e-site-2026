@@ -315,6 +315,12 @@ A seção pode usar composição Bento Box conforme `DESIGN.md`.
 * Informar as duas rodadas de ajustes.
 * Não incluir CTA nesta seção.
 
+### Layout responsivo
+
+* **Mobile** (`<768px`): painel compacto vertical com `divide-y` mostrando as 6 linhas (título + descrição).
+* **Tablet** (`768–1023px`): grid de 2 colunas × 3 linhas.
+* **Desktop** (`≥1024px`): grid uniforme de 3 colunas × 2 linhas, todos os cartões com a mesma largura e alinhados pelo topo.
+
 ## 12. Projetos desenvolvidos
 
 ### Objetivo
@@ -343,11 +349,17 @@ Cada projeto deve possuir:
 * nome;
 * segmento;
 * descrição curta;
-* ação “Ver projeto por dentro”.
+* ação "Ver projeto por dentro".
 
 O card deve possuir uma única área interativa válida, sem botão aninhado dentro de outro botão.
 
 A capa deve ser um recorte representativo, não a captura completa reduzida até ficar ilegível.
+
+### Layout responsivo
+
+* **Mobile** (`<768px`): faixa horizontal com `scroll-snap`, cards com `min-w-[85%]`, sem autoplay. Preservar imagem inteira sem corte. CTA abaixo do carrossel.
+* **Tablet** (`768–1023px`): grid de 2 colunas. O quinto projeto pode ficar centralizado na última linha se necessário.
+* **Desktop** (`≥1024px`): grid de 6 colunas. Cada projeto ocupa 2 colunas. Projetos 1–3 ocupam a primeira linha (colunas 1–2, 3–4, 5–6). Projetos 4–5 ocupam a segunda linha centralizados (colunas 2–3 e 4–5). Os cinco cartões possuem a mesma largura. CTA e microcopy centralizados horizontalmente após o grid, com largura da microcopy limitada a ~580px.
 
 ### Visualizador no celular
 
@@ -475,6 +487,12 @@ Destacar:
 * pausa do prazo quando houver pendência;
 * até duas rodadas de ajustes.
 
+### Layout responsivo
+
+* **Mobile** (`<768px`): leitura vertical com gaps reduzidos, números com `w-9 h-9`.
+* **Tablet** (`768–1023px`): grid 2×2, blocos lado a lado em duas linhas.
+* **Desktop** (`≥1024px`): quatro colunas em uma única linha (`lg:grid-cols-4`), blocos de largura igual, alinhados pelo topo. O bloco "Prazo do projeto" permanece abaixo das quatro etapas como faixa informativa separada, sem ser contado como quinta etapa.
+
 ## 14. Quem é Willian Souza
 
 Usar a copy e os indicadores de `CONTENT.md`.
@@ -484,10 +502,16 @@ Usar a copy e os indicadores de `CONTENT.md`.
 * Usar foto real de Willian.
 * Informar que o projeto é conduzido diretamente por ele.
 * Não apresentar equipe.
-* Não usar “nós”.
+* Não usar "nós".
 * Não inventar certificações.
 * Não modificar os números aprovados.
 * Não transformar a seção em uma biografia extensa.
+
+### Layout responsivo
+
+* **Desktop** (`≥1024px`): composição em duas colunas. Coluna esquerda (~55%) contém etiqueta "EXECUÇÃO DIRETA", título e dois parágrafos alinhados à esquerda. Coluna direita (~45%) contém os quatro indicadores em grid 2×2, alinhados pelo topo. Usa `lg:grid lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:gap-12 lg:items-start`.
+* **Tablet** (`768–1023px`): apresentação primeiro, indicadores abaixo em grid 2×2.
+* **Mobile** (`<768px`): texto primeiro, indicadores em grid 2×2, sem rolagem horizontal.
 
 ## 15. Investimento
 
@@ -1082,7 +1106,7 @@ Aplicar padrões compactos para reduzir a altura total sem remover conteúdo:
 
 * **Portfólio**: faixa horizontal com `scroll-snap`, cards com `min-w-[85%]`, sem autoplay. Desktop mantém grid `md:grid-cols-2 lg:grid-cols-3`.
 * **O que está incluído**: painel compacto com 6 linhas em `divide-y`. Bento Box (`hidden md:grid`) mantido no desktop.
-* **Quem é Willian Souza**: grid `grid-cols-2` (2×2) no mobile, `lg:grid-cols-4` no desktop. Tamanhos de fonte reduzidos.
+* **Quem é Willian Souza**: a partir de `1024px`, layout em duas colunas com texto à esquerda e indicadores em 2×2 à direita. Entre `768px` e `1023px`, apresentação acima e indicadores abaixo em 2×2. Abaixo de `768px`, texto primeiro e indicadores em grid `grid-cols-2` (2×2) com tamanhos de fonte reduzidos.
 * **Como funciona**: gaps e tamanhos reduzidos (`space-y-4 md:space-y-8`, `w-9 h-9 md:w-10 md:h-10`).
 
 Todos os textos, CTAs, modais e integrações permanecem idênticos. O desktop não é afetado.

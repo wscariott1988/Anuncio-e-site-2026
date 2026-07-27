@@ -36,17 +36,56 @@ export function HowItWorksSection() {
           </h2>
         </div>
 
-        <div className="space-y-4 md:space-y-8">
+        {/* Mobile: vertical stack */}
+        <div className="md:hidden space-y-4">
           {steps.map((s) => (
-            <div key={s.num} className="flex gap-4 md:gap-6 items-start">
-              <div className="w-9 h-9 md:w-10 md:h-10 rounded-full bg-[var(--brand)] text-white flex items-center justify-center text-sm font-bold flex-shrink-0">
+            <div key={s.num} className="flex gap-4 items-start">
+              <div className="w-9 h-9 rounded-full bg-[var(--brand)] text-white flex items-center justify-center text-sm font-bold flex-shrink-0">
                 {s.num}
               </div>
-              <div className="space-y-1 md:space-y-2">
-                <h3 className="text-base md:text-lg font-semibold text-[var(--text-primary)]">
+              <div className="space-y-1">
+                <h3 className="text-base font-semibold text-[var(--text-primary)]">
                   {s.title}
                 </h3>
-                <p className="text-[14px] md:text-[15px] text-[var(--text-secondary)] leading-relaxed">
+                <p className="text-[14px] text-[var(--text-secondary)] leading-relaxed">
+                  {s.text}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Tablet: 2×2 grid */}
+        <div className="hidden md:grid md:grid-cols-2 lg:hidden gap-6">
+          {steps.map((s) => (
+            <div key={s.num} className="flex gap-4 items-start">
+              <div className="w-10 h-10 rounded-full bg-[var(--brand)] text-white flex items-center justify-center text-sm font-bold flex-shrink-0">
+                {s.num}
+              </div>
+              <div className="space-y-2">
+                <h3 className="text-lg font-semibold text-[var(--text-primary)]">
+                  {s.title}
+                </h3>
+                <p className="text-[15px] text-[var(--text-secondary)] leading-relaxed">
+                  {s.text}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Desktop: 4 columns in a row */}
+        <div className="hidden lg:grid lg:grid-cols-4 gap-6">
+          {steps.map((s) => (
+            <div key={s.num} className="space-y-3">
+              <div className="w-10 h-10 rounded-full bg-[var(--brand)] text-white flex items-center justify-center text-sm font-bold">
+                {s.num}
+              </div>
+              <div className="space-y-2">
+                <h3 className="text-lg font-semibold text-[var(--text-primary)]">
+                  {s.title}
+                </h3>
+                <p className="text-[15px] text-[var(--text-secondary)] leading-relaxed">
                   {s.text}
                 </p>
               </div>

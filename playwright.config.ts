@@ -25,7 +25,7 @@ export default defineConfig({
   webServer: {
     command: "npm run start",
     port: 3000,
-    reuseExistingServer: !process.env.CI,
+    reuseExistingServer: false, // Evita reutilizar servidor desatualizado; encerrer manualmente antes dos testes.
     timeout: 120_000,
     env: {
       NEXT_PUBLIC_WHATSAPP_NUMBER: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "5511999887766",

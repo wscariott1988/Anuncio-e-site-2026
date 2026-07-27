@@ -523,10 +523,22 @@
 - [ ] Portfólio não possui autoplay nem animação automática.
 - [ ] Texto sr-only de orientação ao swipe está presente.
 - [ ] "O que está incluído" usa painel compacto com divide-y no mobile.
-- [ ] "O que está incluído" usa Bento Box grid no desktop.
+- [ ] "O que está incluído" usa grid uniforme 3×2 no desktop.
+- [ ] "O que está incluído" usa grid 2×3 no tablet.
+- [ ] "O que está incluído" não possui col-span especial no desktop.
+- [ ] "Projetos desenvolvidos" usa faixa horizontal com scroll-snap no mobile.
+- [ ] "Projetos desenvolvidos" usa grid 2 colunas no tablet.
+- [ ] "Projetos desenvolvidos" usa grid 6 colunas no desktop com segunda linha centralizada.
+- [ ] "Projetos desenvolvidos" possui 5 cartões com mesma largura no desktop.
+- [ ] "Como funciona" usa leitura vertical no mobile.
+- [ ] "Como funciona" usa grid 2×2 no tablet.
+- [ ] "Como funciona" usa 4 colunas em uma linha no desktop.
+- [ ] "Como funciona" mantém "Prazo do projeto" como faixa separada abaixo das etapas.
 - [ ] "Quem é Willian Souza" usa grid-cols-2 (2×2) no mobile.
-- [ ] "Quem é Willian Souza" usa grid-cols-4 no desktop.
-- [ ] "Como funciona" possui gaps reduzidos no mobile.
+- [ ] "Quem é Willian Souza" usa layout de duas colunas no desktop (texto à esquerda, indicadores 2×2 à direita).
+- [ ] "Quem é Willian Souza" usa apresentação acima e indicadores 2×2 abaixo no tablet.
+- [ ] "Projetos desenvolvidos" usa CTA centralizado no desktop.
+- [ ] "Projetos desenvolvidos" usa microcopy centralizada e limitada no desktop.
 - [ ] Todos os textos e CTAs estão preservados nos padrões compactos.
 - [ ] Desktop não foi afetado pelos padrões compactos.
 
@@ -571,6 +583,9 @@
 - [ ] Verificação de tipos foi executada, quando disponível.
 - [ ] Testes automatizados foram executados, quando disponíveis.
 - [ ] Build de produção foi concluído.
+- [ ] Playwright não reutilizou servidor antigo (`reuseExistingServer: false`).
+- [ ] Porta 3000 esteve livre antes dos testes.
+- [ ] Capturas foram geradas a partir do build atual.
 - [ ] Não existem erros relevantes no console.
 - [ ] Não existem erros inesperados na rede.
 - [ ] Links internos funcionam.

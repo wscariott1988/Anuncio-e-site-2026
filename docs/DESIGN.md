@@ -259,10 +259,10 @@ Não depender apenas de breakpoints fixos. Evitar:
 
 Em viewports abaixo de `768px`, aplicar padrões compactos para reduzir a altura total da página sem remover conteúdo nem alterar o desktop:
 
-- **Portfólio**: faixa horizontal com `scroll-snap` (`snap-x snap-mandatory`), cards com `min-w-[85%]`, `scroll-snap-align: start`. Sem autoplay, sem animação. Incluir `<p className="sr-only">Deslize para ver outros projetos</p>` para acessibilidade. O grid `md:grid md:grid-cols-2 lg:grid-cols-3` continua visível no desktop.
-- **O que está incluído**: painel compacto com `divide-y` mostrando 6 linhas (título + descrição), visível apenas no mobile. O Bento Box (`hidden md:grid`) continua visível no desktop.
-- **Quem é Willian Souza**: grid `grid-cols-2` por padrão (2×2 no mobile), `lg:grid-cols-4` no desktop. Tamanhos de fonte reduzidos com `text-base sm:text-lg` e `text-xs sm:text-sm`.
-- **Como funciona**: gaps reduzidos (`space-y-4 md:space-y-8`, `gap-4 md:gap-6`), número do passo com `w-9 h-9 md:w-10 md:h-10`.
+- **Portfólio**: faixa horizontal com `scroll-snap` (`snap-x snap-mandatory`), cards com `min-w-[85%]`, `scroll-snap-align: start`. Sem autoplay, sem animação. Incluir `<p className="sr-only">Deslize para ver outros projetos</p>` para acessibilidade. No desktop (≥1024px), grid de 6 colunas com 3 projetos na primeira linha (2 colunas cada) e 2 projetos centralizados na segunda linha (colunas 2–3 e 4–5). CTA e microcopy centralizados horizontalmente após o grid. No tablet (768–1023px), grid de 2 colunas.
+- **O que está incluído**: painel compacto com `divide-y` mostrando 6 linhas (título + descrição), visível apenas no mobile. No desktop (≥1024px), grid uniforme de 3 colunas × 2 linhas sem `col-span` especial. No tablet (768–1023px), grid de 2 colunas × 3 linhas.
+- **Quem é Willian Souza**: a partir de `1024px`, composição em duas colunas (texto à esquerda com etiqueta, título e parágrafos; métricas em grid 2×2 à direita, alinhadas pelo topo). Proporção aproximada 55/45. Entre `768px` e `1023px`, apresentação acima e indicadores abaixo em grid 2×2. Abaixo de `768px`, grid `grid-cols-2` (2×2) com tamanhos de fonte reduzidos.
+- **Como funciona**: gaps reduzidos (`space-y-4 md:space-y-8`), número do passo com `w-9 h-9 md:w-10 md:h-10`. No desktop (≥1024px), 4 colunas em uma única linha (`lg:grid-cols-4`). No tablet (768–1023px), grid 2×2. O bloco "Prazo do projeto" permanece abaixo das etapas como faixa informativa separada.
 
 Esses padrões são **somente mobile**. O desktop não pode ser afetado.
 

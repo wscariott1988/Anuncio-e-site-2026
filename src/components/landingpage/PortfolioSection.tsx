@@ -104,18 +104,28 @@ export function PortfolioSection({ onCtaClick, onOpenProject }: PortfolioSection
         </div>
 
         {/* Desktop / tablet: grid */}
-        <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {PROJECTS.map((project) => (
+        <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-6 gap-6">
+          {PROJECTS.slice(0, 3).map((project) => (
             <PortfolioCard
               key={project.id}
               project={project}
               onOpenProject={onOpenProject}
-              className="bg-[var(--background)] rounded-2xl border border-[var(--border)] overflow-hidden group cursor-pointer hover:shadow-[0_8px_24px_rgba(16,24,40,0.06)] transition-shadow"
+              className="bg-[var(--background)] rounded-2xl border border-[var(--border)] overflow-hidden group cursor-pointer hover:shadow-[0_8px_24px_rgba(16,24,40,0.06)] transition-shadow lg:col-span-2"
             />
           ))}
+          <div className="lg:col-start-2 lg:col-span-4 grid grid-cols-2 gap-6">
+            {PROJECTS.slice(3).map((project) => (
+              <PortfolioCard
+                key={project.id}
+                project={project}
+                onOpenProject={onOpenProject}
+                className="bg-[var(--background)] rounded-2xl border border-[var(--border)] overflow-hidden group cursor-pointer hover:shadow-[0_8px_24px_rgba(16,24,40,0.06)] transition-shadow"
+              />
+            ))}
+          </div>
         </div>
 
-        <div className="space-y-3">
+        <div className="space-y-3 lg:items-center lg:text-center">
           <button
             onClick={() => {
               trackCtaClick("portfolio", "Quero minha Landing Page", "portfolio_primary");
@@ -125,7 +135,7 @@ export function PortfolioSection({ onCtaClick, onOpenProject }: PortfolioSection
           >
             Quero minha Landing Page
           </button>
-          <p className="text-sm text-[var(--text-secondary)]">Cada projeto recebe uma estrutura adequada à oferta e ao público do negócio.</p>
+          <p className="text-sm text-[var(--text-secondary)] lg:mx-auto lg:max-w-[580px]">Cada projeto recebe uma estrutura adequada à oferta e ao público do negócio.</p>
         </div>
       </div>
     </section>

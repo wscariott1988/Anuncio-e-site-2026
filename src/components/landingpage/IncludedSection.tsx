@@ -56,14 +56,12 @@ export function IncludedSection() {
           ))}
         </div>
 
-        {/* Desktop / tablet: Bento Box grid */}
-        <div className="hidden md:grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {items.map((item, i) => (
+        {/* Desktop / tablet: uniform grid */}
+        <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {items.map((item) => (
             <div
               key={item.title}
-              className={`bg-[var(--surface)] rounded-2xl border border-[var(--border)] p-6 space-y-3 ${
-                i === 0 ? "sm:col-span-2 lg:col-span-2" : ""
-              }`}
+              className="bg-[var(--surface)] rounded-2xl border border-[var(--border)] p-6 space-y-3"
             >
               <h3 className="text-base font-semibold text-[var(--text-primary)]">
                 {item.title}
