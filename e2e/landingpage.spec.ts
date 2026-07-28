@@ -189,8 +189,8 @@ test.describe("Route tests", () => {
     await page.goto(PAGE_URL, { waitUntil: "networkidle" });
 
     const title = await page.title();
-    expect(title).toContain("Landing Page para Tr├ífego Pago");
-    expect(title).toContain("An├║ncio & Site");
+    expect(title).toContain("Landing Page para Tráfego Pago");
+    expect(title).toContain("Anúncio & Site");
 
     const metaDesc = await page.locator('meta[name="description"]').getAttribute("content");
     expect(metaDesc).toContain("R$ 997");
@@ -202,10 +202,10 @@ test.describe("Route tests", () => {
     expect(robots).toContain("noindex");
   });
 
-  test("No strikethrough, discount, urgency, vagas, cron├┤metro", async () => {
+  test("No strikethrough, discount, urgency, vagas, cronômetro", async () => {
     await waitForPageReady(page);
     const body = await page.textContent("body");
-    expect(body).not.toMatch(/~~|s├│ restam|vagas? limitad[aoe]|├║ltim[aoe]s?|conto(?:r|agem)|desconto|pre├ºo anterior|riscad[ao]/i);
+    expect(body).not.toMatch(/~~|só restam|vagas? limitad[aoe]|últim[aoe]s?|conto(?:r|agem)|desconto|preço anterior|riscad[ao]/i);
     const strikethroughs = page.locator("s, strike, del");
     await expect(strikethroughs).toHaveCount(0);
   });
@@ -271,10 +271,10 @@ test.describe("Route tests", () => {
     expect(visibleText).not.toContain("anuncioesite.com.br/zarq-planejados");
   });
 
-  test("Scope text uses 'Configura├º├úo de rastreamento'", async () => {
+  test("Scope text uses 'Configuração de rastreamento'", async () => {
     await waitForPageReady(page);
     const body = await page.textContent("body");
-    expect(body).toContain("Configura├º├úo de rastreamento");
+    expect(body).toContain("Configuração de rastreamento");
   });
 
   test("Portfolio modal: no image overflow on mobile", async () => {
@@ -282,7 +282,7 @@ test.describe("Route tests", () => {
     await waitForPageReady(page);
 
     const mobileStrip = page.locator(".md\\:hidden .overflow-x-auto");
-    const card = mobileStrip.locator('[aria-label="Ver projeto Mec├ónica Auto Brum por dentro"]');
+    const card = mobileStrip.locator('[aria-label="Ver projeto Mecânica Auto Brum por dentro"]');
     await card.scrollIntoViewIfNeeded();
     await card.click();
 
@@ -315,7 +315,7 @@ test.describe("Route tests", () => {
     await waitForPageReady(page);
 
     const mobileStrip = page.locator(".md\\:hidden .overflow-x-auto");
-    const card = mobileStrip.locator('[aria-label="Ver projeto Mec├ónica Auto Brum por dentro"]');
+    const card = mobileStrip.locator('[aria-label="Ver projeto Mecânica Auto Brum por dentro"]');
     await card.scrollIntoViewIfNeeded();
     await card.click();
 
@@ -390,7 +390,7 @@ test.describe("CTA tests", () => {
 
     await openFormFromHero(page);
 
-    await page.getByRole("button", { name: "Come├ºar" }).click();
+    await page.getByRole("button", { name: "Começar" }).click();
     await expect(page.locator("dialog[open]")).toBeVisible();
 
     await page.fill("#form-nome", "Maria Silva");
@@ -400,7 +400,7 @@ test.describe("CTA tests", () => {
 
     await openFormFromHero(page);
 
-    await page.getByRole("button", { name: "Come├ºar" }).click();
+    await page.getByRole("button", { name: "Começar" }).click();
 
     await expect(page.locator("#form-nome")).toHaveValue("Maria Silva");
 
@@ -442,7 +442,7 @@ test.describe("Form tests", () => {
     const dialog = page.locator("dialog[open]");
     await expect(dialog).toBeVisible();
 
-    await page.getByRole("button", { name: "Come├ºar" }).click();
+    await page.getByRole("button", { name: "Começar" }).click();
 
     await page.getByRole("button", { name: "Continuar" }).click();
     await expect(page.getByText("Informe seu nome para continuar.")).toBeVisible();
@@ -450,7 +450,7 @@ test.describe("Form tests", () => {
     await page.fill("#form-nome", "Maria Silva");
 
     await page.getByRole("button", { name: "Continuar" }).click();
-    await expect(page.getByText("Informe um n├║mero de WhatsApp v├ílido com DDD.")).toBeVisible();
+    await expect(page.getByText("Informe um número de WhatsApp válido com DDD.")).toBeVisible();
 
     await page.fill("#form-whatsapp", "11999998888");
 
@@ -464,28 +464,28 @@ test.describe("Form tests", () => {
     await page.getByRole("button", { name: "Continuar" }).click();
     await expect(page.locator("#form-negocio")).toBeVisible();
 
-    await page.fill("#form-negocio", "Cl├¡nica odontol├│gica");
+    await page.fill("#form-negocio", "Clínica odontológica");
 
-    await page.getByLabel("J├í anuncio no Google Ads").check();
+    await page.getByLabel("Já anuncio no Google Ads").check();
 
-    await page.getByLabel("N├úo", { exact: false }).last().check();
+    await page.getByLabel("Não", { exact: false }).last().check();
 
     await page.getByRole("button", { name: "Continuar" }).click();
 
     await expect(page.getByText("Maria Silva")).toBeVisible();
     await expect(page.getByText("(11) 99999-8888")).toBeVisible();
-    await expect(page.getByText("Cl├¡nica odontol├│gica")).toBeVisible();
-    await expect(page.getByText("J├í anuncio no Google Ads")).toBeVisible();
+    await expect(page.getByText("Clínica odontológica")).toBeVisible();
+    await expect(page.getByText("Já anuncio no Google Ads")).toBeVisible();
 
-    const submitBtn = page.getByRole("button", { name: "Enviar informa├º├Áes" });
+    const submitBtn = page.getByRole("button", { name: "Enviar informações" });
     await expect(submitBtn).toBeDisabled();
 
     await page.locator('input[type="checkbox"]').check();
 
     await submitBtn.click();
 
-    await expect(page.getByText("Integra├º├úo pendente")).toBeVisible({ timeout: 10_000 });
-    await expect(page.getByText("Servidor ainda n├úo configurado")).toBeVisible();
+    await expect(page.getByText("Integração pendente")).toBeVisible({ timeout: 10_000 });
+    await expect(page.getByText("Servidor ainda não configurado")).toBeVisible();
 
     expect(forbiddenRequests).toHaveLength(0);
 
@@ -500,7 +500,7 @@ test.describe("Form tests", () => {
 
     await expect(page.getByText("Suas respostas foram preservadas nesta tela.")).toBeVisible();
 
-    await page.getByRole("button", { name: "Voltar para a p├ígina" }).click();
+    await page.getByRole("button", { name: "Voltar para a página" }).click();
     await expect(dialog).not.toBeVisible();
 
     assertNoViolations(violations);
@@ -513,7 +513,7 @@ test.describe("Form tests", () => {
     await waitForPageReady(page);
 
     await openFormFromHero(page);
-    await page.getByRole("button", { name: "Come├ºar" }).click();
+    await page.getByRole("button", { name: "Começar" }).click();
 
     await page.fill("#form-nome", "Test");
     await page.fill("#form-whatsapp", "11999998888");
@@ -524,7 +524,7 @@ test.describe("Form tests", () => {
     await page.getByLabel("Sim").last().check();
     await expect(page.locator("#form-url")).toBeVisible();
 
-    await page.getByLabel("N├úo", { exact: false }).last().check();
+    await page.getByLabel("Não", { exact: false }).last().check();
     await expect(page.locator("#form-url")).not.toBeVisible();
 
     await page.keyboard.press("Escape");
@@ -567,10 +567,10 @@ test.describe("Form tests", () => {
 
 test.describe("Portfolio tests", () => {
   const PROJECTS = [
-    { name: "Mec├ónica Auto Brum", slug: "mecanica-auto-brum" },
+    { name: "Mecânica Auto Brum", slug: "mecanica-auto-brum" },
     { name: "ZARQ Planejados", slug: "zarq-planejados" },
-    { name: "Agafarma M├írio Quintana", slug: "agafarma-mario-quintana" },
-    { name: "BS Montagem de M├│veis", slug: "bs-montagem" },
+    { name: "Agafarma Mário Quintana", slug: "agafarma-mario-quintana" },
+    { name: "BS Montagem de Móveis", slug: "bs-montagem" },
     { name: "Artur Montador", slug: "artur-montador" },
   ];
 
@@ -614,7 +614,7 @@ test.describe("Portfolio tests", () => {
     });
 
     const mobileStrip = page.locator(".md\\:hidden .overflow-x-auto");
-    const card = mobileStrip.locator('[aria-label="Ver projeto Mec├ónica Auto Brum por dentro"]');
+    const card = mobileStrip.locator('[aria-label="Ver projeto Mecânica Auto Brum por dentro"]');
     await card.scrollIntoViewIfNeeded();
     await card.click();
 
@@ -663,7 +663,7 @@ test.describe("Portfolio tests", () => {
     });
 
     const desktopGrid = page.locator(".hidden.md\\:grid.md\\:grid-cols-2");
-    const card = desktopGrid.locator('[aria-label="Ver projeto Mec├ónica Auto Brum por dentro"]');
+    const card = desktopGrid.locator('[aria-label="Ver projeto Mecânica Auto Brum por dentro"]');
     await card.scrollIntoViewIfNeeded();
     await card.click();
 
@@ -692,7 +692,7 @@ test.describe("Portfolio tests", () => {
     await waitForPageReady(page);
 
     const desktopGrid = page.locator(".hidden.md\\:grid.md\\:grid-cols-2");
-    const card = desktopGrid.locator('[aria-label="Ver projeto Mec├ónica Auto Brum por dentro"]');
+    const card = desktopGrid.locator('[aria-label="Ver projeto Mecânica Auto Brum por dentro"]');
     await card.scrollIntoViewIfNeeded();
     await card.click();
 
@@ -768,34 +768,34 @@ test.describe("FAQ tests", () => {
 });
 
 /* ------------------------------------------------------------------ */
-/*  VISUAL CAPTURES ÔÇö Segmented at real viewport widths                */
+/*  VISUAL CAPTURES — Segmented at real viewport widths                */
 /* ------------------------------------------------------------------ */
 
 test.describe("Visual captures", () => {
-  test("Desktop captures ÔÇö 1440x900 viewport clips", async ({ page }) => {
+  test("Desktop captures — 1440x900 viewport clips", async ({ page }) => {
     const violations: ConsoleViolation[] = [];
     collectConsoleViolations(page, violations);
 
     await page.setViewportSize({ width: 1440, height: 900 });
     await waitForPageReady(page);
 
-    // Hero ÔÇö top of page
+    // Hero — top of page
     await page.screenshot({ path: "artifacts/visual-review/desktop-hero.png", fullPage: false });
 
-    // Problema e solu├º├úo
-    await scrollToH2(page, "an├║ncio traz o visitante");
+    // Problema e solução
+    await scrollToH2(page, "anúncio traz o visitante");
     await page.screenshot({ path: "artifacts/visual-review/desktop-problema-solucao.png", fullPage: false });
 
-    // Itens inclu├¡dos
+    // Itens incluídos
     await scrollToH2(page, "tudo o que sua landing page");
     await page.screenshot({ path: "artifacts/visual-review/desktop-incluido.png", fullPage: false });
 
-    // Portf├│lio
+    // Portfólio
     await scrollToH2(page, "Algumas Landing Pages");
     await page.screenshot({ path: "artifacts/visual-review/desktop-portfolio.png", fullPage: false });
 
     // Processo
-    await scrollToH2(page, "briefing ├á publica├º├úo");
+    await scrollToH2(page, "briefing à publicação");
     await page.screenshot({ path: "artifacts/visual-review/desktop-processo.png", fullPage: false });
 
     // Investimento
@@ -809,7 +809,7 @@ test.describe("Visual captures", () => {
     assertNoViolations(violations);
   });
 
-  test("Mobile captures ÔÇö 390x844 viewport clips", async ({ page }) => {
+  test("Mobile captures — 390x844 viewport clips", async ({ page }) => {
     const violations: ConsoleViolation[] = [];
     collectConsoleViolations(page, violations);
 
@@ -819,11 +819,11 @@ test.describe("Visual captures", () => {
     // Hero
     await page.screenshot({ path: "artifacts/visual-review/mobile-hero.png", fullPage: false });
 
-    // Problema e solu├º├úo
-    await scrollToH2(page, "an├║ncio traz o visitante");
+    // Problema e solução
+    await scrollToH2(page, "anúncio traz o visitante");
     await page.screenshot({ path: "artifacts/visual-review/mobile-solucao.png", fullPage: false });
 
-    // Portf├│lio
+    // Portfólio
     await scrollToH2(page, "Algumas Landing Pages");
     await page.screenshot({ path: "artifacts/visual-review/mobile-portfolio.png", fullPage: false });
 
@@ -835,28 +835,28 @@ test.describe("Visual captures", () => {
     await scrollToH2(page, "precisa saber antes");
     await page.screenshot({ path: "artifacts/visual-review/mobile-faq.png", fullPage: false });
 
-    // Form ÔÇö initial
+    // Form — initial
     await openFormFromHero(page);
     await page.screenshot({ path: "artifacts/visual-review/mobile-formulario-inicial.png", fullPage: false });
     await page.keyboard.press("Escape");
 
-    // Form ÔÇö review step
+    // Form — review step
     await openFormFromHero(page);
-    await page.getByRole("button", { name: "Come├ºar" }).click();
+    await page.getByRole("button", { name: "Começar" }).click();
     await page.fill("#form-nome", "Maria Silva");
     await page.fill("#form-whatsapp", "11999998888");
     await page.getByRole("button", { name: "Continuar" }).click();
-    await page.fill("#form-negocio", "Cl├¡nica odontol├│gica");
-    await page.getByLabel("J├í anuncio no Google Ads").check();
-    await page.getByLabel("N├úo", { exact: false }).last().check();
+    await page.fill("#form-negocio", "Clínica odontológica");
+    await page.getByLabel("Já anuncio no Google Ads").check();
+    await page.getByLabel("Não", { exact: false }).last().check();
     await page.getByRole("button", { name: "Continuar" }).click();
-    await expect(page.getByText("Confira suas informa├º├Áes")).toBeVisible();
+    await expect(page.getByText("Confira suas informações")).toBeVisible();
     await page.screenshot({ path: "artifacts/visual-review/mobile-formulario-revisao.png", fullPage: false });
     await page.keyboard.press("Escape");
 
     // Portfolio viewer
     const mobileStrip = page.locator(".md\\:hidden .overflow-x-auto");
-    const card = mobileStrip.locator('[aria-label="Ver projeto Mec├ónica Auto Brum por dentro"]');
+    const card = mobileStrip.locator('[aria-label="Ver projeto Mecânica Auto Brum por dentro"]');
     await card.scrollIntoViewIfNeeded();
     await card.click();
     await expect(page.locator("dialog[open]")).toBeVisible({ timeout: 10_000 });
@@ -867,7 +867,7 @@ test.describe("Visual captures", () => {
     assertNoViolations(violations);
   });
 
-  test("Tablet captures ÔÇö 768x1024 viewport clips", async ({ page }) => {
+  test("Tablet captures — 768x1024 viewport clips", async ({ page }) => {
     const violations: ConsoleViolation[] = [];
     collectConsoleViolations(page, violations);
 
@@ -877,7 +877,7 @@ test.describe("Visual captures", () => {
     // Hero
     await page.screenshot({ path: "artifacts/visual-review/tablet-hero.png", fullPage: false });
 
-    // Portf├│lio
+    // Portfólio
     await scrollToH2(page, "Algumas Landing Pages");
     await page.screenshot({ path: "artifacts/visual-review/tablet-portfolio.png", fullPage: false });
 
@@ -948,7 +948,7 @@ test.describe("Console and network integrity", () => {
     await waitForPageReady(page);
 
     await openFormFromHero(page);
-    await page.getByRole("button", { name: "Come├ºar" }).click();
+    await page.getByRole("button", { name: "Começar" }).click();
     await page.fill("#form-nome", "Maria Silva");
     await page.fill("#form-whatsapp", "11999998888");
     await page.keyboard.press("Escape");
@@ -977,34 +977,34 @@ test.describe("CONTENT.md conformity", () => {
 
     const body = await page.textContent("body");
 
-    // New phrases ÔÇö must be present
-    expect(body).toContain("N├úo ├® curso, template ou ferramenta.");
+    // New phrases — must be present
+    expect(body).toContain("Não é curso, template ou ferramenta.");
     expect(body).toContain("conduzir o visitante ao contato");
-    expect(body).toContain("visualizar a p├ígina por dentro");
+    expect(body).toContain("visualizar a página por dentro");
     expect(body).toContain("Algumas Landing Pages que desenvolvi");
-    expect(body).toContain("Cada projeto recebe uma estrutura adequada ├á oferta e ao p├║blico do neg├│cio.");
-    expect(body).toContain("n├úo garante vendas, leads ou desempenho da campanha");
-    expect(body).toContain("Projeto completo, adaptado ├á sua oferta e preparado para campanhas de Google Ads ou Meta Ads.");
-    expect(body).toContain("Preencha o formul├írio para eu avaliar sua necessidade e confirmar o escopo.");
+    expect(body).toContain("Cada projeto recebe uma estrutura adequada à oferta e ao público do negócio.");
+    expect(body).toContain("não garante vendas, leads ou desempenho da campanha");
+    expect(body).toContain("Projeto completo, adaptado à sua oferta e preparado para campanhas de Google Ads ou Meta Ads.");
+    expect(body).toContain("Preencha o formulário para eu avaliar sua necessidade e confirmar o escopo.");
     expect(body).toContain("Desenvolvida diretamente por mim");
     expect(body).toContain("Preparada para celular e desktop");
-    expect(body).toContain("Eu cuido do planejamento ├á publica├º├úo");
-    expect(body).toContain("At├® 7 dias ├║teis ap├│s briefing e materiais");
+    expect(body).toContain("Eu cuido do planejamento à publicação");
+    expect(body).toContain("Até 7 dias úteis após briefing e materiais");
 
-    // Old phrases ÔÇö must be absent
+    // Old phrases — must be absent
     expect(body).not.toMatch(/Alguns projetos que desenvolvi/i);
     expect(body).not.toMatch(/Landing Pages criadas para diferentes/i);
-    expect(body).not.toMatch(/Cada neg├│cio possui uma oferta/i);
-    expect(body).not.toMatch(/Esse ├® o valor do projeto padr├úo/i);
+    expect(body).not.toMatch(/Cada negócio possui uma oferta/i);
+    expect(body).not.toMatch(/Esse é o valor do projeto padrão/i);
     expect(body).not.toMatch(/Confira as respostas para as principais/i);
-    expect(body).not.toMatch(/Voc├¬ n├úo precisa montar nada sozinho/i);
+    expect(body).not.toMatch(/Você não precisa montar nada sozinho/i);
     expect(body).not.toMatch(/Conduzida diretamente por mim/i);
     expect(body).not.toMatch(/Entregue pronta para sua campanha/i);
-    expect(body).not.toMatch(/n├úo existe garantia/i);
-    expect(body).not.toMatch(/Eu civo da p├ígina, do planejamento/i);
-    expect(body).not.toMatch(/Quero uma Landing Page para meu neg├│cio/i);
+    expect(body).not.toMatch(/não existe garantia/i);
+    expect(body).not.toMatch(/Eu civo da página, do planejamento/i);
+    expect(body).not.toMatch(/Quero uma Landing Page para meu negócio/i);
     expect(body).not.toMatch(/Quero solicitar meu projeto/i);
-    expect(body).not.toMatch(/conhecer a p├ígina por dentro/i);
+    expect(body).not.toMatch(/conhecer a página por dentro/i);
     expect(body).not.toMatch(/Conte sobre sua empresa e eu avalio/i);
 
     assertNoViolations(violations);
@@ -1049,26 +1049,26 @@ test.describe("CONTENT.md conformity", () => {
     await waitForPageReady(page);
     await openFormFromHero(page);
 
-    await page.getByRole("button", { name: "Come├ºar" }).click();
+    await page.getByRole("button", { name: "Começar" }).click();
 
     await page.fill("#form-nome", "Ana Beatriz");
     await page.fill("#form-whatsapp", "11999998888");
     await page.getByRole("button", { name: "Continuar" }).click();
 
-    await page.fill("#form-negocio", "Cl├¡nica odontol├│gica");
-    await page.getByLabel("J├í anuncio no Google Ads").check();
-    await page.getByLabel("N├úo", { exact: false }).last().check();
+    await page.fill("#form-negocio", "Clínica odontológica");
+    await page.getByLabel("Já anuncio no Google Ads").check();
+    await page.getByLabel("Não", { exact: false }).last().check();
     await page.getByRole("button", { name: "Continuar" }).click();
 
     await page.locator('input[type="checkbox"]').check();
-    await page.getByRole("button", { name: "Enviar informa├º├Áes" }).click();
+    await page.getByRole("button", { name: "Enviar informações" }).click();
 
-    await expect(page.getByText("Informa├º├Áes recebidas")).toBeVisible({ timeout: 10_000 });
+    await expect(page.getByText("Informações recebidas")).toBeVisible({ timeout: 10_000 });
     await expect(page.getByText("Obrigado, Ana Beatriz. Recebi os dados do seu projeto.")).toBeVisible();
-    await expect(page.getByText("Agora voc├¬ pode continuar a conversa comigo pelo WhatsApp")).toBeVisible();
+    await expect(page.getByText("Agora você pode continuar a conversa comigo pelo WhatsApp")).toBeVisible();
 
-    await expect(page.getByText("Informa├º├Áes enviadas", { exact: true })).not.toBeVisible();
-    await expect(page.getByText("Recebi suas informa├º├Áes!", { exact: true })).not.toBeVisible();
+    await expect(page.getByText("Informações enviadas", { exact: true })).not.toBeVisible();
+    await expect(page.getByText("Recebi suas informações!", { exact: true })).not.toBeVisible();
     await expect(page.getByText("entender seu projeto", { exact: true })).not.toBeVisible();
 
     expect(forbiddenRequests).toHaveLength(0);
@@ -1079,7 +1079,7 @@ test.describe("CONTENT.md conformity", () => {
     });
     expect(hasGenerateLead).toBe(true);
 
-    await page.getByRole("button", { name: "Voltar para a p├ígina" }).click();
+    await page.getByRole("button", { name: "Voltar para a página" }).click();
 
     assertNoViolations(violations);
   });
@@ -1115,10 +1115,10 @@ test.describe("Responsive compact layout", () => {
     await waitForPageReady(page);
 
     const projectNames = [
-      "Mec├ónica Auto Brum",
+      "Mecânica Auto Brum",
       "ZARQ Planejados",
-      "Agafarma M├írio Quintana",
-      "BS Montagem de M├│veis",
+      "Agafarma Mário Quintana",
+      "BS Montagem de Móveis",
       "Artur Montador",
     ];
 
@@ -1199,7 +1199,7 @@ test.describe("Responsive compact layout", () => {
     await waitForPageReady(page);
 
     const mobileStrip = page.locator(".md\\:hidden .overflow-x-auto");
-    const first = mobileStrip.locator('[aria-label="Ver projeto Mec├ónica Auto Brum por dentro"]');
+    const first = mobileStrip.locator('[aria-label="Ver projeto Mecânica Auto Brum por dentro"]');
     await first.scrollIntoViewIfNeeded();
     await expect(first).toBeVisible();
 
@@ -1219,10 +1219,10 @@ test.describe("Responsive compact layout", () => {
 
     const mobileStrip = page.locator(".md\\:hidden .overflow-x-auto");
     const projects = [
-      "Mec├ónica Auto Brum",
+      "Mecânica Auto Brum",
       "ZARQ Planejados",
-      "Agafarma M├írio Quintana",
-      "BS Montagem de M├│veis",
+      "Agafarma Mário Quintana",
+      "BS Montagem de Móveis",
       "Artur Montador",
     ];
 
@@ -1250,7 +1250,7 @@ test.describe("Responsive compact layout", () => {
     await waitForPageReady(page);
 
     const mobileStrip = page.locator(".md\\:hidden .overflow-x-auto");
-    const firstCard = mobileStrip.locator('[aria-label="Ver projeto Mec├ónica Auto Brum por dentro"]');
+    const firstCard = mobileStrip.locator('[aria-label="Ver projeto Mecânica Auto Brum por dentro"]');
     await firstCard.scrollIntoViewIfNeeded();
     await firstCard.focus();
     await page.keyboard.press("Enter");
@@ -1317,12 +1317,12 @@ test.describe("Responsive compact layout", () => {
     await expect(rows).toHaveCount(6);
 
     const titles = [
-      "Estrat├®gia e copy",
+      "Estratégia e copy",
       "Design responsivo",
       "Desenvolvimento em Next.js",
-      "Formul├írio e WhatsApp",
-      "Configura├º├úo de rastreamento",
-      "Publica├º├úo e testes",
+      "Formulário e WhatsApp",
+      "Configuração de rastreamento",
+      "Publicação e testes",
     ];
 
     for (const title of titles) {
@@ -1356,14 +1356,14 @@ test.describe("Responsive compact layout", () => {
     assertNoViolations(violations);
   });
 
-  test("AboutSection mobile: 2├ù2 grid with all 4 indicators", async ({ page }) => {
+  test("AboutSection mobile: 2×2 grid with all 4 indicators", async ({ page }) => {
     const violations: ConsoleViolation[] = [];
     collectConsoleViolations(page, violations);
 
     await page.setViewportSize({ width: 390, height: 844 });
     await waitForPageReady(page);
 
-    const grid = page.locator("section").filter({ hasText: "Seu projeto ├® desenvolvido" }).locator(".grid");
+    const grid = page.locator("section").filter({ hasText: "Seu projeto é desenvolvido" }).locator(".grid");
     await grid.scrollIntoViewIfNeeded();
 
     const gridStyles = await grid.evaluate((el) => {
@@ -1381,7 +1381,7 @@ test.describe("Responsive compact layout", () => {
     await expect(page.getByText("Mais de 5 anos")).toBeVisible();
     await expect(page.getByText("Cerca de R$ 40 mil")).toBeVisible();
     await expect(page.getByText("Mais de 7 mil clientes")).toBeVisible();
-    await expect(page.getByText("Execu├º├úo direta").first()).toBeVisible();
+    await expect(page.getByText("Execução direta").first()).toBeVisible();
 
     assertNoViolations(violations);
   });
@@ -1395,29 +1395,29 @@ test.describe("Responsive compact layout", () => {
     const body = await page.textContent("body");
 
     expect(body).toContain("Tudo o que sua Landing Page precisa para entrar no ar");
-    expect(body).toContain("Estrat├®gia e copy");
+    expect(body).toContain("Estratégia e copy");
     expect(body).toContain("Design responsivo");
     expect(body).toContain("Desenvolvimento em Next.js");
-    expect(body).toContain("Formul├írio e WhatsApp");
-    expect(body).toContain("Configura├º├úo de rastreamento");
-    expect(body).toContain("Publica├º├úo e testes");
-    expect(body).toContain("O projeto inclui at├® 2 rodadas de ajustes dentro do escopo aprovado.");
+    expect(body).toContain("Formulário e WhatsApp");
+    expect(body).toContain("Configuração de rastreamento");
+    expect(body).toContain("Publicação e testes");
+    expect(body).toContain("O projeto inclui até 2 rodadas de ajustes dentro do escopo aprovado.");
 
-    expect(body).toContain("Seu projeto ├® desenvolvido diretamente por mim");
+    expect(body).toContain("Seu projeto é desenvolvido diretamente por mim");
     expect(body).toContain("Mais de 5 anos");
     expect(body).toContain("Cerca de R$ 40 mil");
     expect(body).toContain("Mais de 7 mil clientes");
-    expect(body).toContain("Trabalhando com Google Ads e neg├│cios locais.");
-    expect(body).toContain("Investidos em minhas pr├│prias campanhas.");
+    expect(body).toContain("Trabalhando com Google Ads e negócios locais.");
+    expect(body).toContain("Investidos em minhas próprias campanhas.");
     expect(body).toContain("Atendidos a partir de contatos conquistados pelo Google.");
-    expect(body).toContain("Estrat├®gia, copy, design e desenvolvimento conduzidos por mim.");
+    expect(body).toContain("Estratégia, copy, design e desenvolvimento conduzidos por mim.");
 
-    expect(body).toContain("Do briefing ├á publica├º├úo em quatro etapas");
+    expect(body).toContain("Do briefing à publicação em quatro etapas");
     expect(body).toContain("Briefing e materiais");
     expect(body).toContain("Copy, design e desenvolvimento");
-    expect(body).toContain("Revis├úo e ajustes");
-    expect(body).toContain("Aprova├º├úo e publica├º├úo");
-    expect(body).toContain("At├® 7 dias ├║teis");
+    expect(body).toContain("Revisão e ajustes");
+    expect(body).toContain("Aprovação e publicação");
+    expect(body).toContain("Até 7 dias úteis");
 
     expect(body).toContain("Algumas Landing Pages que desenvolvi");
 
@@ -1433,7 +1433,7 @@ test.describe("Responsive compact layout", () => {
 
     await openFormFromHero(page);
     await expect(page.locator("dialog[open]")).toBeVisible();
-    await page.getByRole("button", { name: "Come├ºar" }).click();
+    await page.getByRole("button", { name: "Começar" }).click();
     await expect(page.locator("#form-nome")).toBeVisible();
     await page.keyboard.press("Escape");
     await expect(page.locator("dialog[open]")).not.toBeVisible();
@@ -1470,7 +1470,7 @@ test.describe("Responsive compact layout", () => {
       const scrollContainer = page.locator(".md\\:hidden .overflow-x-auto");
       await expect(scrollContainer).toBeVisible();
 
-      const firstCard = scrollContainer.locator('[aria-label="Ver projeto Mec├ónica Auto Brum por dentro"]');
+      const firstCard = scrollContainer.locator('[aria-label="Ver projeto Mecânica Auto Brum por dentro"]');
       await firstCard.scrollIntoViewIfNeeded();
 
       const containerBox = await scrollContainer.boundingBox();
@@ -1511,7 +1511,7 @@ test.describe("Responsive compact layout", () => {
       await waitForPageReady(page);
 
       const scrollContainer = page.locator(".md\\:hidden .overflow-x-auto");
-      const firstCard = scrollContainer.locator('[aria-label="Ver projeto Mec├ónica Auto Brum por dentro"]');
+      const firstCard = scrollContainer.locator('[aria-label="Ver projeto Mecânica Auto Brum por dentro"]');
       await firstCard.scrollIntoViewIfNeeded();
 
       const img = firstCard.locator("img");
@@ -1580,13 +1580,13 @@ test.describe("Responsive compact layout", () => {
       await waitForPageReady(page);
 
       const mobileStrip = page.locator(".md\\:hidden .overflow-x-auto");
-      const card = mobileStrip.locator('[aria-label="Ver projeto Agafarma M├írio Quintana por dentro"]');
+      const card = mobileStrip.locator('[aria-label="Ver projeto Agafarma Mário Quintana por dentro"]');
       await card.scrollIntoViewIfNeeded();
       await card.click();
 
       const dialog = page.locator("dialog[open]");
       await expect(dialog).toBeVisible({ timeout: 10_000 });
-      await expect(dialog.getByText("Agafarma M├írio Quintana").first()).toBeVisible();
+      await expect(dialog.getByText("Agafarma Mário Quintana").first()).toBeVisible();
 
       await page.keyboard.press("Escape");
       await expect(dialog).not.toBeVisible();
