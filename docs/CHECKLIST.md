@@ -29,7 +29,7 @@
 
 - [ ] A rota oficial é `/landingpage`.
 - [ ] A rota incorreta `/landingpge` não foi criada.
-- [ ] A homepage não foi modificada.
+- [ ] A homepage não foi modificada (exceto o redirect temporário `/` → `/landingpage`).
 - [ ] Blog e artigos não foram modificados.
 - [ ] Outras rotas permanecem funcionando.
 - [ ] Componentes compartilhados não foram quebrados.
@@ -593,7 +593,7 @@
 - [ ] Edge foi testado.
 - [ ] Safari ou equivalente foi testado quando disponível.
 - [ ] Rotas existentes continuam funcionando.
-- [ ] Página 404 não foi prejudicada.
+- [ ] Página 404 não foi prejudicada (rota `/` agora redireciona em vez de 404).
 
 ## 29. Testes do formulário
 
@@ -703,6 +703,6 @@ A Landing Page somente está pronta quando:
 - [ ] Meta não recebeu duplicidade.
 - [ ] Nenhum WhatsApp foi contabilizado como novo lead.
 - [ ] Dados pessoais não apareceram nas plataformas.
-- [ ] Homepage e outras rotas permaneceram intactas.
+- [ ] Homepage e outras rotas permaneceram intactas (redirect temporário `/` → `/landingpage` está ativo).
 - [ ] Build de produção foi concluído.
 - [ ] Testes no domínio real foram concluídos.

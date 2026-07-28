@@ -187,3 +187,16 @@ test.describe("Full page captures", () => {
     await page.screenshot({ path: "artifacts/visual-review/landingpage-mobile-full-final.png", fullPage: true });
   });
 });
+
+/* ------------------------------------------------------------------ */
+/*  SOCIAL CAPTURES                                                    */
+/* ------------------------------------------------------------------ */
+
+test("open-graph-preview-final.png — Open Graph image", async ({ page }) => {
+  await page.goto("/landingpage/opengraph-image", { waitUntil: "networkidle" });
+  await page.waitForTimeout(500);
+  await page.screenshot({
+    path: "artifacts/visual-review/open-graph-preview-final.png",
+    fullPage: false,
+  });
+});

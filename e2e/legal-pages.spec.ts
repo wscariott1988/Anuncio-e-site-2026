@@ -212,9 +212,10 @@ test.describe("Cross-links between legal pages", () => {
 });
 
 test.describe("Route isolation", () => {
-  test("root path / returns 404", async ({ page }) => {
-    const response = await page.goto("/");
-    expect(response?.status()).toBe(404);
+  test("root path / redirects to /landingpage", async ({ page }) => {
+    const response = await page.goto("/", { waitUntil: "networkidle" });
+    expect(response?.status()).toBe(200);
+    expect(page.url()).toContain("/landingpage");
   });
 
   test("landingpage/obrigado returns 404", async ({ page }) => {

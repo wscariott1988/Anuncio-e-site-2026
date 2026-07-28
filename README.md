@@ -154,6 +154,14 @@ Se `typecheck` ou `test` não existirem:
 
 ## Rotas
 
+### Rota raiz (redirect temporário)
+
+```text
+/  →  /landingpage
+```
+
+A raiz redireciona para `/landingpage` com preservação de parâmetros de campanha. Esse redirect será mantido até a criação da homepage institucional.
+
 ### Rota comercial
 
 ```text
@@ -183,7 +191,7 @@ O sucesso do formulário acontece dentro do modal.
 
 Não alterar nesta fase:
 
-- homepage;
+- homepage (exceto o redirect temporário `/` → `/landingpage`);
 - blog;
 - artigos;
 - páginas por nicho;

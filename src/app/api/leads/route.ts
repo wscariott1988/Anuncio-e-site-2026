@@ -15,7 +15,9 @@ const ALLOWED_POSSUI_SITE = ["Sim", "Não"] as const;
 const ALLOWED_SOURCE_CTA = [
   "header",
   "hero",
+  "included",
   "portfolio",
+  "about",
   "pricing",
   "final",
 ] as const;
@@ -132,7 +134,12 @@ function normalizeReferrerHostname(value: unknown): string {
   return sanitized;
 }
 
+function logEvent(stage: string, data: Record<string, unknown>) {
+  console.log(JSON.stringify({ timestamp: new Date().toISOString(), stage, ...data }));
+}
+
 export async function POST(request: NextRequest) {
+  const startTime = Date.now();
   const contentType = request.headers.get("content-type");
   if (!contentType || !contentType.includes("application/json")) {
     return NextResponse.json(
@@ -232,6 +239,7 @@ export async function POST(request: NextRequest) {
   const appsScriptSecret = process.env.GOOGLE_APPS_SCRIPT_SECRET;
 
   if (!appsScriptUrl || !appsScriptSecret) {
+    logEvent("pending_integration", { duration: Date.now() - startTime });
     return NextResponse.json(
       { ok: false, status: "error", code: "PENDING_INTEGRATION" },
       { status: 503 }
@@ -239,6 +247,7 @@ export async function POST(request: NextRequest) {
   }
 
   const leadId = crypto.randomUUID();
+  const leadIdShort = leadId.slice(0, 8);
   const now = new Date().toISOString();
 
   const sourceCta = typeof body.sourceCta === "string" && (ALLOWED_SOURCE_CTA as readonly string[]).includes(body.sourceCta)
@@ -282,9 +291,11 @@ export async function POST(request: NextRequest) {
     fbclid,
     entry_path: entryPath,
     referrer_hostname: referrerHostname,
-    status_atendimento: "novo",
+    status_atendimento: "Novo",
     observacoes: "",
   };
+
+  logEvent("sending_to_apps_script", { lead_id: leadIdShort, duration: Date.now() - startTime });
 
   try {
     const controller = new AbortController();
@@ -304,6 +315,7 @@ export async function POST(request: NextRequest) {
     try {
       appsScriptResult = JSON.parse(appsScriptText);
     } catch {
+      logEvent("apps_script_invalid_response", { lead_id: leadIdShort, duration: Date.now() - startTime, httpStatus: appsScriptResponse.status });
       return NextResponse.json(
         { ok: false, status: "error", code: "APPS_SCRIPT_INVALID_RESPONSE" },
         { status: 502 }
@@ -311,23 +323,29 @@ export async function POST(request: NextRequest) {
     }
 
     if (appsScriptResult.ok && (appsScriptResult.status === "created" || appsScriptResult.status === "duplicate")) {
+      logEvent("apps_script_success", { lead_id: leadIdShort, status: appsScriptResult.status, duration: Date.now() - startTime });
       return NextResponse.json(
         { ok: true, status: appsScriptResult.status, lead_id: leadId },
         { status: appsScriptResult.status === "created" ? 201 : 200 }
       );
     }
 
+    const errorCode = appsScriptResult.code || "APPS_SCRIPT_ERROR";
+    logEvent("apps_script_error_response", { lead_id: leadIdShort, code: errorCode, duration: Date.now() - startTime, httpStatus: appsScriptResponse.status });
     return NextResponse.json(
-      { ok: false, status: "error", code: appsScriptResult.code || "APPS_SCRIPT_ERROR" },
+      { ok: false, status: "error", code: errorCode },
       { status: 502 }
     );
   } catch (err: unknown) {
     if (err instanceof Error && err.name === "AbortError") {
+      logEvent("apps_script_timeout", { lead_id: leadIdShort, duration: Date.now() - startTime });
       return NextResponse.json(
         { ok: false, status: "error", code: "TIMEOUT" },
         { status: 504 }
       );
     }
+
+    logEvent("apps_script_retry", { lead_id: leadIdShort, duration: Date.now() - startTime });
 
     const retryController = new AbortController();
     const retryTimeoutId = setTimeout(() => retryController.abort(), 30000);
@@ -347,6 +365,7 @@ export async function POST(request: NextRequest) {
       try {
         retryResult = JSON.parse(retryText);
       } catch {
+        logEvent("retry_invalid_response", { lead_id: leadIdShort, duration: Date.now() - startTime, httpStatus: retryResponse.status });
         return NextResponse.json(
           { ok: false, status: "error", code: "APPS_SCRIPT_INVALID_RESPONSE" },
           { status: 502 }
@@ -354,18 +373,22 @@ export async function POST(request: NextRequest) {
       }
 
       if (retryResult.ok && (retryResult.status === "created" || retryResult.status === "duplicate")) {
+        logEvent("retry_success", { lead_id: leadIdShort, status: retryResult.status, duration: Date.now() - startTime });
         return NextResponse.json(
           { ok: true, status: retryResult.status, lead_id: leadId },
           { status: retryResult.status === "created" ? 201 : 200 }
         );
       }
 
+      const retryCode = retryResult.code || "APPS_SCRIPT_ERROR";
+      logEvent("retry_error_response", { lead_id: leadIdShort, code: retryCode, duration: Date.now() - startTime, httpStatus: retryResponse.status });
       return NextResponse.json(
-        { ok: false, status: "error", code: retryResult.code || "APPS_SCRIPT_ERROR" },
+        { ok: false, status: "error", code: retryCode },
         { status: 502 }
       );
     } catch {
       clearTimeout(retryTimeoutId);
+      logEvent("retry_network_error", { lead_id: leadIdShort, duration: Date.now() - startTime });
       return NextResponse.json(
         { ok: false, status: "error", code: "NETWORK_ERROR" },
         { status: 502 }

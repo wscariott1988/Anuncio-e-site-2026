@@ -50,7 +50,7 @@ function collectConsoleViolations(page: Page, violations: ConsoleViolation[]) {
     if (status >= 400) {
       try {
         const pathname = new URL(url).pathname;
-        const allowed404 = ["/", "/politica-de-privacidade", "/termos", "/landingpage/obrigado"];
+        const allowed404 = ["/politica-de-privacidade", "/termos", "/landingpage/obrigado"];
         if (status === 404 && allowed404.includes(pathname)) return;
       } catch { /* not a valid URL */ }
       if (url.includes("webpack-hmr") || url.includes("_next/")) return;
@@ -110,9 +110,23 @@ test.describe("Route tests", () => {
     expect(res?.status()).toBe(200);
   });
 
-  test("Root / returns 404 (intentional)", async () => {
-    const res = await page.goto("/");
-    expect(res?.status()).toBe(404);
+  test("Root / redirects to /landingpage (temporary)", async () => {
+    await page.goto("/", { waitUntil: "networkidle" });
+    expect(page.url()).toContain("/landingpage");
+    expect(page.url()).not.toContain("/?");
+    const h1 = page.locator("h1");
+    await expect(h1).toHaveCount(1);
+  });
+
+  test("Root / preserves query parameters on redirect", async () => {
+    await page.goto("/?utm_source=google&utm_medium=cpc&gclid=abc123", { waitUntil: "networkidle" });
+    const url = page.url();
+    expect(url).toContain("/landingpage");
+    expect(url).toContain("utm_source=google");
+    expect(url).toContain("utm_medium=cpc");
+    expect(url).toContain("gclid=abc123");
+    const h1 = page.locator("h1");
+    await expect(h1).toHaveCount(1);
   });
 
   test("Exactly 1 h1 exists", async () => {
@@ -1783,5 +1797,121 @@ test.describe("Portfolio CTA centering desktop", () => {
     }
 
     assertNoViolations(violations);
+  });
+});
+
+/* ------------------------------------------------------------------ */
+/*  SOCIAL IDENTITY — OG, Twitter, icons                               */
+/* ------------------------------------------------------------------ */
+
+test.describe("Social identity metadata", () => {
+  test("Open Graph meta tags are present with correct values", async ({ page }) => {
+    await page.goto(PAGE_URL, { waitUntil: "networkidle" });
+
+    const ogTitle = await page
+      .locator('meta[property="og:title"]')
+      .getAttribute("content");
+    expect(ogTitle).toContain("Landing Page para Tráfego Pago");
+    expect(ogTitle).toContain("Anúncio & Site");
+
+    const ogDesc = await page
+      .locator('meta[property="og:description"]')
+      .getAttribute("content");
+    expect(ogDesc).toContain("R$ 997");
+
+    const ogUrl = await page
+      .locator('meta[property="og:url"]')
+      .getAttribute("content");
+    expect(ogUrl).toContain("/landingpage");
+
+    const ogSiteName = await page
+      .locator('meta[property="og:site_name"]')
+      .getAttribute("content");
+    expect(ogSiteName).toBe("Anúncio & Site");
+
+    const ogLocale = await page
+      .locator('meta[property="og:locale"]')
+      .getAttribute("content");
+    expect(ogLocale).toBe("pt_BR");
+
+    const ogType = await page
+      .locator('meta[property="og:type"]')
+      .getAttribute("content");
+    expect(ogType).toBe("website");
+
+    const ogImage = await page
+      .locator('meta[property="og:image"]')
+      .getAttribute("content");
+    expect(ogImage).toBeTruthy();
+    expect(ogImage).toContain("/landingpage/opengraph-image");
+  });
+
+  test("Twitter card meta tags are present", async ({ page }) => {
+    await page.goto(PAGE_URL, { waitUntil: "networkidle" });
+
+    const twCard = await page
+      .locator('meta[name="twitter:card"]')
+      .getAttribute("content");
+    expect(twCard).toBe("summary_large_image");
+
+    const twTitle = await page
+      .locator('meta[name="twitter:title"]')
+      .getAttribute("content");
+    expect(twTitle).toContain("Landing Page para Tráfego Pago");
+
+    const twDesc = await page
+      .locator('meta[name="twitter:description"]')
+      .getAttribute("content");
+    expect(twDesc).toContain("R$ 997");
+
+    const twImage = await page
+      .locator('meta[name="twitter:image"]')
+      .getAttribute("content");
+    expect(twImage).toBeTruthy();
+    expect(twImage).toContain("/landingpage/twitter-image");
+  });
+
+  test("Favicon and apple-touch-icon link tags are present", async ({ page }) => {
+    await page.goto(PAGE_URL, { waitUntil: "networkidle" });
+
+    const icon = await page.locator('link[rel="icon"]').getAttribute("href");
+    expect(icon).toBeTruthy();
+    expect(icon).toContain("/icon");
+
+    const appleIcon = await page
+      .locator('link[rel="apple-touch-icon"]')
+      .getAttribute("href");
+    expect(appleIcon).toBeTruthy();
+    expect(appleIcon).toContain("/apple-icon");
+  });
+
+  test("OG image PNG route returns 200", async ({ request }) => {
+    const res = await request.get("/landingpage/opengraph-image");
+    expect(res.status()).toBe(200);
+    expect(res.headers()["content-type"]).toContain("image/png");
+  });
+
+  test("Twitter image PNG route returns 200", async ({ request }) => {
+    const res = await request.get("/landingpage/twitter-image");
+    expect(res.status()).toBe(200);
+    expect(res.headers()["content-type"]).toContain("image/png");
+  });
+
+  test("Favicon PNG route returns 200", async ({ request }) => {
+    const res = await request.get("/icon");
+    expect(res.status()).toBe(200);
+    expect(res.headers()["content-type"]).toContain("image/png");
+  });
+
+  test("Apple touch icon PNG route returns 200", async ({ request }) => {
+    const res = await request.get("/apple-icon");
+    expect(res.status()).toBe(200);
+    expect(res.headers()["content-type"]).toContain("image/png");
+  });
+
+  test("Image generation does not fetch external fonts", async ({ request }) => {
+    const res = await request.get("/landingpage/opengraph-image");
+    expect(res.status()).toBe(200);
+    expect(res.headers()["content-type"]).toContain("image/png");
   });
 });

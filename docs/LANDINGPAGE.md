@@ -155,9 +155,21 @@ Não criar:
 /landingpge
 ```
 
+### Redirect temporário da raiz
+
+A rota `/` redireciona temporariamente para `/landingpage` enquanto a homepage institucional não existe.
+
+Regras:
+
+- o redirecionamento usa `redirect()` do Next.js sem duplicar conteúdo;
+- parâmetros de campanha (UTMs, gclid, fbclid etc.) são preservados;
+- o redirecionamento será removido quando a homepage for criada;
+- `/landingpage` continua sendo a rota oficial;
+- a canonical permanece `https://www.anuncioesite.com.br/landingpage`.
+
 ### Regras
 
-* Não alterar a homepage.
+* Não alterar a homepage (exceto o redirect temporário documentado acima).
 * Não transformar a Landing Page em homepage.
 * Não adicionar menu institucional.
 * Não incentivar exploração de outras páginas.
