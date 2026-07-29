@@ -187,7 +187,6 @@ event_version: 1
 | `form_error` | Diagnosticar falhas | Não |
 | `generate_lead` | Registrar lead armazenado | Sim |
 | `whatsapp_after_lead` | Medir continuidade após lead | Não |
-| `whatsapp_form_error` | Medir contingência por erro | Não |
 | `portfolio_open` | Medir abertura de projeto | Não |
 | `portfolio_view_change` | Medir troca mobile/desktop | Não |
 | `faq_open` | Medir dúvida aberta | Não |
@@ -409,29 +408,7 @@ Quando o visitante clicar em “Continuar no WhatsApp” na tela de sucesso.
 - Não deve ser enviado ao Google Ads como nova conversão.
 - Não deve disparar outro evento Meta `Lead`.
 
-## 15. `whatsapp_form_error`
-
-### Disparo
-
-Quando o visitante clicar em “Avisar pelo WhatsApp” após uma tentativa válida que tenha falhado tecnicamente.
-
-### Parâmetros
-
-| Parâmetro | Tipo | Valores |
-|---|---|---|
-| `form_id` | string | valor fixo |
-| `error_type` | string | `network`, `server`, `rate_limited`, `unknown` |
-| `event_version` | string | `1` |
-
-### Regras
-
-- Não disparar em erro de preenchimento.
-- Não incluir respostas no evento.
-- Não usar `lead_id`, porque não existe lead confirmado.
-- Não disparar `generate_lead`.
-- Não importar como conversão.
-
-## 16. `portfolio_open`
+## 15. `portfolio_open`
 
 ### Disparo
 
@@ -530,16 +507,6 @@ generate_lead
 ```
 
 Gerar apenas um `generate_lead`.
-
-### Falha técnica com contingência
-
-```text
-form_submit_attempt
-form_error
-whatsapp_form_error
-```
-
-Não gerar `generate_lead`.
 
 ### Abandono
 
@@ -646,7 +613,6 @@ Isso não autoriza CAPI ou rastreamento server-side nesta fase.
 | `form_error` | Sim | Não | Não |
 | `generate_lead` | Sim | Sim | `Lead` |
 | `whatsapp_after_lead` | Sim | Não | Não |
-| `whatsapp_form_error` | Sim | Não | Não |
 | `portfolio_open` | Sim | Não | Não |
 | `portfolio_view_change` | Sim | Não | Não |
 | `faq_open` | Sim | Não | Não |
@@ -749,7 +715,7 @@ Lead
 - Não disparar no clique do botão.
 - Não disparar em `form_submit_attempt`.
 - Não disparar em `whatsapp_after_lead`.
-- Não disparar em `whatsapp_form_error`.
+- Não disparar em erro técnico.
 - Não enviar nome ou telefone.
 - Não adicionar Advanced Matching nesta fase.
 - Não adicionar CAPI nesta fase.

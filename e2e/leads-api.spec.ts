@@ -12,6 +12,7 @@ function collectViolations(page: Page, violations: Violation[]) {
         text.includes("webpack-hmr") ||
         text.includes("WebSocket") ||
         text.includes("404") ||
+        text.includes("422") ||
         text.includes("502") ||
         text.includes("503")
       ) return;
@@ -273,6 +274,7 @@ test.describe("Form submission flow", () => {
 
     await expect(page.locator("text=Não foi possível enviar agora")).toBeVisible({ timeout: 10_000 });
     await expect(page.locator("text=Tentar novamente")).toBeVisible();
+    await expect(page.locator('a[href*="wa.me"], a[href*="api.whatsapp.com"], button:has-text("Avisar pelo WhatsApp")')).toHaveCount(0);
   });
 
   test("form preserves data after error and retry succeeds", async () => {
@@ -445,5 +447,193 @@ test.describe("Form submission flow", () => {
     await fillStep2(page);
     await checkConsentAndSubmit(page);
     await expect(page.locator("text=Integração pendente")).toBeVisible({ timeout: 10_000 });
+  });
+
+  /* ------------------------------------------------------------------ */
+  /*  FIELD VALIDATION ERROR HANDLING                                    */
+  /* ------------------------------------------------------------------ */
+
+  test.describe("Field validation error handling", () => {
+    test("frontend blocks invalid WhatsApp before sending", async () => {
+      await waitForPage(page);
+      await openForm(page);
+
+      await page.fill("#form-nome", "Maria");
+      await page.fill("#form-whatsapp", "119999888");
+
+      const apiCalls: string[] = [];
+      await page.route("**/api/leads", (route: Route) => {
+        apiCalls.push(route.request().url());
+        return route.fulfill({ status: 200, body: "{}" });
+      });
+
+      await page.getByRole("button", { name: "Continuar" }).click();
+      await expect(page.locator("text=Confira o número e inclua o DDD. Exemplo: (51) 99999-9999.")).toBeVisible();
+      expect(apiCalls).toHaveLength(0);
+    });
+
+    test("whatsapp field shows aria-invalid when errored", async () => {
+      await waitForPage(page);
+      await openForm(page);
+
+      await page.fill("#form-nome", "Maria");
+      await page.getByRole("button", { name: "Continuar" }).click();
+
+      const whatsappInput = page.locator("#form-whatsapp");
+      await expect(whatsappInput).toHaveAttribute("aria-invalid", "true");
+    });
+
+    test("INVALID_WHATSAPP from API returns to step 1 with field error", async () => {
+      await waitForPage(page);
+      await openForm(page);
+
+      await page.route("**/api/leads", async (route: Route) => {
+        await route.fulfill({
+          status: 422,
+          contentType: "application/json",
+          body: JSON.stringify({ ok: false, status: "error", code: "INVALID_WHATSAPP" }),
+        });
+      });
+
+      await fillStep1(page, "Maria", "11999887766");
+      await fillStep2(page);
+      await checkConsentAndSubmit(page);
+
+      await expect(page.locator("#form-nome")).toBeVisible();
+      await expect(page.locator("#form-nome")).toHaveValue("Maria");
+      await expect(page.locator("#form-whatsapp")).toBeVisible();
+      await expect(page.locator("text=Confira o número e inclua o DDD. Exemplo: (51) 99999-9999.")).toBeVisible();
+    });
+
+    test("INVALID_WHATSAPP sets aria-invalid and aria-describedby", async () => {
+      await waitForPage(page);
+      await openForm(page);
+
+      await page.route("**/api/leads", async (route: Route) => {
+        await route.fulfill({
+          status: 422,
+          contentType: "application/json",
+          body: JSON.stringify({ ok: false, status: "error", code: "INVALID_WHATSAPP" }),
+        });
+      });
+
+      await fillStep1(page, "Maria", "11999887766");
+      await fillStep2(page);
+      await checkConsentAndSubmit(page);
+
+      const whatsappInput = page.locator("#form-whatsapp");
+      await expect(whatsappInput).toHaveAttribute("aria-invalid", "true");
+      await expect(whatsappInput).toHaveAttribute("aria-describedby", "form-whatsapp-error");
+    });
+
+    test("no WhatsApp link after INVALID_WHATSAPP", async () => {
+      await waitForPage(page);
+      await openForm(page);
+
+      await page.route("**/api/leads", async (route: Route) => {
+        await route.fulfill({
+          status: 422,
+          contentType: "application/json",
+          body: JSON.stringify({ ok: false, status: "error", code: "INVALID_WHATSAPP" }),
+        });
+      });
+
+      await fillStep1(page, "Maria", "11999887766");
+      await fillStep2(page);
+      await checkConsentAndSubmit(page);
+
+      const whatsappLinks = page.locator('a[href*="wa.me"], a[href*="api.whatsapp.com"]');
+      await expect(whatsappLinks).toHaveCount(0);
+      await expect(page.locator("button", { hasText: "Continuar no WhatsApp" })).toHaveCount(0);
+    });
+
+    test("no WhatsApp link after 502 server error", async () => {
+      await waitForPage(page);
+      await openForm(page);
+
+      await page.route("**/api/leads", async (route: Route) => {
+        await route.fulfill({
+          status: 502,
+          contentType: "application/json",
+          body: JSON.stringify({ ok: false, status: "error", code: "APPS_SCRIPT_ERROR" }),
+        });
+      });
+
+      await fillStep1(page, "Maria", "11999887766");
+      await fillStep2(page);
+      await checkConsentAndSubmit(page);
+
+      const whatsappLinks = page.locator('a[href*="wa.me"], a[href*="api.whatsapp.com"]');
+      await expect(whatsappLinks).toHaveCount(0);
+      await expect(page.locator("button", { hasText: "Continuar no WhatsApp" })).toHaveCount(0);
+    });
+
+    test("no generate_lead after validation error", async () => {
+      await waitForPage(page);
+      await openForm(page);
+
+      await page.evaluate(() => {
+        (window as unknown as { dataLayer: Record<string, unknown>[] }).dataLayer = [];
+      });
+
+      await page.route("**/api/leads", async (route: Route) => {
+        await route.fulfill({
+          status: 422,
+          contentType: "application/json",
+          body: JSON.stringify({ ok: false, status: "error", code: "INVALID_WHATSAPP" }),
+        });
+      });
+
+      await fillStep1(page, "Maria", "11999887766");
+      await fillStep2(page);
+      await checkConsentAndSubmit(page);
+
+      const dataLayer = await page.evaluate(() => {
+        return (window as unknown as { dataLayer: Record<string, unknown>[] }).dataLayer || [];
+      });
+      expect(dataLayer.find((e) => e.event === "generate_lead")).toBeUndefined();
+      expect(dataLayer.find((e) => e.event === "whatsapp_after_lead")).toBeUndefined();
+    });
+
+    test("correction after INVALID_WHATSAPP allows full flow", async () => {
+      await waitForPage(page);
+      await openForm(page);
+
+      let callCount = 0;
+      await page.route("**/api/leads", async (route: Route) => {
+        callCount++;
+        if (callCount === 1) {
+          await route.fulfill({
+            status: 422,
+            contentType: "application/json",
+            body: JSON.stringify({ ok: false, status: "error", code: "INVALID_WHATSAPP" }),
+          });
+        } else {
+          await route.fulfill({
+            status: 201,
+            contentType: "application/json",
+            body: JSON.stringify(VALID_LEAD),
+          });
+        }
+      });
+
+      await fillStep1(page, "Carlos", "11988776655");
+      await fillStep2(page);
+      await checkConsentAndSubmit(page);
+
+      await expect(page.locator("#form-whatsapp")).toBeVisible();
+      await expect(page.locator("text=Confira o número e inclua o DDD")).toBeVisible();
+
+      await page.fill("#form-whatsapp", "11999887766");
+      await page.getByRole("button", { name: "Continuar" }).click();
+      await expect(page.locator("#form-negocio")).toBeVisible({ timeout: 5000 });
+      await expect(page.locator("#form-negocio")).toHaveValue("Clinica odontologica");
+
+      await page.getByRole("button", { name: "Continuar" }).click();
+      await page.locator('input[type="checkbox"]').check();
+      await page.getByRole("button", { name: "Enviar informações" }).click();
+
+      await expect(page.locator("text=Recebi os dados do seu projeto")).toBeVisible({ timeout: 10_000 });
+    });
   });
 });

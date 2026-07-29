@@ -337,22 +337,6 @@ Esse evento:
 - não dispara Meta `Lead`;
 - não dispara outro `generate_lead`.
 
-### Contingência
-
-Usar:
-
-```text
-whatsapp_form_error
-```
-
-Esse evento:
-
-- só aparece após falha técnica válida;
-- não aparece em erro de preenchimento;
-- não é conversão;
-- não possui `lead_id`;
-- não dispara `generate_lead`.
-
 O evento antigo `whatsapp_click` não deve ser usado.
 
 ## 12. Projetos desenvolvidos
@@ -488,7 +472,6 @@ Implementar apenas:
 - `form_error`;
 - `generate_lead`;
 - `whatsapp_after_lead`;
-- `whatsapp_form_error`;
 - `portfolio_open`;
 - `portfolio_view_change`;
 - `faq_open`.

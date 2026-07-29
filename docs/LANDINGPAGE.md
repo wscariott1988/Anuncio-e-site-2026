@@ -750,27 +750,11 @@ Não criar nem usar `/landingpage/obrigado` na primeira versão.
 
 ### Falha técnica
 
-Na primeira falha técnica:
-
 * preservar respostas;
-* exibir “Tentar novamente” como ação principal;
+* exibir "Tentar novamente" como ação principal;
 * permitir voltar e revisar;
+* não disponibilizar WhatsApp;
 * não disparar conversão.
-
-Depois de uma tentativa válida que falhe tecnicamente:
-
-* permitir a contingência “Avisar pelo WhatsApp”;
-* usar a mensagem específica de erro definida em `CONTENT.md`;
-* não marcar essa ação como lead confirmado;
-* não usar `whatsapp_after_lead` para essa contingência.
-
-Evento da contingência:
-
-```text
-whatsapp_form_error
-```
-
-Esse evento deve ser incluído em `TRACKING.md` e nunca importado como conversão principal.
 
 ## 20. Integração e armazenamento do formulário
 
@@ -894,10 +878,7 @@ Rate limit e CAPTCHA podem ser adicionados futuramente somente quando houver nec
 
 ### Disponibilidade
 
-O WhatsApp aparece somente:
-
-1. depois do envio confirmado; ou
-2. como contingência após tentativa válida com falha técnica.
+O WhatsApp aparece somente depois do envio confirmado.
 
 ### Configuração
 
@@ -955,13 +936,7 @@ Depois do lead confirmado:
 whatsapp_after_lead
 ```
 
-Depois de falha técnica válida:
-
-```text
-whatsapp_form_error
-```
-
-Nenhum dos dois eventos cria outro `generate_lead`.
+Esse evento não cria outro `generate_lead`.
 
 ### Origem
 

@@ -464,7 +464,7 @@ test.describe("Form tests", () => {
     await page.fill("#form-nome", "Maria Silva");
 
     await page.getByRole("button", { name: "Continuar" }).click();
-    await expect(page.getByText("Informe um número de WhatsApp válido com DDD.")).toBeVisible();
+    await expect(page.getByText("Confira o número e inclua o DDD. Exemplo: (51) 99999-9999.")).toBeVisible();
 
     await page.fill("#form-whatsapp", "11999998888");
 

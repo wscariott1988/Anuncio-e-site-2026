@@ -9,9 +9,8 @@ import {
   trackFormError,
   trackGenerateLead,
   trackWhatsappAfterLead,
-  trackWhatsappFormError,
 } from "@/lib/tracking";
-import { getWhatsappAfterLeadUrl, getWhatsappErrorUrl } from "@/lib/whatsapp";
+import { getWhatsappAfterLeadUrl } from "@/lib/whatsapp";
 import { SITUACAO_OPCOES } from "@/lib/constants";
 import type { CtaLocation, FormData, FormState, FormStepName, SituacaoAnuncios, PossuiSite } from "@/types";
 
@@ -40,10 +39,23 @@ function formatPhone(value: string): string {
   return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7)}`;
 }
 
-function isValidPhone(value: string): boolean {
+function isValidBrazilianPhone(value: string): boolean {
   const digits = value.replace(/\D/g, "");
-  return digits.length === 11;
+  if (digits.length !== 11) return false;
+  const ddd = parseInt(digits.slice(0, 2), 10);
+  if (ddd < 11 || ddd > 99) return false;
+  return digits[2] === "9";
 }
+
+const API_FIELD_ERRORS: Record<string, { field: string; step: FormState; message: string }> = {
+  INVALID_NOME: { field: "nome", step: "step_1", message: "Confira seu nome e sobrenome." },
+  INVALID_WHATSAPP: { field: "whatsapp", step: "step_1", message: "Confira o número e inclua o DDD. Exemplo: (51) 99999-9999." },
+  INVALID_NEGOCIO: { field: "negocioServico", step: "step_2", message: "Descreva seu negócio ou serviço para continuar." },
+  INVALID_SITUACAO: { field: "situacaoAnuncios", step: "step_2", message: "Opção inválida. Selecione novamente." },
+  INVALID_POSSUI_SITE: { field: "possuiSite", step: "step_2", message: "Selecione Sim ou Não para continuar." },
+  INVALID_URL: { field: "urlAtual", step: "step_2", message: "Informe um endereço de site válido." },
+  CONSENT_REQUIRED: { field: "consentimento", step: "step_3", message: "Confirme que leu a Política de Privacidade." },
+};
 
 function isValidEmailishUrl(value: string): boolean {
   if (!value) return true;
@@ -62,14 +74,19 @@ export function LeadFormModal({ isOpen, ctaLocation, onClose }: LeadFormModalPro
   const [failedAttempts, setFailedAttempts] = useState(0);
   const [leadId, setLeadId] = useState<string | null>(null);
   const firstFieldRef = useRef<HTMLInputElement>(null);
+  const whatsappFieldRef = useRef<HTMLInputElement>(null);
   const submitButtonRef = useRef<HTMLButtonElement>(null);
   const honeypotRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (state === "step_1" && firstFieldRef.current) {
-      firstFieldRef.current.focus();
+    if (state === "step_1") {
+      if (errors.whatsapp && whatsappFieldRef.current) {
+        whatsappFieldRef.current.focus();
+      } else if (firstFieldRef.current) {
+        firstFieldRef.current.focus();
+      }
     }
-  }, [state]);
+  }, [state, errors.whatsapp]);
 
   const handleClose = useCallback(() => {
     setState("idle");
@@ -102,7 +119,7 @@ export function LeadFormModal({ isOpen, ctaLocation, onClose }: LeadFormModalPro
 
       if (step === 0) {
         if (!data.nome.trim()) newErrors.nome = "Informe seu nome para continuar.";
-        if (!isValidPhone(data.whatsapp)) newErrors.whatsapp = "Informe um número de WhatsApp válido com DDD.";
+        if (!isValidBrazilianPhone(data.whatsapp)) newErrors.whatsapp = "Confira o número e inclua o DDD. Exemplo: (51) 99999-9999.";
       } else if (step === 1) {
         if (!data.negocioServico.trim()) newErrors.negocioServico = "Informe qual é o seu negócio ou serviço.";
         if (!data.situacaoAnuncios) newErrors.situacaoAnuncios = "Selecione uma opção para continuar.";
@@ -201,6 +218,16 @@ export function LeadFormModal({ isOpen, ctaLocation, onClose }: LeadFormModalPro
         return;
       }
 
+      if (response.status === 422 && result.code && API_FIELD_ERRORS[result.code]) {
+        const error = API_FIELD_ERRORS[result.code];
+        setErrors({ [error.field]: error.message });
+        setState(error.step);
+        if (error.field === "whatsapp") {
+          trackFormError("validation_whatsapp", STEP_NAMES[currentStepIndex] || "unknown", failedAttempts + 1);
+        }
+        return;
+      }
+
       if (result.code === "PENDING_INTEGRATION") {
         setState("pending_integration");
         return;
@@ -223,14 +250,6 @@ export function LeadFormModal({ isOpen, ctaLocation, onClose }: LeadFormModalPro
       window.open(url, "_blank", "noopener,noreferrer");
     }
   }, [leadId, ctaLocation]);
-
-  const openWhatsappError = useCallback(() => {
-    const url = getWhatsappErrorUrl();
-    if (url) {
-      trackWhatsappFormError("server_error");
-      window.open(url, "_blank", "noopener,noreferrer");
-    }
-  }, []);
 
   return (
     <Modal isOpen={isOpen} onClose={handleClose} title="Formulário de contato">
@@ -320,6 +339,7 @@ export function LeadFormModal({ isOpen, ctaLocation, onClose }: LeadFormModalPro
                     Qual WhatsApp devo usar para responder?
                   </label>
                   <input
+                    ref={whatsappFieldRef}
                     id="form-whatsapp"
                     type="tel"
                     value={data.whatsapp}
@@ -330,8 +350,10 @@ export function LeadFormModal({ isOpen, ctaLocation, onClose }: LeadFormModalPro
                     }`}
                     style={{ fontSize: "16px" }}
                     autoComplete="tel"
+                    aria-invalid={errors.whatsapp ? "true" : undefined}
+                    aria-describedby={errors.whatsapp ? "form-whatsapp-error" : undefined}
                   />
-                  {errors.whatsapp && <p className="text-sm text-red-500">{errors.whatsapp}</p>}
+                  {errors.whatsapp && <p id="form-whatsapp-error" className="text-sm text-red-500" role="alert">{errors.whatsapp}</p>}
                   <p className="text-xs text-[var(--text-secondary)]">
                     Usarei esse número apenas para analisar sua solicitação e entrar em contato sobre o projeto.
                   </p>
@@ -575,7 +597,7 @@ export function LeadFormModal({ isOpen, ctaLocation, onClose }: LeadFormModalPro
               <div className="space-y-6 text-center">
                 <div className="space-y-2">
                   <h2 className="text-xl font-bold text-[var(--text-primary)]">Não foi possível enviar agora</h2>
-                  <p className="text-sm text-[var(--text-secondary)]">Suas respostas foram preservadas. Tente enviar novamente.</p>
+                  <p className="text-sm text-[var(--text-secondary)]">Houve uma falha temporária. Suas respostas foram preservadas.</p>
                 </div>
                 <div className="flex flex-col gap-3">
                   <button
@@ -591,19 +613,6 @@ export function LeadFormModal({ isOpen, ctaLocation, onClose }: LeadFormModalPro
                     Voltar e revisar
                   </button>
                 </div>
-                {failedAttempts >= 1 && (
-                  <div className="space-y-3 pt-4 border-t border-[var(--border)]">
-                    <p className="text-sm text-[var(--text-secondary)]">
-                      Se o problema continuar, você pode me avisar pelo WhatsApp. Suas informações permanecerão preenchidas nesta página.
-                    </p>
-                    <button
-                      onClick={openWhatsappError}
-                      className="h-12 px-6 text-base font-medium border border-green-500 text-green-700 rounded-xl hover:bg-green-50 transition-colors"
-                    >
-                      Avisar pelo WhatsApp
-                    </button>
-                  </div>
-                )}
               </div>
             )}
 

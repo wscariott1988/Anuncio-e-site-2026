@@ -335,16 +335,12 @@ Não simular envio nem escolher fornecedor externo sem aprovação.
 
 ## WhatsApp
 
-O WhatsApp aparece somente:
+O WhatsApp aparece somente depois do envio confirmado.
 
-1. depois do envio confirmado; ou
-2. depois de uma tentativa válida que falhe tecnicamente.
-
-Eventos:
+Evento:
 
 ```text
 whatsapp_after_lead
-whatsapp_form_error
 ```
 
 O evento antigo abaixo não deve ser usado:

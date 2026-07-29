@@ -296,11 +296,7 @@
 - [ ] A mensagem pós-lead corresponde a `CONTENT.md`.
 - [ ] `whatsapp_after_lead` dispara somente após o lead.
 - [ ] `whatsapp_after_lead` não gera outro lead.
-- [ ] A contingência aparece somente após falha técnica válida.
-- [ ] A mensagem de contingência corresponde a `CONTENT.md`.
-- [ ] `whatsapp_form_error` dispara na contingência.
-- [ ] `whatsapp_form_error` não possui `lead_id`.
-- [ ] `whatsapp_form_error` não gera conversão.
+- [ ] O WhatsApp não aparece em erro de validação ou erro técnico.
 - [ ] O evento antigo `whatsapp_click` não existe.
 
 ## 15. Eventos
@@ -313,7 +309,6 @@
 - [ ] `form_error`.
 - [ ] `generate_lead`.
 - [ ] `whatsapp_after_lead`.
-- [ ] `whatsapp_form_error`.
 - [ ] `portfolio_open`.
 - [ ] `portfolio_view_change`.
 - [ ] `faq_open`.
