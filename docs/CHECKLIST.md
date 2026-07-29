@@ -328,6 +328,13 @@
 
 - [ ] Existe um módulo central de rastreamento.
 - [ ] Ausência do GTM não quebra a página.
+- [ ] GTM instalado via `@next/third-parties/google` no root layout.
+- [ ] GTM carrega com `NEXT_PUBLIC_GTM_ID` configurado.
+- [ ] Container ID correto no script.
+- [ ] Apenas um script GTM (sem duplicidade).
+- [ ] Nenhum `gtag.js` separado incluído.
+- [ ] GTM presente em `/landingpage`, `/politica-de-privacidade`, `/termos`.
+- [ ] Nenhuma alteração visual causada pelo GTM.
 - [ ] Nome não aparece no `dataLayer`.
 - [ ] Telefone não aparece no `dataLayer`.
 - [ ] Negócio ou serviço não aparece no `dataLayer`.

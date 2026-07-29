@@ -353,14 +353,14 @@ O número deve vir de configuração central.
 
 ## Rastreamento
 
-Ferramentas previstas:
+Google Tag Manager instalado via `@next/third-parties/google` no root layout. Configurado com `NEXT_PUBLIC_GTM_ID`.
 
-- Google Tag Manager;
+Ferramentas a configurar no GTM:
+
 - Google Analytics 4;
 - Google Ads;
 - Meta Pixel;
-- Consent Mode v2;
-- `dataLayer`.
+- Consent Mode v2.
 
 Conversão principal:
 

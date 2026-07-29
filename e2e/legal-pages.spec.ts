@@ -185,7 +185,7 @@ for (const route of [
       const count = await scripts.count();
       for (let i = 0; i < count; i++) {
         const src = await scripts.nth(i).getAttribute("src");
-        if (src) {
+        if (src && !src.includes("googletagmanager.com")) {
           expect(src).toMatch(/^\/_next\//);
         }
       }

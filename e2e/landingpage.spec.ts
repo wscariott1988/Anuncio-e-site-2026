@@ -438,7 +438,6 @@ test.describe("Form tests", () => {
       const url = req.url();
       if (url.includes("wa.me")) forbiddenRequests.push(url);
       if (url.includes("facebook.net")) forbiddenRequests.push(url);
-      if (url.includes("googletagmanager")) forbiddenRequests.push(url);
       if (url.includes("google-analytics")) forbiddenRequests.push(url);
     });
 
@@ -916,7 +915,6 @@ test.describe("Console and network integrity", () => {
     page.on("request", (req) => {
       const url = req.url();
       if (
-        url.includes("googletagmanager") ||
         url.includes("google-analytics") ||
         url.includes("facebook.net") ||
         url.includes("doubleclick") ||
@@ -1048,7 +1046,6 @@ test.describe("CONTENT.md conformity", () => {
       const url = req.url();
       if (url.includes("wa.me")) forbiddenRequests.push(url);
       if (url.includes("facebook.net")) forbiddenRequests.push(url);
-      if (url.includes("googletagmanager")) forbiddenRequests.push(url);
       if (url.includes("google-analytics")) forbiddenRequests.push(url);
     });
 
@@ -1913,5 +1910,56 @@ test.describe("Social identity metadata", () => {
     const res = await request.get("/landingpage/opengraph-image");
     expect(res.status()).toBe(200);
     expect(res.headers()["content-type"]).toContain("image/png");
+  });
+});
+
+/* ------------------------------------------------------------------ */
+/*  GOOGLE TAG MANAGER INSTALLATION                                    */
+/* ------------------------------------------------------------------ */
+
+test.describe("Google Tag Manager installation", () => {
+  test("GTM script tag is present with correct container ID", async ({ page }) => {
+    await page.goto(PAGE_URL, { waitUntil: "networkidle" });
+    const script = page.locator("script[src*='googletagmanager.com/gtm.js']");
+    await expect(script).toBeAttached({ timeout: 10_000 });
+    const src = await script.getAttribute("src");
+    expect(src).toContain("GTM-N6V46RJN");
+  });
+
+  test("GTM initializes dataLayer with gtm.start event", async ({ page }) => {
+    await page.goto(PAGE_URL, { waitUntil: "networkidle" });
+    const hasGtmStart = await page.evaluate(() => {
+      const dl = window.dataLayer ?? [];
+      return dl.some((e) => (e as Record<string, unknown>).event === "gtm.js");
+    });
+    expect(hasGtmStart).toBe(true);
+  });
+
+  test("no duplicate GTM script tags", async ({ page }) => {
+    await page.goto(PAGE_URL, { waitUntil: "networkidle" });
+    const scripts = page.locator("script[src*='googletagmanager.com/gtm.js']");
+    await expect(scripts).toHaveCount(1);
+  });
+
+  test("no separate gtag.js script present", async ({ page }) => {
+    await page.goto(PAGE_URL, { waitUntil: "networkidle" });
+    const gtagScripts = page.locator("script[src*='googletagmanager.com/gtag/js']");
+    await expect(gtagScripts).toHaveCount(0);
+  });
+
+  test("GTM is present on /landingpage, /politica-de-privacidade, /termos", async ({ page }) => {
+    for (const path of ["/landingpage", "/politica-de-privacidade", "/termos"]) {
+      await page.goto(path, { waitUntil: "networkidle" });
+      await expect(page.locator("script[src*='googletagmanager.com/gtm.js']")).toBeAttached({ timeout: 10_000 });
+    }
+  });
+
+  test("no visual changes from GTM installation", async ({ page }) => {
+    await page.goto(PAGE_URL, { waitUntil: "networkidle" });
+    await page.waitForSelector("h1", { timeout: 10_000 });
+    const h1Count = await page.locator("h1").count();
+    expect(h1Count).toBe(1);
+    const bodyChildren = await page.evaluate(() => document.body.children.length);
+    expect(bodyChildren).toBeGreaterThan(0);
   });
 });

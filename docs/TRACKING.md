@@ -1,6 +1,6 @@
 # Rastreamento — `/landingpage`
 
-> Status: especificação oficial para implementação  
+> Status: GTM instalado, demais tags pendentes  
 > Rota: `/landingpage`  
 > Conversão principal: `generate_lead`  
 > Formulário: `landingpage_lead_form`  
@@ -47,14 +47,14 @@ A medição deve responder:
 - Sincronização operacional com Google Sheets.
 - Controle de consentimento.
 
-### Arquitetura preferencial
+### Arquitetura
 
-O Google Tag Manager deve centralizar o disparo das tags.
+O Google Tag Manager está instalado no root layout via `@next/third-parties/google` e cobre todas as rotas (`/`, `/landingpage`, `/politica-de-privacidade`, `/termos`).
 
-Antes de implementar:
+O GTM é renderizado condicionalmente: somente quando `NEXT_PUBLIC_GTM_ID` está presente.
 
-- inspecionar o código existente;
-- verificar se GTM já está instalado;
+Antes de configurar tags no GTM:
+
 - verificar se GA4 já está instalado diretamente;
 - verificar se Meta Pixel já está instalado diretamente;
 - verificar se Google Ads já possui conversão;

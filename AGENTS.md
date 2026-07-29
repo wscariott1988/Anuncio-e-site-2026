@@ -460,6 +460,10 @@ Disparar somente depois do armazenamento confirmado pelo servidor.
 
 O armazenamento confirmado é a confirmação do Apps Script de que a linha foi escrita no Google Sheets.
 
+### Instalação do GTM
+
+O Google Tag Manager está instalado no root layout via `@next/third-parties/google` (`GoogleTagManager`). A renderização é condicional: só ocorre quando `NEXT_PUBLIC_GTM_ID` está presente. O GTM cobre todas as rotas (`/`, `/landingpage`, `/politica-de-privacidade`, `/termos`).
+
 ### Eventos
 
 Implementar apenas:
