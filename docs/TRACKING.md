@@ -865,13 +865,13 @@ Usar uma implementação compatível com Consent Mode v2 e com a Política de Pr
 
 ### Estado padrão
 
-Antes da escolha:
+Antes da escolha, com `wait_for_update: 500` para o GTM aguardar a restauração:
 
 ```text
-analytics_storage: denied
-ad_storage: denied
-ad_user_data: denied
-ad_personalization: denied
+analytics_storage: denied (wait_for_update: 500)
+ad_storage: denied (wait_for_update: 500)
+ad_user_data: denied (wait_for_update: 500)
+ad_personalization: denied (wait_for_update: 500)
 ```
 
 ### Aceitar medição
@@ -908,10 +908,19 @@ Não permitir publicidade autorizada de forma incompatível com a política adot
 
 ### Implementação
 
-- Definir o estado antes das tags.
+- Definir o estado antes das tags via scripts `beforeInteractive`.
+- Restaurar preferência salva do `localStorage` também via `beforeInteractive`.
+- Usar `wait_for_update: 500` no consentimento padrão.
+- Mapeamento das categorias do painel para os storage types:
+
+  | Categoria | Storage type |
+  |---|---|
+  | Analytics | `analytics_storage` |
+  | Publicidade | `ad_storage`, `ad_user_data`, `ad_personalization` |
+
 - Atualizar na mesma página após a escolha.
-- Persistir a preferência em armazenamento essencial apropriado.
-- Permitir alteração posterior.
+- Persistir a preferência em `localStorage` com chave `anuncio_e_site_consent_v1` e versão embutida.
+- Permitir alteração posterior pelo link "Configurações de privacidade" no rodapé.
 - Não recarregar a página como único meio de atualização.
 - Bloquear Meta Pixel enquanto publicidade estiver recusada.
 - Bloquear tags não essenciais conforme a escolha.

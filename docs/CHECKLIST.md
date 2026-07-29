@@ -419,11 +419,27 @@
 - [ ] `ad_storage` inicia negado.
 - [ ] `ad_user_data` inicia negado.
 - [ ] `ad_personalization` inicia negado.
+- [ ] `wait_for_update: 500` está presente no consentimento padrão.
+- [ ] Os scripts de consentimento usam `strategy="beforeInteractive"`.
+- [ ] A preferência salva é restaurada automaticamente em visitas seguintes.
+- [ ] O banner aparece na primeira visita sem preferência.
+- [ ] O banner desaparece após aceitar ou recusar.
+- [ ] Os botões "Aceitar todos" e "Recusar opcionais" funcionam no banner.
+- [ ] O banner possui link para a Política de Privacidade.
+- [ ] O botão "Configurar" no banner abre o painel de configurações.
+- [ ] As categorias no painel são Analytics e Publicidade.
+- [ ] O mapeamento das categorias está correto (analytics → analytics_storage, publicidade → ad_storage/ad_user_data/ad_personalization).
+- [ ] "Salvar preferências" persiste e aplica a escolha.
+- [ ] O painel de configurações fecha com Esc.
+- [ ] O painel de configurações fecha ao clicar no fundo.
+- [ ] O fundo fica bloqueado durante abertura do painel.
 - [ ] “Aceitar medição” atualiza os estados previstos.
 - [ ] “Recusar recursos não essenciais” mantém os estados negados.
 - [ ] Preferências personalizadas funcionam.
-- [ ] A escolha fica persistida.
-- [ ] É possível alterar a escolha posteriormente.
+- [ ] A escolha fica persistida em `localStorage` com chave `anuncio_e_site_consent_v1`.
+- [ ] É possível alterar a escolha posteriormente pelo link "Configurações de privacidade".
+- [ ] O link "Configurações de privacidade" está presente no rodapé da Landing Page.
+- [ ] O link "Configurações de privacidade" está presente no rodapé das páginas jurídicas.
 - [ ] Meta Pixel não dispara quando publicidade está recusada.
 - [ ] Tags não essenciais respeitam a escolha.
 - [ ] O formulário funciona com tudo recusado.

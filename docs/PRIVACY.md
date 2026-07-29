@@ -69,6 +69,8 @@ O tratamento poderá ocorrer, conforme a finalidade, com base:
 
 O consentimento pode ser revogado pelo canal indicado nesta Política, sem afetar os tratamentos realizados anteriormente de forma legítima.
 
+O consentimento de cookies e medição é independente do consentimento do formulário. A recusa de cookies não impede o envio do formulário.
+
 ## 5. Compartilhamento e fornecedores
 
 Os dados podem ser processados por fornecedores necessários ao funcionamento da página e do atendimento, incluindo:
@@ -107,7 +109,30 @@ Adotamos medidas técnicas e administrativas proporcionais à natureza dos dados
 
 Nenhum sistema é completamente imune a incidentes. Caso ocorra uma situação relevante, serão adotadas as providências cabíveis de acordo com a legislação.
 
-## 9. Direitos do titular
+## 9. Gerenciamento de cookies e consentimento
+
+A página exibe um painel de consentimento na primeira visita. O visitante pode:
+
+- **Aceitar todos** os cookies e tecnologias não essenciais;
+- **Recusar opcionais**, bloqueando análise e publicidade;
+- **Configurar**, escolhendo entre as categorias disponíveis.
+
+### Categorias
+
+| Categoria | Finalidade |
+|---|---|
+| Analytics | Medição de audiência e comportamento na página |
+| Publicidade | Anúncios personalizados nas plataformas de campanha |
+
+### Persistência
+
+A escolha fica armazenada no navegador do visitante (localStorage). Em visitas seguintes, a preferência salva é aplicada automaticamente antes do carregamento de qualquer tecnologia de medição.
+
+### Alteração posterior
+
+O visitante pode alterar sua escolha a qualquer momento pelo link **Configurações de privacidade** disponível no rodapé da página.
+
+## 10. Direitos do titular
 
 Nos termos da LGPD, o titular pode solicitar, quando aplicável:
 
@@ -124,19 +149,19 @@ Nos termos da LGPD, o titular pode solicitar, quando aplicável:
 
 Para exercer esses direitos, envie uma solicitação para **contato@grupows.com**. Poderemos pedir informações necessárias para confirmar a identidade do solicitante e proteger os dados contra acesso indevido.
 
-## 10. Crianças e adolescentes
+## 11. Crianças e adolescentes
 
 O serviço é direcionado a empresas, profissionais e pessoas capazes de contratar. A página não é destinada à coleta intencional de dados de crianças.
 
-## 11. Links e serviços de terceiros
+## 12. Links e serviços de terceiros
 
 A página pode direcionar o visitante para serviços externos, como o WhatsApp. O tratamento realizado nesses ambientes é regido também pelos termos e políticas dos respectivos fornecedores.
 
-## 12. Alterações desta Política
+## 13. Alterações desta Política
 
 Esta Política poderá ser atualizada para refletir mudanças legais, técnicas ou operacionais. A versão vigente será identificada pela data informada no início do documento.
 
-## 13. Contato
+## 14. Contato
 
 Para dúvidas ou solicitações relacionadas à privacidade e à proteção de dados:
 

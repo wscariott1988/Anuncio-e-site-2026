@@ -1,4 +1,5 @@
 import { BRAND_NAME } from "@/lib/constants";
+import { ConsentFooterButton } from "@/components/consent/ConsentFooterButton";
 
 interface LegalPageLayoutProps {
   children: React.ReactNode;
@@ -41,6 +42,7 @@ export function LegalPageLayout({ children }: LegalPageLayoutProps) {
             <a href="/landingpage" className="text-[var(--brand)] hover:underline">
               Voltar à Landing Page
             </a>
+            <ConsentFooterButton />
           </nav>
           <p className="text-xs text-[var(--text-secondary)]">
             © {new Date().getFullYear()} {BRAND_NAME}. Todos os direitos reservados.

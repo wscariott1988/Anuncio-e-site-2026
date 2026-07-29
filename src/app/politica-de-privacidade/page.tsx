@@ -230,7 +230,72 @@ export default function PrivacyPolicyPage() {
           </p>
 
           <h2 className="text-[22px] md:text-[24px] font-bold text-[var(--text-primary)] mt-10 mb-3">
-            9. Direitos do titular
+            9. Gerenciamento de cookies e consentimento
+          </h2>
+          <p>
+            A página exibe um painel de consentimento na primeira visita. O
+            visitante pode:
+          </p>
+          <ul className="list-disc pl-6 space-y-1">
+            <li>
+              <strong>Aceitar todos</strong> os cookies e tecnologias não
+              essenciais;
+            </li>
+            <li>
+              <strong>Recusar opcionais</strong>, bloqueando análise e
+              publicidade;
+            </li>
+            <li>
+              <strong>Configurar</strong>, escolhendo entre as categorias
+              disponíveis.
+            </li>
+          </ul>
+
+          <h3 className="text-[18px] font-semibold text-[var(--text-primary)] mt-6 mb-2">
+            Categorias
+          </h3>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="border-b border-[var(--border)]">
+                  <th className="text-left py-2 pr-4 font-semibold text-[var(--text-primary)]">Categoria</th>
+                  <th className="text-left py-2 font-semibold text-[var(--text-primary)]">Finalidade</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="border-b border-[var(--border)]">
+                  <td className="py-2 pr-4 text-[var(--text-primary)]">Analytics</td>
+                  <td className="py-2 text-[var(--text-secondary)]">Medição de audiência e comportamento na página</td>
+                </tr>
+                <tr>
+                  <td className="py-2 pr-4 text-[var(--text-primary)]">Publicidade</td>
+                  <td className="py-2 text-[var(--text-secondary)]">Anúncios personalizados nas plataformas de campanha</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3 className="text-[18px] font-semibold text-[var(--text-primary)] mt-6 mb-2">
+            Persistência
+          </h3>
+          <p>
+            A escolha fica armazenada no navegador do visitante (
+            <code className="bg-[var(--surface-soft)] px-1.5 py-0.5 rounded text-sm">localStorage</code>).
+            Em visitas seguintes, a preferência salva é aplicada automaticamente
+            antes do carregamento de qualquer tecnologia de medição.
+          </p>
+
+          <h3 className="text-[18px] font-semibold text-[var(--text-primary)] mt-6 mb-2">
+            Alteração posterior
+          </h3>
+          <p>
+            O visitante pode alterar sua escolha a qualquer momento pelo link{" "}
+            <strong>Configurações de privacidade</strong> disponível no rodapé da
+            página.
+          </p>
+
+          <h2 className="text-[22px] md:text-[24px] font-bold text-[var(--text-primary)] mt-10 mb-3">
+            10. Direitos do titular
           </h2>
           <p>
             Nos termos da LGPD, o titular pode solicitar, quando aplicável:
@@ -270,7 +335,7 @@ export default function PrivacyPolicyPage() {
           </p>
 
           <h2 className="text-[22px] md:text-[24px] font-bold text-[var(--text-primary)] mt-10 mb-3">
-            10. Crianças e adolescentes
+            11. Crianças e adolescentes
           </h2>
           <p>
             O serviço é direcionado a empresas, profissionais e pessoas capazes
@@ -279,7 +344,7 @@ export default function PrivacyPolicyPage() {
           </p>
 
           <h2 className="text-[22px] md:text-[24px] font-bold text-[var(--text-primary)] mt-10 mb-3">
-            11. Links e serviços de terceiros
+            12. Links e serviços de terceiros
           </h2>
           <p>
             A página pode direcionar o visitante para serviços externos, como o
@@ -288,7 +353,7 @@ export default function PrivacyPolicyPage() {
           </p>
 
           <h2 className="text-[22px] md:text-[24px] font-bold text-[var(--text-primary)] mt-10 mb-3">
-            12. Alterações desta Política
+            13. Alterações desta Política
           </h2>
           <p>
             Esta Política poderá ser atualizada para refletir mudanças legais,
@@ -297,7 +362,7 @@ export default function PrivacyPolicyPage() {
           </p>
 
           <h2 className="text-[22px] md:text-[24px] font-bold text-[var(--text-primary)] mt-10 mb-3">
-            13. Contato
+            14. Contato
           </h2>
           <p>
             Para dúvidas ou solicitações relacionadas à privacidade e à proteção

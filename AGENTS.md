@@ -513,6 +513,32 @@ Nunca enviar ao `dataLayer`, GA4, Google Ads ou Meta:
 - Não confundir consentimento do formulário com consentimento de cookies.
 - Validar o comportamento antes da publicação.
 
+### Arquitetura implementada
+
+A implementação segue Consent Mode v2 com três camadas:
+
+1. **Scripts beforeInteractive** (`src/app/layout.tsx`): criam `dataLayer` e `gtag()`, definem consentimento padrão com `wait_for_update: 500`, restauram preferência salva.
+2. **ConsentProvider** (`src/components/consent/ConsentProvider.tsx`): componente cliente React com contexto, gerencia banner (primeira visita) e painel de configurações (reabertura).
+3. **Componentes de UI**: `ConsentBanner` (fixo inferior), `ConsentSettings` (modal overlay com duas categorias), `ConsentFooterButton` (link nos rodapés).
+
+### Chave de persistência
+
+- `localStorage` com a chave `anuncio_e_site_consent_v1`, contendo versão, preferências e timestamp.
+
+### Mapeamento
+
+| Categoria | Storage type |
+|---|---|
+| Analytics | `analytics_storage` |
+| Publicidade | `ad_storage`, `ad_user_data`, `ad_personalization` |
+
+### Regras
+
+- O banner nunca abre automaticamente após a primeira escolha.
+- O painel de configurações nunca abre automaticamente — somente por ação do visitante ("Configurar" no banner ou "Configurações de privacidade" no rodapé).
+- O link "Configurações de privacidade" está presente em ambos os rodapés (`landingpage/Footer.tsx` e `legal/LegalPageLayout.tsx`).
+- Nenhum dado pessoal é armazenado no `localStorage` como parte do consentimento.
+
 Não publicar tags de publicidade ignorando a preferência do visitante.
 
 ## 17. Privacidade e documentos jurídicos

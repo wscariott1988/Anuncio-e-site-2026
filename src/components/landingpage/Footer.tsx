@@ -1,4 +1,5 @@
 import { BRAND_NAME } from "@/lib/constants";
+import { ConsentFooterButton } from "@/components/consent/ConsentFooterButton";
 
 export function Footer() {
   return (
@@ -10,13 +11,14 @@ export function Footer() {
             Landing Pages para tráfego pago, desenvolvidas diretamente por Willian Souza.
           </p>
         </div>
-        <nav aria-label="Links jurídicos" className="flex gap-6 text-sm">
+        <nav aria-label="Links jurídicos" className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
           <a href="/politica-de-privacidade" className="text-[var(--brand)] hover:underline">
             Política de Privacidade
           </a>
           <a href="/termos" className="text-[var(--brand)] hover:underline">
             Termos de Uso
           </a>
+          <ConsentFooterButton />
         </nav>
         <p className="text-xs text-[var(--text-secondary)]">
           © {new Date().getFullYear()} {BRAND_NAME}. Todos os direitos reservados.
