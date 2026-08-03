@@ -464,6 +464,19 @@ O armazenamento confirmado é a confirmação do Apps Script de que a linha foi 
 
 O Google Tag Manager está instalado no root layout via `@next/third-parties/google` (`GoogleTagManager`). A renderização é condicional: só ocorre quando `NEXT_PUBLIC_GTM_ID` está presente. O GTM cobre todas as rotas (`/`, `/landingpage`, `/politica-de-privacidade`, `/termos`).
 
+### Microsoft Clarity
+
+O Microsoft Clarity é instalado **exclusivamente pelo GTM**.
+
+- Não instalar snippet do Clarity no código.
+- Não criar `NEXT_PUBLIC_CLARITY_PROJECT_ID`.
+- Não usar o pacote `@microsoft/clarity` sem justificativa e aprovação.
+- Não duplicar a tag do Clarity.
+- O formulário inteiro permanece mascarado com `data-clarity-mask="true"` no contêiner raiz.
+- O banner permanece genérico e não menciona "Microsoft Clarity".
+- Nenhuma PII pode ser enviada ao Clarity ou ao `dataLayer`.
+- A validação real do Clarity (mapas de calor, gravações e mascaramento) é feita no painel do Clarity.
+
 ### Eventos
 
 Implementar apenas:
@@ -538,6 +551,7 @@ A implementação segue Consent Mode v2 com três camadas:
 - O painel de configurações nunca abre automaticamente — somente por ação do visitante ("Configurar" no banner ou "Configurações de privacidade" no rodapé).
 - O link "Configurações de privacidade" está presente em ambos os rodapés (`landingpage/Footer.tsx` e `legal/LegalPageLayout.tsx`).
 - Nenhum dado pessoal é armazenado no `localStorage` como parte do consentimento.
+- O Microsoft Clarity segue a categoria Analytics e não dispara enquanto Analytics estiver recusado.
 
 Não publicar tags de publicidade ignorando a preferência do visitante.
 

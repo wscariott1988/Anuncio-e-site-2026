@@ -73,6 +73,82 @@ async function waitForPageReady(page: Page) {
   await page.waitForTimeout(500);
 }
 
+/* ------------------------------------------------------------------ */
+/*  Consent Mode v2 helpers                                           */
+/* ------------------------------------------------------------------ */
+
+function collectGooglePings(page: Page, pings: string[]) {
+  page.on("request", (req) => {
+    const url = req.url();
+    if (url.includes("google-analytics.com")) pings.push(url);
+  });
+}
+
+const TRACKING_COOKIE_RE = /^(_ga|_gid|_gcl[a-z0-9_]*|_clck|_clsk|_cltk|_cl)/i;
+
+async function trackingCookies(page: Page): Promise<string[]> {
+  const cookies = await page.context().cookies();
+  return cookies.map((c) => c.name).filter((n) => TRACKING_COOKIE_RE.test(n));
+}
+
+async function trackingStorageKeys(page: Page): Promise<string[]> {
+  return page.evaluate(() => {
+    const keys: string[] = [];
+    const visit = (store: Storage) => {
+      for (let i = 0; i < store.length; i++) {
+        const k = store.key(i) ?? "";
+        if (/(_ga|_gid|_gcl|_clck|_clsk|_cltk|clarity)/i.test(k)) keys.push(k);
+      }
+    };
+    visit(window.localStorage);
+    visit(window.sessionStorage);
+    return keys;
+  });
+}
+
+async function consentCommand(page: Page, command: "default" | "update") {
+  return page.evaluate((cmd) => {
+    const dl = window.dataLayer ?? [];
+    const asArray = (e: unknown): unknown[] | null => {
+      if (Array.isArray(e)) return e;
+      const maybe = e as { length?: unknown } | null;
+      if (maybe && typeof maybe === "object" && typeof maybe.length === "number") {
+        return Array.from({ length: maybe.length as number }, (_, i) => (maybe as Record<number, unknown>)[i]);
+      }
+      return null;
+    };
+    let last: Record<string, string> | null = null;
+    for (const e of dl) {
+      const a = asArray(e);
+      if (a && a[0] === "consent" && a[1] === cmd) {
+        last = a[2] as Record<string, string>;
+      }
+    }
+    return last;
+  }, command);
+}
+
+const BANNER = '[role="dialog"][aria-label="Sua privacidade"]';
+
+async function expectAllConsentDenied(page: Page) {
+  const last = await consentCommand(page, "update");
+  const def = await consentCommand(page, "default");
+  const state = last ?? def;
+  expect(state, "no consent command found in dataLayer").not.toBeNull();
+  expect(state!.analytics_storage).toBe("denied");
+  expect(state!.ad_storage).toBe("denied");
+  expect(state!.ad_user_data).toBe("denied");
+  expect(state!.ad_personalization).toBe("denied");
+}
+
+function assertDeniedGooglePings(pings: string[]) {
+  for (const url of pings) {
+    expect(url, `GA4 ping missing cookieless consent markers: ${url}`).toMatch(/pscdl=denied/);
+    expect(url, `GA4 ping missing npa=1: ${url}`).toMatch(/npa=1/);
+    expect(url, `GA4 ping missing denied storage: ${url}`).toMatch(/gcs=G[01]00/);
+  }
+}
+
 async function openFormFromHero(page: Page) {
   const heroBtn = page.getByRole("button", { name: "Quero minha Landing Page" }).first();
   await heroBtn.scrollIntoViewIfNeeded();
@@ -434,12 +510,13 @@ test.describe("Form tests", () => {
     collectConsoleViolations(page, violations);
 
     const forbiddenRequests: string[] = [];
+    const googlePings: string[] = [];
     page.on("request", (req) => {
       const url = req.url();
       if (url.includes("wa.me")) forbiddenRequests.push(url);
       if (url.includes("facebook.net")) forbiddenRequests.push(url);
-      if (url.includes("google-analytics")) forbiddenRequests.push(url);
     });
+    collectGooglePings(page, googlePings);
 
     await page.route("**/api/leads", async (route) => {
       await route.fulfill({
@@ -501,6 +578,13 @@ test.describe("Form tests", () => {
     await expect(page.getByText("Servidor ainda não configurado")).toBeVisible();
 
     expect(forbiddenRequests).toHaveLength(0);
+
+    if (googlePings.length > 0) {
+      assertDeniedGooglePings(googlePings);
+    }
+    await expectAllConsentDenied(page);
+    expect(await trackingCookies(page)).toHaveLength(0);
+    expect(await trackingStorageKeys(page)).toHaveLength(0);
 
     const whatsappLinks = page.locator('a[href*="wa.me"], a[href*="api.whatsapp.com"]');
     await expect(whatsappLinks).toHaveCount(0);
@@ -912,10 +996,10 @@ test.describe("Console and network integrity", () => {
     collectConsoleViolations(page, violations);
 
     const forbiddenRequests: string[] = [];
+    const googlePings: string[] = [];
     page.on("request", (req) => {
       const url = req.url();
       if (
-        url.includes("google-analytics") ||
         url.includes("facebook.net") ||
         url.includes("doubleclick") ||
         url.includes("ads.google") ||
@@ -927,6 +1011,7 @@ test.describe("Console and network integrity", () => {
         forbiddenRequests.push(url);
       }
     });
+    collectGooglePings(page, googlePings);
 
     await waitForPageReady(page);
 
@@ -950,6 +1035,10 @@ test.describe("Console and network integrity", () => {
     await page.waitForTimeout(1000);
 
     expect(forbiddenRequests).toHaveLength(0);
+    expect(googlePings.length).toBeGreaterThan(0);
+    assertDeniedGooglePings(googlePings);
+    expect(await trackingCookies(page)).toHaveLength(0);
+    expect(await trackingStorageKeys(page)).toHaveLength(0);
     assertNoViolations(violations);
   });
 
@@ -1042,12 +1131,13 @@ test.describe("CONTENT.md conformity", () => {
     collectConsoleViolations(page, violations);
 
     const forbiddenRequests: string[] = [];
+    const googlePings: string[] = [];
     page.on("request", (req) => {
       const url = req.url();
       if (url.includes("wa.me")) forbiddenRequests.push(url);
       if (url.includes("facebook.net")) forbiddenRequests.push(url);
-      if (url.includes("google-analytics")) forbiddenRequests.push(url);
     });
+    collectGooglePings(page, googlePings);
 
     await page.route("**/api/leads", async (route) => {
       await route.fulfill({
@@ -1083,6 +1173,10 @@ test.describe("CONTENT.md conformity", () => {
     await expect(page.getByText("entender seu projeto", { exact: true })).not.toBeVisible();
 
     expect(forbiddenRequests).toHaveLength(0);
+    expect(googlePings.length).toBeGreaterThan(0);
+    assertDeniedGooglePings(googlePings);
+    expect(await trackingCookies(page)).toHaveLength(0);
+    expect(await trackingStorageKeys(page)).toHaveLength(0);
 
     const hasGenerateLead = await page.evaluate(() => {
       const dl = window.dataLayer ?? [];
@@ -1941,10 +2035,13 @@ test.describe("Google Tag Manager installation", () => {
     await expect(scripts).toHaveCount(1);
   });
 
-  test("no separate gtag.js script present", async ({ page }) => {
-    await page.goto(PAGE_URL, { waitUntil: "networkidle" });
+  test("no hardcoded gtag.js — GA4 is loaded only through GTM", async ({ page }) => {
+    const response = await page.goto(PAGE_URL, { waitUntil: "networkidle" });
+    const html = await response!.text();
+    expect(html).not.toContain("googletagmanager.com/gtag/js");
     const gtagScripts = page.locator("script[src*='googletagmanager.com/gtag/js']");
-    await expect(gtagScripts).toHaveCount(0);
+    const count = await gtagScripts.count();
+    expect(count).toBeLessThanOrEqual(1);
   });
 
   test("GTM is present on /landingpage, /politica-de-privacidade, /termos", async ({ page }) => {
@@ -1961,5 +2058,280 @@ test.describe("Google Tag Manager installation", () => {
     expect(h1Count).toBe(1);
     const bodyChildren = await page.evaluate(() => document.body.children.length);
     expect(bodyChildren).toBeGreaterThan(0);
+  });
+});
+
+/* ------------------------------------------------------------------ */
+/*  CONSENT MODE v2 AVANÇADO                                          */
+/* ------------------------------------------------------------------ */
+
+test.describe("Consent Mode v2 avançado", () => {
+  test("consent default is denied for all four categories", async ({ page }) => {
+    await page.goto(PAGE_URL, { waitUntil: "networkidle" });
+    const def = await consentCommand(page, "default");
+    expect(def).not.toBeNull();
+    expect(def!.analytics_storage).toBe("denied");
+    expect(def!.ad_storage).toBe("denied");
+    expect(def!.ad_user_data).toBe("denied");
+    expect(def!.ad_personalization).toBe("denied");
+  });
+
+  test("default denied: no tracking cookies/storage; any GA4 ping is cookieless with denied markers", async ({ page }) => {
+    const googlePings: string[] = [];
+    collectGooglePings(page, googlePings);
+
+    await page.goto(PAGE_URL, { waitUntil: "networkidle" });
+
+    if (googlePings.length > 0) {
+      assertDeniedGooglePings(googlePings);
+    }
+    await expectAllConsentDenied(page);
+    expect(await trackingCookies(page)).toHaveLength(0);
+    expect(await trackingStorageKeys(page)).toHaveLength(0);
+  });
+
+  test("Recusar opcionais keeps consent denied and creates no optional cookies", async ({ page }) => {
+    const googlePings: string[] = [];
+    collectGooglePings(page, googlePings);
+
+    await page.goto(PAGE_URL, { waitUntil: "networkidle" });
+
+    const banner = page.locator(BANNER);
+    await expect(banner).toBeVisible({ timeout: 10_000 });
+    await banner.getByRole("button", { name: "Recusar opcionais" }).click();
+    await expect(banner).not.toBeVisible();
+
+    await expectAllConsentDenied(page);
+    assertDeniedGooglePings(googlePings);
+    expect(await trackingCookies(page)).toHaveLength(0);
+    expect(await trackingStorageKeys(page)).toHaveLength(0);
+  });
+
+  test("Aceitar todos grants all four categories, allows GA4 requests and cookies", async ({ page }) => {
+    const googlePings: string[] = [];
+    collectGooglePings(page, googlePings);
+
+    await page.goto(PAGE_URL, { waitUntil: "networkidle" });
+
+    const banner = page.locator(BANNER);
+    await expect(banner).toBeVisible({ timeout: 10_000 });
+    await banner.getByRole("button", { name: "Aceitar todos" }).click();
+    await expect(banner).not.toBeVisible();
+
+    const update = await consentCommand(page, "update");
+    expect(update).not.toBeNull();
+    expect(update!.analytics_storage).toBe("granted");
+    expect(update!.ad_storage).toBe("granted");
+    expect(update!.ad_user_data).toBe("granted");
+    expect(update!.ad_personalization).toBe("granted");
+
+    await expect
+      .poll(() => googlePings.length, { timeout: 10_000 })
+      .toBeGreaterThan(0);
+
+    await page.reload({ waitUntil: "networkidle" });
+    await expect
+      .poll(async () => (await trackingCookies(page)).some((c) => /^_ga/.test(c)), {
+        timeout: 10_000,
+      })
+      .toBe(true);
+  });
+
+  test("revogar via Configurações de privacidade envia update denied", async ({ page }) => {
+    await page.goto(PAGE_URL, { waitUntil: "networkidle" });
+
+    const banner = page.locator(BANNER);
+    await expect(banner).toBeVisible({ timeout: 10_000 });
+    await banner.getByRole("button", { name: "Aceitar todos" }).click();
+    await expect(banner).not.toBeVisible();
+
+    const initial = await consentCommand(page, "update");
+    expect(initial).not.toBeNull();
+    expect(initial!.analytics_storage).toBe("granted");
+
+    await page.getByRole("button", { name: "Configurações de privacidade" }).click();
+    const settings = page.locator('[role="dialog"][aria-labelledby="consent-settings-title"]');
+    await expect(settings).toBeVisible();
+    await settings.getByRole("switch", { name: /Analytics/ }).click();
+    await settings.getByRole("button", { name: "Salvar preferências" }).click();
+    await expect(settings).not.toBeVisible();
+
+    const update = await consentCommand(page, "update");
+    expect(update).not.toBeNull();
+    expect(update!.analytics_storage).toBe("denied");
+    expect(update!.ad_storage).toBe("granted");
+    expect(update!.ad_user_data).toBe("granted");
+    expect(update!.ad_personalization).toBe("granted");
+  });
+
+  test("no Microsoft Clarity while analytics_storage is denied", async ({ page }) => {
+    await page.goto(PAGE_URL, { waitUntil: "networkidle" });
+
+    const banner = page.locator(BANNER);
+    await expect(banner).toBeVisible({ timeout: 10_000 });
+    await banner.getByRole("button", { name: "Recusar opcionais" }).click();
+
+    await expect(page.locator('script[src*="clarity.ms"]')).toHaveCount(0);
+
+    const cookies = await trackingCookies(page);
+    expect(cookies).not.toContain("_clck");
+    expect(cookies).not.toContain("_clsk");
+
+    await expectAllConsentDenied(page);
+  });
+});
+
+/* ------------------------------------------------------------------ */
+/*  MICROSOFT CLARITY PREPARATION                                      */
+/* ------------------------------------------------------------------ */
+
+test.describe("Microsoft Clarity preparation", () => {
+  test("lead form root container has data-clarity-mask=true", async ({ page }) => {
+    await waitForPageReady(page);
+    await openFormFromHero(page);
+    const masked = page.locator('[data-clarity-mask="true"]');
+    await expect(masked).toBeVisible();
+  });
+
+  test("all steps: every input, textarea and select has a data-clarity-mask ancestor", async ({ page }) => {
+    await waitForPageReady(page);
+    await openFormFromHero(page);
+
+    const expectAllControlsMasked = async () => {
+      const result = await page.evaluate(() => {
+        const dialog = document.querySelector("dialog[open]");
+        if (!dialog) return { ok: false, reason: "dialog not open", unmasked: [], total: 0 };
+        const controls = dialog.querySelectorAll("input, textarea, select");
+        const unmasked: string[] = [];
+        for (const el of Array.from(controls)) {
+          const control = el as HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
+          if (!control.closest('[data-clarity-mask="true"]')) {
+            unmasked.push(`${control.tagName.toLowerCase()}#${control.id || control.name || "(no id)"}`);
+          }
+        }
+        return { ok: unmasked.length === 0, unmasked, total: controls.length };
+      });
+      expect(result.ok, `Unmasked controls: ${JSON.stringify(result)}`).toBe(true);
+      expect(result.total).toBeGreaterThan(0);
+    };
+
+    await page.getByRole("button", { name: "Começar" }).click();
+
+    // STEP 1 — contact
+    await page.fill("#form-nome", "Maria Clarity");
+    await page.fill("#form-whatsapp", "11900009999");
+    await expectAllControlsMasked();
+    await page.getByRole("button", { name: "Continuar" }).click();
+
+    // STEP 2 — project
+    await page.fill("#form-negocio", "Consultoria de marketing");
+    await page.getByRole("radio", { name: "Já anuncio nos dois" }).check();
+    await page.getByRole("radio", { name: "Sim" }).check();
+    await page.fill("#form-url", "https://exemplo.com.br");
+    await expectAllControlsMasked();
+    await page.getByRole("button", { name: "Continuar" }).click();
+
+    // STEP 3 — review
+    await expect(page.getByText("Confira suas informações")).toBeVisible();
+    await expectAllControlsMasked();
+
+    const reviewInsideMask = await page.evaluate(() => {
+      const heading = Array.from(document.querySelectorAll("h2")).find((h) =>
+        h.textContent?.includes("Confira suas informações")
+      );
+      return heading ? Boolean(heading.closest('[data-clarity-mask="true"]')) : false;
+    });
+    expect(reviewInsideMask).toBe(true);
+
+    // preserved answers render inside the same masked container
+    const maskedText = (await page.locator('[data-clarity-mask="true"]').textContent()) ?? "";
+    expect(maskedText).toContain("Maria Clarity");
+    expect(maskedText).toContain("(11) 90000-9999");
+    expect(maskedText).toContain("Consultoria de marketing");
+    expect(maskedText).toContain("https://exemplo.com.br");
+  });
+
+  test("consent banner is present and generic", async ({ page }) => {
+    await waitForPageReady(page);
+    const banner = page.locator('[role="dialog"][aria-label="Sua privacidade"]');
+    await expect(banner).toBeVisible({ timeout: 10_000 });
+    const text = await banner.textContent();
+    expect(text?.trim().length ?? 0).toBeGreaterThan(0);
+  });
+
+  test("consent banner does not mention Microsoft Clarity", async ({ page }) => {
+    await waitForPageReady(page);
+    const banner = page.locator('[role="dialog"][aria-label="Sua privacidade"]');
+    await expect(banner).toBeVisible({ timeout: 10_000 });
+    await expect(banner).not.toContainText("Microsoft Clarity");
+  });
+
+  test("privacy policy mentions Microsoft Clarity", async ({ page }) => {
+    await page.goto("/politica-de-privacidade", { waitUntil: "networkidle" });
+    await expect(page.locator("main")).toContainText("Microsoft Clarity");
+  });
+
+  test("no hardcoded Clarity snippet in server-rendered HTML", async ({ page }) => {
+    for (const path of ["/landingpage", "/politica-de-privacidade", "/termos"]) {
+      const response = await page.goto(path, { waitUntil: "domcontentloaded" });
+      const html = await response!.text();
+      expect(html).not.toContain("clarity.ms");
+      expect(html).not.toContain("clarity(");
+    }
+  });
+
+  test("no PII in dataLayer, console output or URL after form interaction", async ({ page }) => {
+    const consoleOutput: string[] = [];
+    page.on("console", (msg) => consoleOutput.push(msg.text()));
+
+    await waitForPageReady(page);
+    await openFormFromHero(page);
+    await page.getByRole("button", { name: "Começar" }).click();
+    await page.fill("#form-nome", "Maria Clarity");
+    await page.fill("#form-whatsapp", "11900009999");
+
+    const dataLayer = await page.evaluate(() => window.dataLayer ?? []);
+    const serialized = JSON.stringify({
+      console: consoleOutput,
+      dataLayer,
+      url: page.url(),
+    });
+    expect(serialized).not.toContain("Maria Clarity");
+    expect(serialized).not.toContain("11900009999");
+  });
+
+  test("success and validation error screens stay inside the masked container", async ({ page }) => {
+    await waitForPageReady(page);
+    await openFormFromHero(page);
+    await page.getByRole("button", { name: "Começar" }).click();
+
+    await page.getByRole("button", { name: "Continuar" }).click();
+    const errorMsg = page.getByText("Informe seu nome para continuar.");
+    await expect(errorMsg).toBeVisible();
+    const errorMasked = await errorMsg.evaluate((el) => Boolean(el.closest('[data-clarity-mask="true"]')));
+    expect(errorMasked).toBe(true);
+
+    await page.route("**/api/leads", async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({ ok: true, status: "created", lead_id: "mask-lead-001" }),
+      });
+    });
+
+    await page.fill("#form-nome", "Maria Mask");
+    await page.fill("#form-whatsapp", "11999998888");
+    await page.getByRole("button", { name: "Continuar" }).click();
+    await page.fill("#form-negocio", "Consultoria");
+    await page.getByLabel("Já anuncio no Google Ads").check();
+    await page.getByLabel("Não", { exact: false }).last().check();
+    await page.getByRole("button", { name: "Continuar" }).click();
+    await page.locator('input[type="checkbox"]').check();
+    await page.getByRole("button", { name: "Enviar informações" }).click();
+
+    const successTitle = page.getByText("Obrigado, Maria Mask. Recebi os dados do seu projeto.");
+    await expect(successTitle).toBeVisible({ timeout: 10_000 });
+    const successMasked = await successTitle.evaluate((el) => Boolean(el.closest('[data-clarity-mask="true"]')));
+    expect(successMasked).toBe(true);
   });
 });

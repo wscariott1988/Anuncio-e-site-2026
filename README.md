@@ -360,6 +360,7 @@ Ferramentas a configurar no GTM:
 - Google Analytics 4;
 - Google Ads;
 - Meta Pixel;
+- Microsoft Clarity;
 - Consent Mode v2.
 
 Conversão principal:
@@ -384,6 +385,8 @@ Não contabilizar como lead:
 Não usar R$ 997 como valor de cada lead.
 
 Detalhes completos estão em `docs/TRACKING.md`.
+
+O Microsoft Clarity é instalado **exclusivamente pelo GTM**: não existe snippet do Clarity no código e não existe `NEXT_PUBLIC_CLARITY_PROJECT_ID`. O formulário inteiro é mascarado com `data-clarity-mask="true"`. A validação real (mapas de calor, gravações de sessão e mascaramento) é feita no painel do Clarity.
 
 ## Consentimento e privacidade
 
@@ -494,6 +497,7 @@ Confirmar:
 - GA4;
 - conversão do Google Ads;
 - Meta Pixel;
+- Microsoft Clarity (Project ID configurado no GTM);
 - controle de consentimento;
 - domínio e infraestrutura;
 - Política de Privacidade;

@@ -346,6 +346,17 @@
 - [ ] `lead_id` não deriva de telefone ou nome.
 - [ ] `event_id` é opaco.
 - [ ] Nenhum identificador opaco foi criado como dimensão de alta cardinalidade.
+- [ ] Microsoft Clarity é instalado exclusivamente pelo GTM.
+- [ ] Não existe snippet do Clarity no código.
+- [ ] Não existe `NEXT_PUBLIC_CLARITY_PROJECT_ID`.
+- [ ] Não existe script `clarity.ms` no HTML sem o GTM.
+- [ ] O formulário possui `data-clarity-mask="true"`.
+- [ ] Todos os campos do formulário estão dentro da área mascarada.
+- [ ] Nome não é enviado ao Clarity ou ao `dataLayer`.
+- [ ] Telefone não é enviado ao Clarity ou ao `dataLayer`.
+- [ ] Negócio ou serviço não é enviado ao Clarity ou ao `dataLayer`.
+- [ ] URL informada não é enviada ao Clarity ou ao `dataLayer`.
+- [ ] Respostas não são enviadas ao Clarity ou ao `dataLayer`.
 
 ## 17. GA4
 
@@ -413,15 +424,23 @@
 
 ## 21. Consentimento
 
+O projeto utiliza **Consent Mode v2 avançado**: no estado negado, GTM, gtag.js e GA4 podem carregar e emitir pings sem cookies, que não são tratados como falha nem como coleta identificável. A medição identificável (cookies `_ga`, `_gid`, `_gcl_*` e equivalentes em armazenamento) só ocorre após `analytics_storage = granted`.
+
 - [ ] O controle de consentimento usa a copy aprovada.
 - [ ] O estado padrão é definido antes das tags.
 - [ ] `analytics_storage` inicia negado.
 - [ ] `ad_storage` inicia negado.
 - [ ] `ad_user_data` inicia negado.
 - [ ] `ad_personalization` inicia negado.
+- [ ] O comando `consent default` existe no `dataLayer` com as quatro categorias negadas antes da escolha.
+- [ ] O comando `consent update` existe no `dataLayer` após aceitar, recusar ou salvar preferências.
 - [ ] `wait_for_update: 500` está presente no consentimento padrão.
 - [ ] Os scripts de consentimento usam `strategy="beforeInteractive"`.
 - [ ] A preferência salva é restaurada automaticamente em visitas seguintes.
+- [ ] No estado negado, GTM, gtag.js e GA4 carregam e podem emitir pings sem cookies.
+- [ ] No estado negado, os pings GA4 carregam `pscdl=denied`, `npa=1` e `gcs=G[01]00`.
+- [ ] No estado negado, não existem cookies `_ga`, `_gid` ou `_gcl_*`.
+- [ ] No estado negado, não existem identificadores equivalentes em `localStorage` ou `sessionStorage`.
 - [ ] O banner aparece na primeira visita sem preferência.
 - [ ] O banner desaparece após aceitar ou recusar.
 - [ ] Os botões "Aceitar todos" e "Recusar opcionais" funcionam no banner.
@@ -433,6 +452,10 @@
 - [ ] O painel de configurações fecha com Esc.
 - [ ] O painel de configurações fecha ao clicar no fundo.
 - [ ] O fundo fica bloqueado durante abertura do painel.
+- [ ] "Aceitar todos" atualiza as quatro categorias para `granted` e permite cookies do GA4.
+- [ ] "Recusar opcionais" mantém as quatro categorias negadas e não cria cookies opcionais.
+- [ ] A revogação pelas "Configurações de privacidade" envia `consent update` para `denied` e impede novas coletas opcionais.
+- [ ] Não há afrouxamento genérico dos filtros de rede: apenas endpoints Google esperados no modo negado; demais rastreadores opcionais continuam bloqueados antes do consentimento.
 - [ ] “Aceitar medição” atualiza os estados previstos.
 - [ ] “Recusar recursos não essenciais” mantém os estados negados.
 - [ ] Preferências personalizadas funcionam.
@@ -442,6 +465,10 @@
 - [ ] O link "Configurações de privacidade" está presente no rodapé das páginas jurídicas.
 - [ ] Meta Pixel não dispara quando publicidade está recusada.
 - [ ] Tags não essenciais respeitam a escolha.
+- [ ] O Microsoft Clarity não dispara quando Analytics está recusado.
+- [ ] O banner não menciona "Microsoft Clarity".
+- [ ] A Política de Privacidade menciona "Microsoft Clarity".
+- [ ] A validação real do Clarity ocorreu no painel (mapas de calor, gravações e mascaramento).
 - [ ] O formulário funciona com tudo recusado.
 - [ ] O sucesso funciona com tudo recusado.
 - [ ] O WhatsApp pós-lead funciona com tudo recusado.
@@ -681,6 +708,7 @@
 - [ ] GA4.
 - [ ] Google Ads.
 - [ ] Meta Pixel.
+- [ ] Microsoft Clarity (Project ID configurado no GTM).
 - [ ] Consentimento.
 - [ ] Política de Privacidade.
 - [ ] Termos de Uso.

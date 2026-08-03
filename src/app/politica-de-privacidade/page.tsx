@@ -156,6 +156,11 @@ export default function PrivacyPolicyPage() {
               de privacidade aplicáveis;
             </li>
             <li>
+              Microsoft Clarity, da Microsoft, para mapas de calor, gravações de
+              sessão e análise agregada da navegação, quando o recurso estiver
+              ativado de acordo com as escolhas de privacidade aplicáveis;
+            </li>
+            <li>
               outros prestadores técnicos indispensáveis à segurança, publicação
               ou funcionamento do serviço.
             </li>
@@ -185,6 +190,14 @@ export default function PrivacyPolicyPage() {
           <p>
             As preferências poderão ser alteradas posteriormente por meio do
             recurso disponibilizado na página.
+          </p>
+          <p>
+            Com sua autorização, a página pode utilizar o Microsoft Clarity para
+            gerar mapas de calor, gravações de sessão e análises agregadas da
+            navegação. A finalidade é compreender como a página é utilizada —
+            incluindo rolagem, cliques e eventuais dificuldades de navegação — e
+            melhorar a experiência do visitante. Campos e áreas sensíveis do
+            formulário são mascarados nessas gravações e análises.
           </p>
 
           <h2 className="text-[22px] md:text-[24px] font-bold text-[var(--text-primary)] mt-10 mb-3">

@@ -79,6 +79,7 @@ Os dados podem ser processados por fornecedores necessários ao funcionamento da
 - Google Apps Script e Google Sheets, para recebimento e organização dos contatos;
 - WhatsApp e Meta, quando o visitante decide continuar a conversa;
 - Google Tag Manager, Google Analytics, Google Ads e Meta Pixel, quando esses recursos estiverem ativados de acordo com as escolhas de privacidade aplicáveis;
+- Microsoft Clarity, da Microsoft, para mapas de calor, gravações de sessão e análise agregada da navegação, quando o recurso estiver ativado de acordo com as escolhas de privacidade aplicáveis;
 - outros prestadores técnicos indispensáveis à segurança, publicação ou funcionamento do serviço.
 
 Esses fornecedores tratam dados de acordo com seus próprios termos e políticas. Alguns podem operar infraestrutura fora do Brasil, o que pode resultar em transferência internacional de dados, observadas as medidas e garantias aplicáveis.
@@ -92,6 +93,8 @@ A página pode utilizar tecnologias estritamente necessárias para funcionamento
 Cookies ou tecnologias de análise, publicidade e medição somente deverão ser ativados conforme as escolhas apresentadas no mecanismo de consentimento aplicável. O visitante poderá aceitar, rejeitar ou gerenciar as categorias não essenciais.
 
 As preferências poderão ser alteradas posteriormente por meio do recurso disponibilizado na página.
+
+Com sua autorização, a página pode utilizar o Microsoft Clarity para gerar mapas de calor, gravações de sessão e análises agregadas da navegação. A finalidade é compreender como a página é utilizada — incluindo rolagem, cliques e eventuais dificuldades de navegação — e melhorar a experiência do visitante. Campos e áreas sensíveis do formulário são mascarados nessas gravações e análises.
 
 ## 7. Armazenamento e retenção
 

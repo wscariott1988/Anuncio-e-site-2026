@@ -1,6 +1,6 @@
 # Rastreamento — `/landingpage`
 
-> Status: GTM instalado, demais tags pendentes  
+> Status: GTM instalado, Microsoft Clarity previsto via GTM (pendente de configuração), demais tags pendentes
 > Rota: `/landingpage`  
 > Conversão principal: `generate_lead`  
 > Formulário: `landingpage_lead_form`  
@@ -39,6 +39,7 @@ A medição deve responder:
 ## 3. Ferramentas previstas
 
 - Google Tag Manager.
+- Microsoft Clarity.
 - Google Analytics 4.
 - Google Ads Conversion Tracking.
 - Meta Pixel.
@@ -65,6 +66,26 @@ Não instalar ao mesmo tempo:
 - GA4 direto e GA4 duplicado pelo GTM;
 - Meta Pixel direto e Meta Pixel duplicado pelo GTM;
 - conversão direta do Google Ads e a mesma conversão importada do GA4.
+
+### Microsoft Clarity
+
+O Microsoft Clarity é instalado **exclusivamente pelo GTM**. Não existe snippet do Clarity no código da aplicação e não deve existir `NEXT_PUBLIC_CLARITY_PROJECT_ID`.
+
+Regras:
+
+- Criar uma única tag de Clarity no GTM, com o Project ID configurado dentro do container.
+- Não instalar o snippet diretamente no código.
+- Não duplicar a tag do Clarity no GTM ou fora dele.
+- Não usar o pacote `@microsoft/clarity` sem justificativa e aprovação.
+- A tag do Clarity deve respeitar o consentimento: disparar somente quando a categoria Analytics estiver autorizada.
+- O banner permanece genérico e não menciona "Microsoft Clarity".
+- O formulário inteiro permanece mascarado com `data-clarity-mask="true"` no contêiner raiz.
+- Nenhuma PII pode ser enviada ao Clarity ou ao `dataLayer` (nome, WhatsApp, negócio, URL informada, respostas).
+- A validação real do Clarity é feita no painel do Clarity (mapas de calor, gravações de sessão e verificação de mascaramento dos campos), nunca apenas no código.
+- O consentimento do Clarity segue a categoria Analytics do painel de preferências. Não criar sinal específico no banner.
+- Para EEA, Reino Unido e Suíça o Clarity exige sinal de consentimento; como o tráfego-alvo é o Brasil, a pendência para essas regiões deve ser registrada se o escopo mudar.
+
+Não tratar o carregamento do Clarity como conversão.
 
 ## 4. Modelo de conversão
 
@@ -861,7 +882,17 @@ O consentimento do formulário é diferente do consentimento de cookies e mediç
 
 ### Base técnica
 
-Usar uma implementação compatível com Consent Mode v2 e com a Política de Privacidade aprovada.
+Usar uma implementação compatível com **Consent Mode v2 avançado** e com a Política de Privacidade aprovada.
+
+O projeto adota o comportamento avançado do Consent Mode: com o consentimento negado, GTM, gtag.js e GA4 podem ser carregados e podem emitir **pings sem cookies** (sinais restritos). Esses acessos não são tratados como falha nem como coleta identificável. A medição identificável (cookies `_ga`, `_gid`, `_gcl_*` e equivalentes em armazenamento) só pode ocorrer após `analytics_storage = granted`.
+
+Garantias esperadas no estado `denied`:
+
+- os comandos `consent default` e `consent update` existem no `dataLayer` com as quatro categorias negadas;
+- os pings do GA4 carregam marcadores restritos (`pscdl=denied`, `npa=1`, `gcs=G[01]00`);
+- nenhum cookie de rastreamento (`_ga`, `_gid`, `_gcl_*`, `_clck`, `_clsk`) é criado;
+- nenhum identificador equivalente é gravado em `localStorage` ou `sessionStorage`;
+- o Microsoft Clarity não carrega enquanto `analytics_storage` estiver negado.
 
 ### Estado padrão
 
@@ -911,6 +942,7 @@ Não permitir publicidade autorizada de forma incompatível com a política adot
 - Definir o estado antes das tags via scripts `beforeInteractive`.
 - Restaurar preferência salva do `localStorage` também via `beforeInteractive`.
 - Usar `wait_for_update: 500` no consentimento padrão.
+- Permitir pings sem cookies (cookieless) de GTM, gtag.js e GA4 no estado negado, sem tratar esses acessos como falha.
 - Mapeamento das categorias do painel para os storage types:
 
   | Categoria | Storage type |
@@ -924,6 +956,8 @@ Não permitir publicidade autorizada de forma incompatível com a política adot
 - Não recarregar a página como único meio de atualização.
 - Bloquear Meta Pixel enquanto publicidade estiver recusada.
 - Bloquear tags não essenciais conforme a escolha.
+- Bloquear o Microsoft Clarity enquanto Analytics estiver recusado, configurando o gating da tag no GTM para `analytics_storage`.
+- Não expor "Microsoft Clarity" no texto do banner.
 
 ### Independência do formulário
 
@@ -951,9 +985,10 @@ NEXT_PUBLIC_GTM_ID
 NEXT_PUBLIC_GA4_ID
 NEXT_PUBLIC_META_PIXEL_ID
 NEXT_PUBLIC_WHATSAPP_NUMBER
-```
 
 Não exigir todas quando o GTM centralizar as integrações.
+
+O Microsoft Clarity não utiliza variável pública: o Project ID fica configurado exclusivamente no container do GTM. Não criar `NEXT_PUBLIC_CLARITY_PROJECT_ID`.
 
 ### Segredos
 
@@ -981,6 +1016,18 @@ Nunca:
 - Ausência de GTM não quebra a página.
 - Eventos não disparam durante renderização duplicada.
 - React Strict Mode não cria duplicidade.
+
+### Consent Mode v2 avançado
+
+- Consent default com as quatro categorias negadas antes da escolha.
+- `consent update` presente no `dataLayer` após aceitar, recusar ou salvar preferências.
+- No estado negado, pings GA4 com `pscdl=denied`, `npa=1` e `gcs=G[01]00`, e ausência de cookies `_ga`, `_gid` e `_gcl_*`.
+- No estado negado, ausência de identificadores equivalentes em `localStorage` e `sessionStorage`.
+- "Aceitar todos" atualiza `analytics_storage`, `ad_storage`, `ad_user_data` e `ad_personalization` para `granted` e permite cookies do GA4.
+- "Recusar opcionais" mantém as quatro categorias negadas e não cria cookies opcionais.
+- Revogação pelas "Configurações de privacidade" envia `consent update` para `denied` e impede novas coletas opcionais.
+- Microsoft Clarity não carrega com `analytics_storage` negado; ausência de `_clck`, `_clsk` e scripts de Clarity nesse estado.
+- Não afrouxar filtros de rede genericamente: liberar apenas os endpoints Google esperados no modo negado e continuar bloqueando outros rastreadores opcionais antes do consentimento.
 
 ### GTM
 
@@ -1011,6 +1058,15 @@ Nunca:
 - Confirmar um único evento `Lead`.
 - Confirmar que WhatsApp não dispara `Lead`.
 - Confirmar que o Pixel respeita consentimento.
+
+### Microsoft Clarity
+
+- Confirmar uma única tag no GTM e ausência de snippet no código.
+- Confirmar que o formulário possui `data-clarity-mask="true"` e que todos os campos estão dentro da área mascarada.
+- Confirmar que o banner não menciona "Microsoft Clarity".
+- Confirmar que a tag respeita `analytics_storage`.
+- Validar no painel do Clarity: mapas de calor, gravações de sessão e mascaramento dos campos.
+- Confirmar ausência de PII no Clarity, no `dataLayer`, no console e na URL.
 
 ### Formulário
 
@@ -1090,6 +1146,9 @@ O rastreamento somente pode ser considerado concluído quando:
 - UTMs e identificadores são preservados corretamente;
 - dados pessoais não aparecem nas plataformas;
 - o formulário funciona sem consentimento de medição;
+- o Clarity é instalado uma única vez pelo GTM, sem snippet no código e sem `NEXT_PUBLIC_CLARITY_PROJECT_ID`;
+- o formulário permanece mascarado e sem PII no Clarity ou no `dataLayer`;
+- a validação real do Clarity (mapas de calor, gravações e mascaramento) ocorreu no painel;
 - ambientes de teste não poluem produção;
 - pendências de contas e IDs são documentadas.
 
@@ -1119,3 +1178,9 @@ Esses itens podem ser adicionados posteriormente por escopo próprio.
   `https://developers.google.com/analytics/devguides/collection/ga4/reference/events`
 - Google Tag Platform — Consent Mode:  
   `https://developers.google.com/tag-platform/security/guides/consent`
+- Microsoft Clarity — setup e instalação:
+  `https://learn.microsoft.com/en-us/clarity/setup-and-installation/clarity-setup`
+- Microsoft Clarity — consentimento (Consent API v2):
+  `https://learn.microsoft.com/en-us/clarity/setup-and-installation/clarity-consent-api-v2`
+- Microsoft Clarity — mascaramento de conteúdo (`data-clarity-mask`):
+  `https://learn.microsoft.com/en-us/clarity/setup-and-installation/clarity-masking`

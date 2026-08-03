@@ -278,7 +278,7 @@ export function LeadFormModal({ isOpen, ctaLocation, onClose }: LeadFormModalPro
         )}
 
         <div className="flex-1 flex items-start md:items-center justify-center px-5 py-3 md:px-8 md:py-6">
-          <div className="w-full max-w-[480px] space-y-6">
+          <div className="w-full max-w-[480px] space-y-6" data-clarity-mask="true">
             {/* Honeypot — hidden from humans, visible to screen readers and bots */}
             <div className="absolute -left-[9999px] opacity-0 h-0 overflow-hidden" aria-hidden="true">
               <label htmlFor="form-hp" className="sr-only">Não preencha este campo</label>

@@ -684,6 +684,15 @@ Antes do envio:
 * solicitar consentimento não pré-marcado;
 * apresentar link para a Política de Privacidade.
 
+### Mascaramento de conteúdo
+
+* O contêiner raiz do formulário modal deve possuir `data-clarity-mask="true"`.
+* Todas as etapas, campos, revisão, erros e tela de sucesso devem ficar dentro dessa área mascarada.
+* Nome, WhatsApp, negócio ou serviço, URL informada e demais respostas não podem ser enviados ao Clarity.
+* Não adicionar valores de campos ao `dataLayer`, atributos `data-*`, URLs, console ou logs do navegador.
+* O Microsoft Clarity é instalado exclusivamente pelo GTM; não instalar snippet no código.
+* O banner permanece genérico e não menciona "Microsoft Clarity".
+
 ### Fechamento do modal
 
 * Disponibilizar botão de fechar com nome acessível.
@@ -982,6 +991,8 @@ Não enviar para `dataLayer`, GA4, Google Ads ou Meta Pixel:
 * A preferência deve poder ser revista.
 * A copy do controle de consentimento está em `CONTENT.md`.
 * O comportamento técnico deve ser validado antes da publicação.
+* O Microsoft Clarity segue a categoria Analytics do painel de preferências.
+* O banner não exibe "Microsoft Clarity" no texto visível.
 
 ## 23. Rodapé e links jurídicos
 
