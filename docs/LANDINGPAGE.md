@@ -29,34 +29,32 @@ Quando existir conflito:
 
 ## 2. Objetivo
 
-A rota `/landingpage` deve converter visitantes interessados na criação de uma Landing Page para tráfego pago em contatos comerciais qualificados.
+A rota `/landingpage` deve converter visitantes interessados na criação de uma Landing Page para tráfego pago em conversas comerciais pelo WhatsApp.
 
 ### Conversão principal
 
-Envio do formulário confirmado pelo servidor e armazenado com sucesso.
+A conversão é a abertura do WhatsApp com a mensagem oficial pré-preenchida. Ela acontece fora da página e não é medida por um evento de conversão confirmado por servidor.
 
-Evento:
+### Fluxo comercial
 
-```text
-generate_lead
-```
+1. O visitante conhece a oferta.
+2. Clica no CTA.
+3. Abre diretamente o WhatsApp.
+4. Conversa com Willian e confirma a contratação.
+5. Paga a entrada de R$ 498,50.
+6. Somente depois recebe e responde o briefing completo.
+7. A página é desenvolvida.
+8. O saldo de R$ 498,50 é pago após a Landing Page estar publicada e funcionando.
 
-### Continuidade comercial
+### Redução de atrito
 
-Depois do envio confirmado, o interessado poderá continuar a conversa pelo WhatsApp.
+A página não deve transmitir que o visitante precisa passar por avaliação, processo seletivo, diagnóstico ou confirmação de enquadramento antes de conversar.
 
-O clique no WhatsApp após o envio:
-
-* não cria um novo lead;
-* não substitui o formulário;
-* não deve disparar `generate_lead`;
-* deve seguir o evento definido em `TRACKING.md`.
+Não existe formulário, modal de avaliação, botão "Começar" nem perguntas anteriores ao WhatsApp.
 
 ### Prioridade
 
-Qualificação é mais importante que volume bruto de contatos.
-
-A página não deve oferecer um atalho direto para o WhatsApp antes do formulário.
+Clareza e velocidade do caminho até o WhatsApp são mais importantes que qualquer coleta prévia de dados.
 
 ## 3. Público
 
@@ -87,11 +85,10 @@ Não exigir que o visitante já esteja anunciando. Ele pode contratar a Landing 
 ### Escopo padrão
 
 * Estratégia e estrutura.
-* Copy.
+* Copy (produzida por Willian; o cliente não entrega textos prontos).
 * Design responsivo.
 * Desenvolvimento em Next.js.
-* Formulário de qualificação.
-* Continuidade pelo WhatsApp após o envio.
+* Canais de contato (WhatsApp e formulário do próprio projeto do cliente, quando aplicável).
 * Configuração de rastreamento.
 * Publicação.
 * Testes.
@@ -120,6 +117,10 @@ Até 7 dias úteis, contados somente após:
 * recebimento dos materiais necessários.
 
 O prazo fica pausado quando uma informação, acesso ou material indispensável estiver pendente.
+
+### Briefing depois da contratação
+
+O briefing completo é enviado somente depois da contratação. Não existe coleta de briefing antes do WhatsApp.
 
 ### Custos externos
 
@@ -175,6 +176,7 @@ Regras:
 * Não incentivar exploração de outras páginas.
 * Não criar novas rotas comerciais sem aprovação.
 * Não adicionar links externos para os projetos apresentados.
+* Não alterar outras rotas ou páginas do projeto.
 
 ## 6. Arquitetura da página
 
@@ -182,18 +184,17 @@ A ordem obrigatória é:
 
 1. Cabeçalho.
 2. Hero.
-3. Faixa de clareza.
-4. Problema e solução.
+3. Bloco de confiança.
+4. Projetos reais.
 5. O que está incluído.
-6. Projetos desenvolvidos.
-7. Como funciona.
-8. Quem é Willian Souza.
-9. Investimento.
-10. Perguntas frequentes.
-11. CTA final.
-12. Rodapé.
+6. Processo simples.
+7. Quem é Willian Souza.
+8. Investimento.
+9. Perguntas frequentes.
+10. CTA final.
+11. Rodapé.
 
-O formulário existe como modal e não como uma seção aberta dentro da página.
+Não existe seção de formulário aberto nem modal de formulário.
 
 Não criar seção de depoimentos, avaliações, logotipos ou resultados sem dados reais e autorização.
 
@@ -206,12 +207,12 @@ Não criar uma segunda explicação para uma ideia já apresentada em outra seç
 O cabeçalho deve conter apenas:
 
 * identificação ou logotipo da Anúncio & Site;
-* CTA “Quero minha Landing Page”.
+* CTA "Quero minha Landing Page".
 
 ### Comportamento
 
 * A identificação leva ao topo da própria página.
-* O CTA abre o formulário modal.
+* O CTA abre diretamente o WhatsApp.
 * O cabeçalho não precisa ser fixo na primeira versão.
 
 ### Não incluir
@@ -221,7 +222,7 @@ O cabeçalho deve conter apenas:
 * Instagram;
 * blog;
 * telefone;
-* WhatsApp;
+* WhatsApp adicional;
 * portfólio externo;
 * barra promocional;
 * seletor de idioma.
@@ -241,7 +242,8 @@ O hero deve permitir a compreensão imediata de:
 * etiqueta;
 * uma única `h1`;
 * subheadline;
-* investimento;
+* investimento (preço total);
+* forma de pagamento (entrada e saldo);
 * prazo;
 * quantidade de rodadas de ajustes;
 * CTA principal;
@@ -250,7 +252,9 @@ O hero deve permitir a compreensão imediata de:
 
 ### Comportamento
 
-* O CTA abre o formulário modal.
+* O CTA abre diretamente o WhatsApp.
+* No desktop, preço, forma de pagamento e CTA aparecem integralmente na primeira dobra.
+* No celular, o H1, o preço e o CTA ficam visíveis rapidamente, sem exigir rolagem longa.
 * Texto e CTA aparecem antes do mockup no celular.
 * O conteúdo principal deve existir no HTML inicial.
 * Nenhuma animação pode ser necessária para compreender a oferta.
@@ -273,73 +277,27 @@ A composição deve:
 
 Não publicar placeholder, dashboard falso ou marca inventada como se fosse projeto real.
 
-## 9. Faixa de clareza
+## 9. Bloco de confiança
 
 Usar integralmente a copy de `CONTENT.md`.
 
-A seção deve impedir que o visitante confunda a oferta com:
+Bloco compacto, sem parágrafos longos, com três informações:
 
-* curso;
-* template;
-* ferramenta;
-* software;
-* assinatura.
+* Desenvolvimento direto com Willian.
+* Mais de 5 anos de experiência prática com Google Ads.
+* Página publicada e testada no celular e no desktop.
 
-Deve ser curta e visualmente separada do hero.
+Funciona como reforço de confiança, não como seção grande. Não deve ocupar posição anterior ao portfólio.
 
-## 10. Problema e solução
-
-Usar integralmente a copy de `CONTENT.md`.
-
-Apresentar os três pontos:
-
-* mensagem alinhada;
-* foco em uma ação;
-* contato e medição.
-
-Não afirmar que:
-
-* a página atual do visitante desperdiça dinheiro;
-* a Landing Page é responsável por todo resultado;
-* trocar a página garante campanha lucrativa.
-
-Não criar outra seção para repetir o problema, a jornada ou a solução.
-
-## 11. O que está incluído
-
-Usar os seis itens de `CONTENT.md`:
-
-1. Estratégia e copy.
-2. Design responsivo.
-3. Desenvolvimento em Next.js.
-4. Formulário e WhatsApp.
-5. Configuração de rastreamento.
-6. Publicação e testes.
-
-A seção pode usar composição Bento Box conforme `DESIGN.md`.
-
-### Regras
-
-* Não inventar serviços adicionais.
-* Não separar formulário e WhatsApp como caminhos concorrentes.
-* Explicar que o WhatsApp aparece como continuidade após o formulário.
-* Condicionar o rastreamento ao fornecimento dos acessos necessários.
-* Informar as duas rodadas de ajustes.
-* Não incluir CTA nesta seção.
-
-### Layout responsivo
-
-* **Mobile** (`<768px`): painel compacto vertical com `divide-y` mostrando as 6 linhas (título + descrição).
-* **Tablet** (`768–1023px`): grid de 2 colunas × 3 linhas.
-* **Desktop** (`≥1024px`): grid uniforme de 3 colunas × 2 linhas, todos os cartões com a mesma largura e alinhados pelo topo.
-
-## 12. Projetos desenvolvidos
+## 10. Projetos reais
 
 ### Objetivo
 
 Apresentar projetos reais sem retirar o visitante da Landing Page da Anúncio & Site.
 
 Nenhum projeto deve possuir link para a página externa.
+
+A seção vem imediatamente após o bloco de confiança.
 
 ### Projetos iniciais
 
@@ -373,6 +331,16 @@ A capa deve ser um recorte representativo, não a captura completa reduzida até
 * **Tablet** (`768–1023px`): grid de 2 colunas. O quinto projeto pode ficar centralizado na última linha se necessário.
 * **Desktop** (`≥1024px`): grid de 6 colunas. Cada projeto ocupa 2 colunas. Projetos 1–3 ocupam a primeira linha (colunas 1–2, 3–4, 5–6). Projetos 4–5 ocupam a segunda linha centralizados (colunas 2–3 e 4–5). Os cinco cartões possuem a mesma largura. CTA e microcopy centralizados horizontalmente após o grid, com largura da microcopy limitada a ~580px.
 
+### CTA do portfólio
+
+Texto:
+
+```text
+Quero minha Landing Page por R$ 997
+```
+
+Abre diretamente o WhatsApp.
+
 ### Visualizador no celular
 
 * Abrir como modal praticamente em tela cheia.
@@ -385,7 +353,7 @@ A capa deve ser um recorte representativo, não a captura completa reduzida até
 
 * Abrir como modal amplo.
 * Iniciar pela versão mobile em moldura de celular.
-* Exibir controle “Celular” e “Desktop”.
+* Exibir controle "Celular" e "Desktop".
 * Carregar a captura desktop somente quando selecionada.
 * Mostrar a versão desktop em moldura de navegador.
 * Permitir rolagem vertical por toda a captura.
@@ -483,29 +451,66 @@ Se o limite prejudicar a leitura, priorizar legibilidade e registrar a exceção
 * Usar carregamento tardio nas capturas completas.
 * Não aplicar carregamento prioritário a imagens abaixo da dobra.
 
-## 13. Como funciona
+## 11. O que está incluído
 
-Usar integralmente as quatro etapas de `CONTENT.md`:
+Usar integralmente a copy de `CONTENT.md`.
 
-1. Briefing e materiais.
-2. Copy, design e desenvolvimento.
-3. Revisão e ajustes.
-4. Aprovação e publicação.
+Apresentar os itens de maneira curta e escaneável:
 
-Destacar:
+1. Estratégia e copy.
+2. Design responsivo.
+3. Desenvolvimento moderno.
+4. Formulário e WhatsApp.
+5. Rastreamento.
+6. Publicação e testes.
 
-* prazo de até 7 dias úteis;
-* início após entrada, briefing e materiais;
-* pausa do prazo quando houver pendência;
-* até duas rodadas de ajustes.
+Depois dos itens, exibir:
+
+```text
+O projeto inclui até 2 rodadas de ajustes dentro do escopo aprovado.
+```
+
+### Regras
+
+* Não inventar serviços adicionais.
+* Condicionar o rastreamento ao fornecimento dos acessos necessários.
+* Não incluir CTA nesta seção.
+* Evitar repetir os mesmos cards ou textos em diferentes versões de desktop e mobile dentro do DOM. Utilizar uma única estrutura semântica e adaptar o layout com CSS sempre que possível.
+* O item "Formulário e WhatsApp" descreve os canais de contato do projeto entregue ao cliente, não um formulário nesta Landing Page.
 
 ### Layout responsivo
 
-* **Mobile** (`<768px`): leitura vertical com gaps reduzidos, números com `w-9 h-9`.
-* **Tablet** (`768–1023px`): grid 2×2, blocos lado a lado em duas linhas.
-* **Desktop** (`≥1024px`): quatro colunas em uma única linha (`lg:grid-cols-4`), blocos de largura igual, alinhados pelo topo. O bloco "Prazo do projeto" permanece abaixo das quatro etapas como faixa informativa separada, sem ser contado como quinta etapa.
+* **Mobile** (`<768px`): grid de 1 coluna (cards empilhados).
+* **Tablet** (`768–1023px`): grid de 2 colunas.
+* **Desktop** (`≥1024px`): grid uniforme de 3 colunas × 2 linhas, todos os cartões com a mesma largura e alinhados pelo topo.
 
-## 14. Quem é Willian Souza
+## 12. Processo simples
+
+Usar integralmente as três etapas de `CONTENT.md`:
+
+1. Contratação.
+2. Briefing simples.
+3. Criação, revisão e publicação.
+
+Abaixo das etapas, exibir:
+
+```text
+Prazo de até 7 dias úteis após o recebimento do briefing completo e dos materiais necessários.
+```
+
+### Regras
+
+* Não fazer parecer que o cliente precisa preparar textos completos.
+* Deixar claro que Willian produz e organiza a copy.
+* Não incluir CTA nesta seção.
+
+### Layout responsivo
+
+* **Mobile** (`<768px`): leitura vertical com gaps reduzidos, números com `w-9 h-9` ou `w-10 h-10`.
+* **Tablet** (`768–1023px`): grid 2 colunas.
+* **Desktop** (`≥1024px`): três colunas em uma única linha, blocos de largura igual, alinhados pelo topo. O bloco de prazo permanece abaixo das etapas como faixa informativa separada, sem ser contado como etapa.
+
+## 13. Quem é Willian Souza
 
 Usar a copy e os indicadores de `CONTENT.md`.
 
@@ -517,36 +522,51 @@ Usar a copy e os indicadores de `CONTENT.md`.
 * Não usar "nós".
 * Não inventar certificações.
 * Não modificar os números aprovados.
+* Não dar a entender que foram criadas Landing Pages para mais de sete mil clientes.
 * Não transformar a seção em uma biografia extensa.
 
 ### Layout responsivo
 
-* **Desktop** (`≥1024px`): composição em duas colunas. Coluna esquerda (~55%) contém etiqueta "EXECUÇÃO DIRETA", título e dois parágrafos alinhados à esquerda. Coluna direita (~45%) contém os quatro indicadores em grid 2×2, alinhados pelo topo. Usa `lg:grid lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:gap-12 lg:items-start`.
+* **Desktop** (`≥1024px`): composição em duas colunas. Coluna esquerda (~55%) contém etiqueta "EXECUÇÃO DIRETA", título e os três parágrafos alinhados à esquerda. Coluna direita (~45%) contém os quatro indicadores em grid 2×2, alinhados pelo topo. Usa `lg:grid lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:gap-12 lg:items-start`.
 * **Tablet** (`768–1023px`): apresentação primeiro, indicadores abaixo em grid 2×2.
 * **Mobile** (`<768px`): texto primeiro, indicadores em grid 2×2, sem rolagem horizontal.
 
-## 15. Investimento
+## 14. Investimento
 
 Usar integralmente a copy de `CONTENT.md`.
 
 ### Elementos obrigatórios
 
-* preço de R$ 997;
-* entrada de R$ 498,50;
-* saldo de R$ 498,50 após publicação;
-* escopo resumido;
-* prazo;
+* preço total de R$ 997;
+* entrada para iniciar de R$ 498,50;
+* saldo de R$ 498,50 após a publicação;
+* prazo de até 7 dias úteis após briefing e materiais;
 * até duas rodadas de ajustes;
-* custos externos;
-* itens fora do escopo;
-* ausência de garantia comercial;
-* CTA.
+* CTA;
+* microtexto.
 
-O CTA abre o formulário modal.
+### Removido desta seção
 
-## 16. Perguntas frequentes
+* Lista do que não está incluído.
+* Advertências sobre garantia de resultados.
+* Parágrafos sobre custos de terceiros.
+* Frase pedindo preenchimento de formulário.
+* Frase sobre avaliar a necessidade.
+* Frase sobre confirmar o escopo.
 
-Usar as 8 perguntas e respostas de `CONTENT.md`.
+Essas informações foram transferidas para a FAQ.
+
+### CTA
+
+```text
+Quero minha Landing Page por R$ 997
+```
+
+Abre diretamente o WhatsApp.
+
+## 15. Perguntas frequentes
+
+Usar as 9 perguntas e respostas de `CONTENT.md`.
 
 ### Comportamento
 
@@ -554,423 +574,108 @@ Usar as 8 perguntas e respostas de `CONTENT.md`.
 * A pergunta permanece visível.
 * Permitir abertura por teclado.
 * Comunicar o estado expandido.
-* Não inserir botão direto para WhatsApp.
+* Não inserir botão direto para WhatsApp dentro da FAQ.
 * Não adicionar campo livre de dúvidas.
 
-## 17. CTA final
+## 16. CTA final
 
 Usar integralmente a copy de `CONTENT.md`.
 
-O CTA abre o formulário modal.
+O CTA abre diretamente o WhatsApp.
 
-Não renderizar o formulário aberto dentro da seção.
+Não renderizar formulário aberto dentro da seção.
 
-## 18. Formulário modal
+## 17. WhatsApp
 
-### Regra central
+### Caminho único de contato
 
-O formulário é o único caminho inicial de contato.
+O WhatsApp é o único caminho inicial de contato.
 
-Todos os CTAs comerciais abrem a mesma instância lógica do formulário.
+Todos os CTAs comerciais abrem a mesma URL do WhatsApp com a mensagem oficial pré-preenchida.
+
+### Mensagem pré-preenchida
+
+Usar exatamente:
+
+```text
+Olá, Willian. Vi a Landing Page completa por R$ 997 e quero iniciar meu projeto. Pode me explicar os próximos passos?
+```
+
+A mensagem deve estar corretamente codificada na URL.
 
 ### Identificação da origem dos CTAs
 
-| Local                  | `cta_location` |
-| ---------------------- | -------------- |
-| Cabeçalho              | `header`       |
-| Hero                   | `hero`         |
-| Projetos desenvolvidos | `portfolio`    |
-| Investimento           | `pricing`      |
-| CTA final              | `final`        |
+| Local                  | `cta_location`   |
+| ---------------------- | ---------------- |
+| Cabeçalho              | `header`         |
+| Hero                   | `hero`           |
+| Projetos desenvolvidos | `portfolio`      |
+| Investimento           | `investment`     |
+| CTA final              | `final`          |
+| CTA fixo mobile        | `sticky-mobile`  |
 
-### Abertura
-
-* Abrir somente por ação do visitante.
-* Nunca abrir automaticamente.
-* Não abrir por tempo, rolagem ou intenção de saída.
-* Registrar o CTA de origem conforme `TRACKING.md`.
-* Posicionar o foco no título ou primeiro controle adequado.
-
-### Tela inicial
-
-Antes da primeira pergunta, apresentar:
-
-* etiqueta;
-* título;
-* explicação;
-* estimativa de cerca de 40 segundos;
-* botão “Começar”.
-
-Usar a copy de `CONTENT.md`.
-
-### Progresso
-
-Exibir três etapas:
-
-1. Contato.
-2. Sobre o projeto.
-3. Confirmar.
-
-O indicador não precisa mostrar a quantidade total de perguntas.
-
-### Experiência
-
-* Apresentar uma pergunta por vez.
-* Permitir avançar somente com resposta obrigatória válida.
-* Permitir voltar.
-* Preservar respostas ao voltar.
-* Preservar respostas ao fechar e reabrir durante a mesma visualização da página.
-* Não persistir dados pessoais em URL.
-* Não exigir reinício após erro.
-* Não mostrar WhatsApp antes do envio.
-
-### Organização das etapas
-
-#### Contato
-
-* Nome.
-* WhatsApp.
-
-#### Sobre o projeto
-
-* Negócio ou serviço.
-* Situação dos anúncios.
-* Existência de site ou Landing Page.
-* URL atual, quando houver.
-
-#### Confirmar
-
-* Revisão das respostas.
-* Consentimento.
-* Envio.
-
-### Campos
-
-Os rótulos, perguntas, opções, placeholders e mensagens são definidos em `CONTENT.md`.
-
-Campos:
-
-1. Nome.
-2. WhatsApp.
-3. Negócio ou serviço.
-4. Situação atual dos anúncios.
-5. Possui site ou Landing Page.
-6. URL atual opcional.
-7. Consentimento com a Política de Privacidade.
-
-### URL condicional
-
-* Exibir somente quando o visitante informar que já possui site ou Landing Page.
-* Manter opcional.
-* Validar apenas quando preenchida.
-* Aceitar colagem.
-
-### Telefone
-
-* Aceitar número brasileiro com DDD.
-* Permitir colagem.
-* Não apagar dígitos inesperadamente.
-* Manter fonte de pelo menos 16 px no celular.
-* Normalizar no envio.
-* Validar novamente no servidor.
-
-### Revisão
-
-Antes do envio:
-
-* mostrar todas as respostas;
-* permitir editar;
-* não expor dados na URL;
-* solicitar consentimento não pré-marcado;
-* apresentar link para a Política de Privacidade.
-
-### Mascaramento de conteúdo
-
-* O contêiner raiz do formulário modal deve possuir `data-clarity-mask="true"`.
-* Todas as etapas, campos, revisão, erros e tela de sucesso devem ficar dentro dessa área mascarada.
-* Nome, WhatsApp, negócio ou serviço, URL informada e demais respostas não podem ser enviados ao Clarity.
-* Não adicionar valores de campos ao `dataLayer`, atributos `data-*`, URLs, console ou logs do navegador.
-* O Microsoft Clarity é instalado exclusivamente pelo GTM; não instalar snippet no código.
-* O banner permanece genérico e não menciona "Microsoft Clarity".
-
-### Fechamento do modal
-
-* Disponibilizar botão de fechar com nome acessível.
-* Fechar com `Esc`.
-* Fechar ao clicar no fundo, quando isso não causar perda inesperada.
-* Preservar as respostas enquanto a página permanecer aberta.
-* Bloquear a rolagem da página ao fundo.
-* Restaurar a rolagem ao fechar.
-* Devolver o foco ao CTA de origem.
-
-### Mobile
-
-* Ocupar praticamente a tela inteira.
-* Respeitar áreas seguras.
-* Manter o botão de avançar acessível com teclado virtual.
-* Não permitir rolagem horizontal.
-* Não ocultar erros ou consentimento.
-
-## 19. Envio e estados
-
-### Validação
-
-* Validar no cliente para orientar o visitante.
-* Validar novamente no servidor.
-* Exibir erro junto ao campo.
-* Não depender somente da cor.
-* Direcionar o foco ao primeiro erro quando necessário.
-
-### Processamento
-
-Ao clicar em “Enviar informações”:
-
-* validar todos os campos;
-* bloquear cliques repetidos;
-* desabilitar o botão;
-* exibir “Enviando informações…”;
-* preservar os dados;
-* não disparar `generate_lead`.
-
-### Sucesso
-
-O sucesso acontece somente quando:
-
-1. o servidor aceita os dados;
-2. os dados são validados;
-3. o lead é armazenado;
-4. o servidor devolve confirmação.
-
-Depois disso:
-
-* disparar `generate_lead` uma única vez;
-* exibir a tela de sucesso dentro do modal;
-* disponibilizar “Continuar no WhatsApp”;
-* disponibilizar “Voltar para a página”;
-* usar a mensagem de WhatsApp definida em `CONTENT.md`.
-
-Não criar nem usar `/landingpage/obrigado` na primeira versão.
-
-### Falha de validação
-
-* Mostrar quais informações precisam ser corrigidas.
-* Preservar todas as respostas.
-* Não disponibilizar WhatsApp por erro de preenchimento.
-
-### Falha técnica
-
-* preservar respostas;
-* exibir "Tentar novamente" como ação principal;
-* permitir voltar e revisar;
-* não disponibilizar WhatsApp;
-* não disparar conversão.
-
-## 20. Integração e armazenamento do formulário
-
-### Fonte oficial
-
-Toda a arquitetura, os nomes técnicos, o esquema das 24 colunas e as regras de sincronização estão em:
+Cada CTA possui os atributos:
 
 ```text
-docs/LEADS.md
+data-whatsapp-cta="true"
+data-cta-location="[localização]"
 ```
 
-Não criar uma segunda lista de colunas neste documento.
+### Comportamento
 
-### Arquitetura aprovada
-
-```text
-Formulário
-→ endpoint do servidor Next.js
-→ validação, normalização e idempotência
-→ envio ao Google Apps Script
-→ Google Apps Script escreve na aba Leads
-→ confirmação com lead_id
-→ sucesso e continuidade pelo WhatsApp
-```
-
-O Google Sheets:
-
-* é o armazenamento único e definitivo dos leads;
-* usa a aba `Leads`;
-* recebe exatamente as 24 colunas de `LEADS.md`;
-* não é acessado diretamente pelo navegador.
-
-### Regra de sucesso
-
-Não simular envio e não apresentar sucesso sem confirmação do Google Apps Script.
-
-O sucesso acontece quando:
-
-1. os dados foram aceitos;
-2. o servidor validou e normalizou os campos;
-3. a idempotência foi confirmada;
-4. o Apps Script confirmou a escrita no Google Sheets;
-5. o servidor devolveu um `lead_id`.
-
-Uma falha do Apps Script:
-
-* significa que o armazenamento não foi confirmado;
-* não pode produzir sucesso, `generate_lead` ou WhatsApp pós-lead;
-* deve preservar as respostas no navegador;
-* deve permitir nova tentativa segura com o mesmo `lead_id`;
-* não pode afirmar que o servidor reteve os dados.
-
-### Implementação
-
-Antes de desenvolver:
-
-* inspecionar a infraestrutura existente;
-* verificar variáveis de ambiente;
-* confirmar o endpoint do Apps Script web app;
-* confirmar o secret do Apps Script;
-* confirmar o identificador da planilha;
-* confirmar a aba `Leads` com as 24 colunas;
-* confirmar que o Apps Script possui acesso de edição na planilha;
-* não criar conta externa ou contratar serviço sem aprovação.
-
-### Servidor
-
-O endpoint deve:
-
-* aceitar somente os campos previstos;
-* validar tipos e tamanhos;
-* normalizar o telefone;
-* sanitizar conteúdo;
-* impedir interpretação de texto como fórmula no Sheets;
-* aplicar proteção contra abuso;
-* preservar somente parâmetros de origem permitidos;
-* gerar data e hora no servidor;
-* registrar o consentimento do formulário;
-* aplicar idempotência;
-* criar ou confirmar um `lead_id` opaco;
-* enviar os dados ao Google Apps Script;
-* iniciar `status_atendimento` como `novo`;
-* iniciar `observacoes` vazio;
-* devolver resposta clara;
-* não expor detalhes internos.
-
-### Integração via Apps Script
-
-A integração com Google Sheets deve:
-
-* acontecer via Google Apps Script (web app);
-* receber POST com secret para autenticação;
-* usar LockService para evitar concorrência;
-* verificar idempotência por `lead_id` antes de escrever;
-* gravar uma única linha por `lead_id`;
-* preservar a ordem das 24 colunas;
-* não inventar valores ausentes;
-* não sobrescrever alterações manuais em `status_atendimento` e `observacoes`;
-* retornar JSON com `ok`, `status` e `lead_id`;
-* usar `status: created` para nova linha;
-* usar `status: duplicate` para repetição idempotente;
-* permitir no máximo uma repetição automática segura do servidor com o mesmo `lead_id`;
-* gerar registro técnico em falha persistente.
-
-Não implementar sincronização bidirecional na primeira versão.
-
-### Proteção proporcional
-
-Aplicar conforme a estrutura existente:
-
-* honeypot;
-* limite de tamanho;
-* validação de origem quando aplicável;
-* HTTPS;
-* segredos somente no servidor;
-* logs sem dados pessoais desnecessários.
-
-Rate limit e CAPTCHA podem ser adicionados futuramente somente quando houver necessidade comprovada.
-
-## 21. WhatsApp
-
-### Disponibilidade
-
-O WhatsApp aparece somente depois do envio confirmado.
+* Abrir o WhatsApp em nova aba.
+* Não usar `preventDefault`.
+* Não usar `event_callback`.
+* Não usar `window.location` com atraso.
+* O rastreamento (`cta_click` e `whatsapp_click`) deve disparar sem bloquear ou atrasar a navegação.
+* Não renderizar link quebrado quando o número estiver ausente.
 
 ### Configuração
 
-* Centralizar o número.
+* Centralizar o número (`NEXT_PUBLIC_WHATSAPP_NUMBER`).
 * Não repetir o número em diversas strings.
+* Não inventar ou substituir o número.
 * Validar antes da publicação.
-* Não renderizar link quebrado quando estiver ausente.
-* Abrir de forma compatível com celular e desktop.
-
-### Depois do lead
-
-Usar a mensagem:
-
-```text
-Olá, Willian. Acabei de enviar as informações do meu projeto pela página da Anúncio & Site.
-```
-
-### Contingência
-
-Usar a mensagem:
-
-```text
-Olá, Willian. Preenchi o formulário da Anúncio & Site, mas ocorreu um erro no envio.
-```
 
 ### Proibições
 
-Não exibir WhatsApp:
+Não exibir telefone direto, botão flutuante adicional, Instagram, Facebook ou links comerciais concorrentes.
 
-* no cabeçalho;
-* no hero;
-* nas seções intermediárias;
-* na FAQ;
-* no CTA final;
-* no rodapé;
-* como botão flutuante.
+## 18. CTA fixo mobile
 
-## 22. Rastreamento e origem
+CTA fixo discreto na parte inferior, exibido somente no celular.
+
+### Regras
+
+* Não cobrir o banner de cookies, controles ou elementos importantes.
+* Não aparecer na primeira dobra quando gerar duplicação visual excessiva com o CTA da hero. Pode aparecer após uma pequena rolagem.
+* Ocultar enquanto o banner de consentimento estiver visível.
+* Ocultar quando o rodapé estiver visível.
+* Não exibir em telas desktop.
+* Abrir diretamente o WhatsApp com `cta_location = sticky-mobile`.
+
+## 19. Rastreamento e origem
 
 Implementar somente os eventos definidos em `TRACKING.md`.
 
-### Conversão principal
+### Eventos
 
-```text
-generate_lead
-```
+* `cta_click`.
+* `whatsapp_click`.
+* `portfolio_open`.
+* `portfolio_view_change`.
+* `faq_open`.
 
-Disparar somente após confirmação real do armazenamento.
+### Proibições
 
-### Continuidade pelo WhatsApp
-
-Depois do lead confirmado:
-
-```text
-whatsapp_after_lead
-```
-
-Esse evento não cria outro `generate_lead`.
-
-### Origem
-
-Preservar e associar ao registro conforme `docs/LEADS.md`, quando existirem:
-
-* `utm_source`;
-* `utm_medium`;
-* `utm_campaign`;
-* `utm_term`;
-* `utm_content`;
-* `gclid`;
-* `gbraid`;
-* `wbraid`;
-* `fbclid`;
-* `entry_path`;
-* `referrer_hostname`.
-
-Associar a origem ao lead sem enviar dados pessoais para analytics.
-
-Gerar também:
-
-* `lead_source` normalizado;
-* `source_cta` com o CTA que iniciou o formulário.
-
-Não inventar parâmetros ausentes e não substituir valores válidos por vazio.
+* Não criar conversão no clique.
+* Não criar conversão na tentativa.
+* Não importar eventos de interação como conversão.
+* Não usar R$ 997 como valor de cada lead.
+* Não instalar tags duplicadas.
+* Não implementar CAPI.
+* Não implementar Enhanced Conversions.
+* Não implementar rastreamento server-side.
 
 ### Proibição de dados pessoais
 
@@ -979,7 +684,7 @@ Não enviar para `dataLayer`, GA4, Google Ads ou Meta Pixel:
 * nome;
 * telefone;
 * descrição do negócio;
-* URL informada;
+* URL digitada;
 * respostas;
 * mensagem;
 * qualquer outro dado pessoal.
@@ -987,14 +692,14 @@ Não enviar para `dataLayer`, GA4, Google Ads ou Meta Pixel:
 ### Consentimento
 
 * As tags devem respeitar as escolhas do visitante.
-* O formulário deve funcionar mesmo sem consentimento para medição.
+* O WhatsApp deve funcionar mesmo sem consentimento para medição.
 * A preferência deve poder ser revista.
 * A copy do controle de consentimento está em `CONTENT.md`.
 * O comportamento técnico deve ser validado antes da publicação.
 * O Microsoft Clarity segue a categoria Analytics do painel de preferências.
 * O banner não exibe "Microsoft Clarity" no texto visível.
 
-## 23. Rodapé e links jurídicos
+## 20. Rodapé e links jurídicos
 
 Usar integralmente a copy de `CONTENT.md`.
 
@@ -1002,6 +707,7 @@ Usar integralmente a copy de `CONTENT.md`.
 
 * Política de Privacidade (`/politica-de-privacidade`).
 * Termos de Uso (`/termos`).
+* "Configurações de privacidade".
 * Voltar ao topo, se necessário.
 
 ### Links proibidos
@@ -1018,18 +724,18 @@ Usar integralmente a copy de `CONTENT.md`.
 
 As páginas jurídicas devem estar prontas e acessíveis antes da publicação.
 
-## 24. Metadata e compartilhamento
+## 21. Metadata e compartilhamento
 
 ### Title
 
 ```text
-Landing Page para Tráfego Pago | Anúncio & Site
+Landing Page Profissional para Google Ads e Meta Ads por R$ 997 | Anúncio & Site
 ```
 
 ### Description
 
 ```text
-Landing Page completa para Google Ads e Meta Ads, com estratégia, copy, design, desenvolvimento e rastreamento. Projeto por R$ 997.
+Landing Page profissional para tráfego pago, criada para Google Ads e Meta Ads por R$ 997. Estratégia, copy, design, desenvolvimento, rastreamento e publicação por Willian Souza. Entrada de R$ 498,50 para iniciar.
 ```
 
 ### Canonical
@@ -1046,11 +752,13 @@ https://www.anuncioesite.com.br/landingpage
 * URL base configurada;
 * favicon funcionando;
 * metadata implementada conforme o padrão do projeto;
-* nenhuma afirmação diferente da oferta.
+* nenhuma afirmação diferente da oferta;
+* title e description refletem: Landing Page profissional, Google Ads, Meta Ads, tráfego pago, preço de R$ 997 e Anúncio & Site;
+* sem keyword stuffing.
 
 Não publicar imagem social provisória ou com dados fictícios.
 
-## 25. Indexação
+## 22. Indexação
 
 A rota de produção pode ser indexável.
 
@@ -1072,7 +780,7 @@ Adicionar ao sitemap somente depois de:
 
 Não bloquear CSS, JavaScript ou imagens necessários à renderização.
 
-## 26. Responsividade
+## 23. Responsividade
 
 Priorizar mobile.
 
@@ -1096,20 +804,11 @@ Validar pelo menos:
 * Sem teclado cobrindo a ação.
 * Sem elementos fixos cobrindo conteúdo.
 
-Não implementar CTA fixo no celular na primeira versão.
+### CTA fixo mobile
 
-### Comportamento compacto mobile (< 768 px)
+O CTA fixo mobile está implementado nesta versão, seguindo as regras da seção 18.
 
-Aplicar padrões compactos para reduzir a altura total sem remover conteúdo:
-
-* **Portfólio**: faixa horizontal com `scroll-snap`, cards com `min-w-[85%]`, sem autoplay. Desktop mantém grid `md:grid-cols-2 lg:grid-cols-3`.
-* **O que está incluído**: painel compacto com 6 linhas em `divide-y`. Bento Box (`hidden md:grid`) mantido no desktop.
-* **Quem é Willian Souza**: a partir de `1024px`, layout em duas colunas com texto à esquerda e indicadores em 2×2 à direita. Entre `768px` e `1023px`, apresentação acima e indicadores abaixo em 2×2. Abaixo de `768px`, texto primeiro e indicadores em grid `grid-cols-2` (2×2) com tamanhos de fonte reduzidos.
-* **Como funciona**: gaps e tamanhos reduzidos (`space-y-4 md:space-y-8`, `w-9 h-9 md:w-10 md:h-10`).
-
-Todos os textos, CTAs, modais e integrações permanecem idênticos. O desktop não é afetado.
-
-## 27. Acessibilidade
+## 24. Acessibilidade
 
 A página deve possuir:
 
@@ -1121,24 +820,24 @@ A página deve possuir:
 * foco visível;
 * navegação por teclado;
 * labels persistentes;
-* erros associados aos campos;
 * estados comunicados;
 * textos alternativos;
 * alvos clicáveis adequados;
+* nomes acessíveis em botões e links;
 * suporte a `prefers-reduced-motion`.
 
 ### Modais
 
-Os modais de formulário e portfólio devem:
+O modal de portfólio deve:
 
 * possuir título acessível;
 * manter o foco internamente;
-* fechar por teclado;
+* fechar por teclado (`Esc`);
 * restaurar o foco;
 * bloquear adequadamente o fundo;
 * não depender de animação.
 
-## 28. Performance
+## 25. Performance
 
 Metas de experiência:
 
@@ -1160,20 +859,19 @@ São metas, não garantias para toda rede ou aparelho.
 * Rastreamento assíncrono.
 * Ausência de efeitos pesados.
 
-## 29. Segurança e privacidade
+## 26. Segurança e privacidade
 
 * Usar HTTPS.
 * Não expor segredos.
 * Não colocar chaves privadas no cliente.
-* Validar entradas no servidor.
-* Evitar logs de dados pessoais.
 * Não incluir dados pessoais em URLs.
 * Não incluir dados pessoais em eventos.
 * Tratar erros sem revelar detalhes internos.
 * Respeitar a Política de Privacidade.
 * Coletar apenas o necessário.
+* A mensagem fixa do WhatsApp não contém dados pessoais do visitante.
 
-## 30. Fora do escopo
+## 27. Fora do escopo
 
 Não implementar nesta fase:
 
@@ -1189,26 +887,20 @@ Não implementar nesta fase:
 * testes A/B ativos;
 * SEO avançado;
 * gestão de anúncios;
+* formulário de qualificação;
 * CAPI;
 * rastreamento server-side;
 * chat automático;
 * pop-up de saída;
 * página de obrigado;
-* CTA flutuante;
+* CTA flutuante adicional;
 * links externos para projetos.
 
-## 31. Dependências antes da publicação
+## 28. Dependências antes da publicação
 
 Os itens abaixo devem ser confirmados:
 
 * número oficial do WhatsApp;
-* endpoint do Apps Script web app;
-* secret do Apps Script;
-* identificador da planilha;
-* aba `Leads` com as 24 colunas de `docs/LEADS.md`;
-* Apps Script com acesso de edição na planilha;
-* LockService habilitado no Apps Script;
-* idempotência e recuperação testadas;
 * IDs de GTM, GA4, Google Ads e Meta Pixel;
 * configuração de consentimento;
 * domínio e infraestrutura;
@@ -1223,7 +915,7 @@ Os itens abaixo devem ser confirmados:
 
 Ausência de uma dependência deve ser relatada como pendência real. Não substituir por dado inventado.
 
-## 32. Critério funcional de aprovação
+## 29. Critério funcional de aprovação
 
 A Landing Page somente pode ser considerada concluída quando:
 
@@ -1232,19 +924,15 @@ A Landing Page somente pode ser considerada concluída quando:
 * a copy corresponde a `CONTENT.md`;
 * o preço e o pagamento estão corretos;
 * todas as seções estão na ordem definida;
-* todos os CTAs abrem o mesmo formulário;
-* não existe WhatsApp antes do formulário;
-* o formulário valida e envia;
-* o lead é armazenado no Google Sheets via Apps Script;
-* o mesmo `lead_id` chega uma única vez ao Google Sheets;
-* a linha possui as 24 colunas na ordem de `docs/LEADS.md`;
-* uma falha do Sheets preserva as respostas e não produz sucesso falso;
-* o sucesso depende da confirmação do Apps Script;
-* `generate_lead` não duplica;
-* o WhatsApp pós-envio funciona;
-* a contingência não é contabilizada como lead;
+* todos os CTAs abrem diretamente o WhatsApp;
+* a mensagem pré-preenchida está correta na URL;
+* o formulário e o modal antigos não aparecem mais;
+* não existem scripts, imports, estados ou estilos órfãos do formulário removido;
+* os eventos de rastreamento continuam sendo disparados sem bloquear a navegação;
+* nenhum CTA bloqueia a abertura do WhatsApp;
 * o portfólio funciona sem links externos;
 * mobile e desktop foram testados;
+* o CTA fixo mobile respeita as regras da seção 18;
 * os modais são acessíveis;
 * metadata e canonical estão corretas;
 * Política de Privacidade e Termos estão acessíveis;

@@ -3,7 +3,7 @@ import { ConsentFooterButton } from "@/components/consent/ConsentFooterButton";
 
 export function Footer() {
   return (
-    <footer className="bg-[var(--surface)] border-t border-[var(--border)]">
+    <footer className="bg-[var(--surface)] border-t border-[var(--border)]" data-sticky-observe="footer">
       <div className="max-w-[1200px] mx-auto px-6 py-12 space-y-6">
         <div className="space-y-2">
           <p className="text-base font-semibold text-[var(--text-primary)]">{BRAND_NAME}</p>

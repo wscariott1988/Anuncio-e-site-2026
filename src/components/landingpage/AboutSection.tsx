@@ -1,11 +1,11 @@
-import { OWNER_NAME } from "@/lib/constants";
+import { OWNER_NAME, BRAND_NAME } from "@/lib/constants";
 
 export function AboutSection() {
   const indicators = [
-    { label: "Mais de 5 anos", detail: "Trabalhando com Google Ads e negócios locais." },
-    { label: "Cerca de R$ 40 mil", detail: "Investidos em minhas próprias campanhas." },
-    { label: "Mais de 7 mil clientes", detail: "Atendidos a partir de contatos conquistados pelo Google." },
-    { label: "Execução direta", detail: "Estratégia, copy, design e desenvolvimento conduzidos por mim." },
+    { label: "Mais de 5 anos", detail: "usando Google Ads em negócios locais" },
+    { label: "Cerca de R$ 40 mil", detail: "investidos em campanhas próprias" },
+    { label: "Mais de 7 mil clientes", detail: "atendidos em meus negócios a partir do Google" },
+    { label: "Execução direta", detail: "Estratégia, copy, design e desenvolvimento conduzidos diretamente por mim" },
   ];
 
   return (
@@ -19,12 +19,17 @@ export function AboutSection() {
             Seu projeto é desenvolvido diretamente por mim
           </h2>
           <p className="text-base text-[var(--text-secondary)] leading-relaxed">
-            Sou {OWNER_NAME}. Há mais de cinco anos uso o Google Ads para
-            anunciar meu próprio trabalho, testar páginas e acompanhar o que
-            acontece depois do clique.
+            Sou {OWNER_NAME}. Há mais de cinco anos utilizo o Google Ads para
+            gerar clientes para meus próprios negócios, testar páginas e
+            acompanhar o que acontece depois do clique.
           </p>
           <p className="text-base text-[var(--text-secondary)] leading-relaxed">
-            Essa experiência prática orienta cada projeto da Anúncio &amp; Site:
+            Nesse período, investi cerca de R$ 40 mil em campanhas próprias e
+            atendi mais de sete mil clientes em meus negócios a partir de
+            contatos conquistados pelo Google.
+          </p>
+          <p className="text-base text-[var(--text-secondary)] leading-relaxed">
+            Essa experiência prática orienta cada projeto da {BRAND_NAME}:
             mensagem clara, boa experiência no celular, contato simples e
             rastreamento das ações importantes.
           </p>

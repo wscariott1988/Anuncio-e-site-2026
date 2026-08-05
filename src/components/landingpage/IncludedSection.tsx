@@ -2,27 +2,27 @@ export function IncludedSection() {
   const items = [
     {
       title: "Estratégia e copy",
-      text: "Organizo sua oferta, o público, os argumentos e os textos da página.",
+      text: "Organização da oferta, público, argumentos e textos da página.",
     },
     {
       title: "Design responsivo",
-      text: "Crio uma interface própria, com prioridade para a experiência no celular.",
+      text: "Interface própria, preparada para celular e desktop.",
     },
     {
-      title: "Desenvolvimento em Next.js",
-      text: "Desenvolvo uma página rápida, acessível e adaptada para diferentes telas.",
+      title: "Desenvolvimento moderno",
+      text: "Página rápida, acessível e adaptada para diferentes telas.",
     },
     {
       title: "Formulário e WhatsApp",
-      text: "O interessado envia as informações e pode continuar a conversa pelo WhatsApp.",
+      text: "Canais preparados para receber e organizar contatos.",
     },
     {
-      title: "Configuração de rastreamento",
-      text: "Configuro os eventos previstos quando as contas e os acessos necessários forem fornecidos.",
+      title: "Rastreamento",
+      text: "Configuração dos eventos previstos quando os acessos necessários forem fornecidos.",
     },
     {
       title: "Publicação e testes",
-      text: "Após sua aprovação, publico e testo a página no celular e no desktop.",
+      text: "Publicação, testes de links, formulário, WhatsApp e eventos configurados.",
     },
   ];
 
@@ -34,7 +34,7 @@ export function IncludedSection() {
             Projeto completo
           </span>
           <h2 className="text-[28px] md:text-[40px] font-bold text-[var(--text-primary)] leading-tight">
-            Tudo o que sua Landing Page precisa para entrar no ar
+            Tudo o que está incluído no projeto
           </h2>
           <p className="text-base text-[var(--text-secondary)] leading-relaxed">
             Eu cuido da estratégia, da criação e da parte técnica em um único
@@ -42,22 +42,7 @@ export function IncludedSection() {
           </p>
         </div>
 
-        {/* Mobile: compact panel */}
-        <div className="md:hidden bg-[var(--surface)] rounded-2xl border border-[var(--border)] divide-y divide-[var(--border)]">
-          {items.map((item) => (
-            <div key={item.title} className="px-5 py-4 space-y-1">
-              <h3 className="text-[15px] font-semibold text-[var(--text-primary)]">
-                {item.title}
-              </h3>
-              <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
-                {item.text}
-              </p>
-            </div>
-          ))}
-        </div>
-
-        {/* Desktop / tablet: uniform grid */}
-        <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {items.map((item) => (
             <div
               key={item.title}

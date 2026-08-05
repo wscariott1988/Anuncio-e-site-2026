@@ -96,35 +96,35 @@ test("mobile-portfolio-viewer-final.png — 390x844", async ({ page }) => {
 test("desktop-included-grid-final.png — 1440x900", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await waitForPageReady(page);
-  await scrollToH2(page, "Tudo o que sua Landing Page");
+  await scrollToH2(page, "Tudo o que está incluído no projeto");
   await page.screenshot({ path: "artifacts/visual-review/desktop-included-grid-final.png", fullPage: false });
 });
 
 test("desktop-portfolio-centered-final.png — 1440x900", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await waitForPageReady(page);
-  await scrollToH2(page, "Algumas Landing Pages");
+  await scrollToH2(page, "Projetos reais desenvolvidos por mim");
   await page.screenshot({ path: "artifacts/visual-review/desktop-portfolio-centered-final.png", fullPage: false });
 });
 
 test("desktop-process-grid-final.png — 1440x900", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await waitForPageReady(page);
-  await scrollToH2(page, "briefing à publicação");
+  await scrollToH2(page, "Da contratação à publicação em três etapas");
   await page.screenshot({ path: "artifacts/visual-review/desktop-process-grid-final.png", fullPage: false });
 });
 
 test("tablet-process-grid-final.png — 768x1024", async ({ page }) => {
   await page.setViewportSize({ width: 768, height: 1024 });
   await waitForPageReady(page);
-  await scrollToH2(page, "briefing à publicação");
+  await scrollToH2(page, "Da contratação à publicação em três etapas");
   await page.screenshot({ path: "artifacts/visual-review/tablet-process-grid-final.png", fullPage: false });
 });
 
 test("mobile-sections-preserved-final.png — 390x844", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await waitForPageReady(page);
-  await scrollToH2(page, "briefing à publicação");
+  await scrollToH2(page, "Da contratação à publicação em três etapas");
   await page.screenshot({ path: "artifacts/visual-review/mobile-sections-preserved-final.png", fullPage: false });
 });
 
@@ -160,7 +160,7 @@ test("mobile-about-preserved-final.png — 390x844", async ({ page }) => {
 test("desktop-portfolio-closing-final.png — 1440x900", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await waitForPageReady(page);
-  await scrollToH2(page, "Algumas Landing Pages");
+  await scrollToH2(page, "Projetos reais desenvolvidos por mim");
   await page.evaluate(() => window.scrollBy(0, 600));
   await page.waitForTimeout(300);
   await page.screenshot({ path: "artifacts/visual-review/desktop-portfolio-closing-final.png", fullPage: false });

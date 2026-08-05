@@ -2,8 +2,9 @@ export type CtaLocation =
   | "header"
   | "hero"
   | "portfolio"
-  | "pricing"
-  | "final";
+  | "investment"
+  | "final"
+  | "sticky-mobile";
 
 export type ProjectId =
   | "mecanica_auto_brum"
@@ -19,38 +20,6 @@ export interface Project {
   slug: string;
   description: string;
 }
-
-export type FormStepName = "contact" | "project" | "confirmation";
-
-export type SituacaoAnuncios =
-  | "Já anuncio no Google Ads"
-  | "Já anuncio no Meta Ads"
-  | "Já anuncio nos dois"
-  | "Ainda não anuncio, mas pretendo começar";
-
-export type PossuiSite = "Sim" | "Não";
-
-export interface FormData {
-  nome: string;
-  whatsapp: string;
-  negocioServico: string;
-  situacaoAnuncios: SituacaoAnuncios | "";
-  possuiSite: PossuiSite | "";
-  urlAtual: string;
-  consentimento: boolean;
-}
-
-export type FormState =
-  | "idle"
-  | "intro"
-  | "step_1"
-  | "step_2"
-  | "step_3"
-  | "submitting"
-  | "error_validation"
-  | "error_server"
-  | "pending_integration"
-  | "success";
 
 export interface TrackingEvent {
   event: string;

@@ -1,15 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import { trackCtaClick } from "@/lib/tracking";
-import { PRICE } from "@/lib/constants";
-import type { CtaLocation } from "@/types";
+import { PRICE, PRICE_INSTALLMENT } from "@/lib/constants";
+import { WhatsAppCta } from "./WhatsAppCta";
 
-interface HeroProps {
-  onCtaClick: (location: CtaLocation) => void;
-}
-
-export function Hero({ onCtaClick }: HeroProps) {
+export function Hero() {
   return (
     <section
       className="relative overflow-hidden"
@@ -25,31 +20,36 @@ export function Hero({ onCtaClick }: HeroProps) {
               Landing Page para tráfego pago
             </span>
             <h1 className="text-[36px] md:text-[56px] font-bold leading-[1.1] text-[var(--text-primary)]">
-              Eu crio sua Landing Page completa para Google Ads e Meta Ads
+              Landing Page profissional para Google Ads e Meta Ads por{" "}
+              <span className="whitespace-nowrap">{PRICE}</span>
             </h1>
             <p className="text-lg text-[var(--text-secondary)] leading-relaxed max-w-[520px]">
-              Estratégia, copy, design, desenvolvimento e rastreamento em uma
-              página rápida, responsiva e preparada para conduzir o visitante ao
-              contato.
+              Eu cuido da estratégia, dos textos, do design, do desenvolvimento,
+              do rastreamento e da publicação. Você responde um briefing simples
+              depois da contratação e recebe sua página pronta para anunciar.
             </p>
             <div className="space-y-1 text-[var(--text-primary)]">
-              <p className="text-lg font-semibold">Projeto completo por <span className="whitespace-nowrap">{PRICE}</span></p>
+              <p className="text-lg font-semibold">
+                Projeto completo por <span className="whitespace-nowrap">{PRICE}</span>
+              </p>
+              <p className="text-sm text-[var(--text-secondary)]">
+                {PRICE_INSTALLMENT} para iniciar + {PRICE_INSTALLMENT} após a
+                página estar publicada e funcionando.
+              </p>
               <p className="text-sm text-[var(--text-secondary)]">
                 Até 7 dias úteis após briefing e materiais • Até 2 rodadas de ajustes
               </p>
             </div>
-            <div className="space-y-3">
-              <button
-                onClick={() => {
-                  trackCtaClick("hero", "Quero minha Landing Page", "hero_primary");
-                  onCtaClick("hero");
-                }}
-                className="w-full md:w-auto h-14 px-8 text-base font-medium bg-[var(--brand)] text-white rounded-xl hover:bg-[var(--brand-hover)] transition-colors"
-              >
-                Quero minha Landing Page
-              </button>
+            <div className="space-y-3" data-sticky-observe="hero-cta">
+              <WhatsAppCta
+                location="hero"
+                ctaId="hero_primary"
+                ctaText={`Quero minha Landing Page por ${PRICE}`}
+                className="w-full md:w-auto h-14 px-8 text-base font-medium bg-[var(--brand)] text-white rounded-xl hover:bg-[var(--brand-hover)] transition-colors inline-flex items-center justify-center"
+              />
               <p className="text-sm text-[var(--text-secondary)]">
-                Você me explica seu negócio. Eu cuido do planejamento à publicação.
+                Fale diretamente com Willian pelo WhatsApp. O briefing completo é
+                enviado somente depois da contratação.
               </p>
             </div>
           </div>

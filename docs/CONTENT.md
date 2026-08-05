@@ -10,17 +10,19 @@
 * Escrever em primeira pessoa do singular.
 * Usar “eu” e “meu”; nunca apresentar uma equipe inexistente.
 * Oferta padrão: projeto completo por R$ 997.
-* Forma de pagamento: 50% na contratação e 50% após a Landing Page ser publicada e estar funcionando.
-* Prazo: até 7 dias úteis após confirmação da entrada, briefing completo e recebimento dos materiais necessários.
+* Entrada: R$ 498,50 na contratação.
+* Saldo: R$ 498,50 após a Landing Page ser publicada e estar funcionando.
+* Prazo: até 7 dias úteis após o pagamento da entrada, o briefing completo e o recebimento dos materiais necessários.
 * Incluir até 2 rodadas de ajustes dentro do escopo aprovado.
+* Todos os CTAs comerciais abrem diretamente o WhatsApp com a mensagem oficial pré-preenchida.
+* A contratação não depende de avaliação, processo seletivo, diagnóstico ou confirmação de enquadramento.
+* O briefing completo é enviado somente depois da contratação.
 * Não exibir preço anterior, preço riscado, desconto ou condição de lançamento.
 * Não prometer vendas, leads, faturamento, ROAS ou desempenho de campanha.
 * Não inventar depoimentos, avaliações, clientes, resultados, certificações ou selos.
-* Todos os CTAs comerciais abrem o mesmo formulário modal.
-* Não oferecer contato direto pelo WhatsApp antes do envio do formulário.
-* O WhatsApp aparece somente após o envio confirmado ou como contingência depois de uma tentativa válida que falhe tecnicamente.
 * Não adicionar Instagram, blog, menu institucional ou links externos desnecessários.
 * Política de Privacidade e Termos de Uso podem aparecer no rodapé.
+* Não exibir telefone, WhatsApp adicional, Instagram, blog, portfólio externo ou outros links comerciais no rodapé.
 
 ---
 
@@ -36,7 +38,7 @@
 
 ### Comportamento
 
-O CTA abre o formulário modal.
+O CTA abre diretamente o WhatsApp.
 
 ---
 
@@ -48,137 +50,47 @@ O CTA abre o formulário modal.
 
 ### Headline
 
-> **Eu crio sua Landing Page completa para Google Ads e Meta Ads**
+> **Landing Page profissional para Google Ads e Meta Ads por R$ 997**
 
 ### Subheadline
 
-Estratégia, copy, design, desenvolvimento e rastreamento em uma página rápida, responsiva e preparada para conduzir o visitante ao contato.
+Eu cuido da estratégia, dos textos, do design, do desenvolvimento, do rastreamento e da publicação. Você responde um briefing simples depois da contratação e recebe sua página pronta para anunciar.
 
 ### Bloco comercial
 
 **Projeto completo por R$ 997**
 
+**R$ 498,50 para iniciar + R$ 498,50 após a página estar publicada e funcionando.**
+
 Até 7 dias úteis após briefing e materiais • Até 2 rodadas de ajustes
 
 ### CTA principal
 
-**Quero minha Landing Page**
+**Quero minha Landing Page por R$ 997**
 
 ### Microcopy
 
-Você me explica seu negócio. Eu cuido do planejamento à publicação.
+Fale diretamente com Willian pelo WhatsApp. O briefing completo é enviado somente depois da contratação.
+
+### Mensagem pré-preenchida do WhatsApp
+
+Olá, Willian. Vi a Landing Page completa por R$ 997 e quero iniciar meu projeto. Pode me explicar os próximos passos?
 
 ---
 
-## 4. Faixa de clareza
+## 4. Bloco de confiança
 
-### Título
+Bloco compacto, sem parágrafos longos, com três informações:
 
-> **Não é curso, template ou ferramenta.**
+* Desenvolvimento direto com Willian
+* Mais de 5 anos de experiência prática com Google Ads
+* Página publicada e testada no celular e no desktop
 
-### Texto
-
-Eu desenvolvo sua Landing Page completa e entrego pronta para receber sua campanha.
-
-### Apoios
-
-* Criada para sua oferta
-* Desenvolvida diretamente por mim
-* Preparada para celular e desktop
+Funciona como reforço de confiança, não como uma seção grande.
 
 ---
 
-## 5. Problema e solução
-
-### Etiqueta
-
-**Depois do clique**
-
-### Título
-
-> **O anúncio traz o visitante. A Landing Page conduz até o contato.**
-
-### Texto
-
-Eu organizo sua oferta em uma página focada: a mensagem do anúncio continua, as informações aparecem na ordem certa e o visitante encontra uma ação principal.
-
-### Ponto 1
-
-**Mensagem alinhada**
-
-O visitante encontra a mesma oferta que despertou seu interesse no anúncio.
-
-### Ponto 2
-
-**Foco em uma ação**
-
-Sem menus e caminhos concorrentes, a atenção permanece no próximo passo.
-
-### Ponto 3
-
-**Contato e medição**
-
-O formulário organiza os dados do interessado e os eventos mostram as ações importantes.
-
----
-
-## 6. O que está incluído
-
-### Etiqueta
-
-**Projeto completo**
-
-### Título
-
-> **Tudo o que sua Landing Page precisa para entrar no ar**
-
-### Texto
-
-Eu cuido da estratégia, da criação e da parte técnica em um único projeto.
-
-### Item 1
-
-**Estratégia e copy**
-
-Organizo sua oferta, o público, os argumentos e os textos da página.
-
-### Item 2
-
-**Design responsivo**
-
-Crio uma interface própria, com prioridade para a experiência no celular.
-
-### Item 3
-
-**Desenvolvimento em Next.js**
-
-Desenvolvo uma página rápida, acessível e adaptada para diferentes telas.
-
-### Item 4
-
-**Formulário e WhatsApp**
-
-O interessado envia as informações e pode continuar a conversa pelo WhatsApp.
-
-### Item 5
-
-**Configuração de rastreamento**
-
-Configuro os eventos previstos quando as contas e os acessos necessários forem fornecidos.
-
-### Item 6
-
-**Publicação e testes**
-
-Após sua aprovação, publico e testo a página no celular e no desktop.
-
-### Condição
-
-O projeto inclui até 2 rodadas de ajustes dentro do escopo aprovado.
-
----
-
-## 7. Projetos desenvolvidos
+## 5. Projetos reais
 
 ### Etiqueta
 
@@ -186,11 +98,11 @@ O projeto inclui até 2 rodadas de ajustes dentro do escopo aprovado.
 
 ### Título
 
-> **Algumas Landing Pages que desenvolvi**
+> **Projetos reais desenvolvidos por mim**
 
-### Texto
+### Texto de apoio
 
-Selecione um projeto para visualizar a página por dentro.
+Veja Landing Pages criadas para negócios de diferentes segmentos.
 
 ### Projeto 1
 
@@ -244,7 +156,7 @@ Botão: **Ver projeto por dentro**
 
 ### CTA
 
-**Quero minha Landing Page**
+**Quero minha Landing Page por R$ 997**
 
 ### Microcopy
 
@@ -252,7 +164,63 @@ Cada projeto recebe uma estrutura adequada à oferta e ao público do negócio.
 
 ---
 
-## 8. Como funciona
+## 6. O que está incluído
+
+### Etiqueta
+
+**Projeto completo**
+
+### Título
+
+> **Tudo o que está incluído no projeto**
+
+### Texto de apoio
+
+Eu cuido da estratégia, da criação e da parte técnica em um único projeto.
+
+### Item 1
+
+**Estratégia e copy**
+
+Organização da oferta, público, argumentos e textos da página.
+
+### Item 2
+
+**Design responsivo**
+
+Interface própria, preparada para celular e desktop.
+
+### Item 3
+
+**Desenvolvimento moderno**
+
+Página rápida, acessível e adaptada para diferentes telas.
+
+### Item 4
+
+**Formulário e WhatsApp**
+
+Canais preparados para receber e organizar contatos.
+
+### Item 5
+
+**Rastreamento**
+
+Configuração dos eventos previstos quando os acessos necessários forem fornecidos.
+
+### Item 6
+
+**Publicação e testes**
+
+Publicação, testes de links, formulário, WhatsApp e eventos configurados.
+
+### Condição
+
+O projeto inclui até 2 rodadas de ajustes dentro do escopo aprovado.
+
+---
+
+## 7. Processo simples
 
 ### Etiqueta
 
@@ -260,41 +228,33 @@ Cada projeto recebe uma estrutura adequada à oferta e ao público do negócio.
 
 ### Título
 
-> **Do briefing à publicação em quatro etapas**
+> **Da contratação à publicação em três etapas**
 
 ### Etapa 1
 
-**Briefing e materiais**
+**Contratação**
 
-Você envia as informações da oferta, do público, dos diferenciais e os materiais disponíveis.
+Você confirma o projeto e faz o pagamento da entrada de R$ 498,50.
 
 ### Etapa 2
 
-**Copy, design e desenvolvimento**
+**Briefing simples**
 
-Eu organizo a estrutura, produzo os textos e desenvolvo a página responsiva.
+Depois da contratação, envio um briefing para reunir as informações da oferta, do público, dos diferenciais e os materiais disponíveis.
 
 ### Etapa 3
 
-**Revisão e ajustes**
+**Criação, revisão e publicação**
 
-Você revisa a página e reúne as solicitações. Estão incluídas até 2 rodadas dentro do escopo.
-
-### Etapa 4
-
-**Aprovação e publicação**
-
-Após sua aprovação, publico a página e testo formulário, WhatsApp, links e eventos configurados.
+Eu preparo a estratégia, os textos, o design e o desenvolvimento. Você revisa, solicita os ajustes previstos e paga o saldo após a página estar publicada e funcionando.
 
 ### Prazo
 
-**Até 7 dias úteis**
-
-A contagem começa após a entrada, o briefing completo e o recebimento dos materiais necessários.
+Prazo de até 7 dias úteis após o recebimento do briefing completo e dos materiais necessários.
 
 ---
 
-## 9. Quem é Willian Souza
+## 8. Quem é Willian Souza
 
 ### Etiqueta
 
@@ -306,7 +266,9 @@ A contagem começa após a entrada, o briefing completo e o recebimento dos mate
 
 ### Texto
 
-Sou Willian Souza. Há mais de cinco anos uso o Google Ads para anunciar meu próprio trabalho, testar páginas e acompanhar o que acontece depois do clique.
+Sou Willian Souza. Há mais de cinco anos utilizo o Google Ads para gerar clientes para meus próprios negócios, testar páginas e acompanhar o que acontece depois do clique.
+
+Nesse período, investi cerca de R$ 40 mil em campanhas próprias e atendi mais de sete mil clientes em meus negócios a partir de contatos conquistados pelo Google.
 
 Essa experiência prática orienta cada projeto da Anúncio & Site: mensagem clara, boa experiência no celular, contato simples e rastreamento das ações importantes.
 
@@ -314,29 +276,29 @@ Essa experiência prática orienta cada projeto da Anúncio & Site: mensagem cla
 
 **Mais de 5 anos**
 
-Trabalhando com Google Ads e negócios locais.
+usando Google Ads em negócios locais
 
 ### Indicador 2
 
 **Cerca de R$ 40 mil**
 
-Investidos em minhas próprias campanhas.
+investidos em campanhas próprias
 
 ### Indicador 3
 
 **Mais de 7 mil clientes**
 
-Atendidos a partir de contatos conquistados pelo Google.
+atendidos em meus negócios a partir do Google
 
 ### Indicador 4
 
 **Execução direta**
 
-Estratégia, copy, design e desenvolvimento conduzidos por mim.
+Estratégia, copy, design e desenvolvimento conduzidos diretamente por mim
 
 ---
 
-## 10. Investimento
+## 9. Investimento
 
 ### Etiqueta
 
@@ -350,53 +312,36 @@ Estratégia, copy, design e desenvolvimento conduzidos por mim.
 
 Projeto completo, adaptado à sua oferta e preparado para campanhas de Google Ads ou Meta Ads.
 
-### Incluído
+### Destaques
 
-* Estratégia e copy
-* Design responsivo
-* Desenvolvimento em Next.js
-* Formulário com continuidade pelo WhatsApp
-* Configuração de rastreamento
-* Publicação e testes
-* Até 2 rodadas de ajustes
-
-### Forma de pagamento
-
-**50% na contratação e 50% após a Landing Page ser publicada e estar funcionando.**
-
-* Entrada: R$ 498,50
+* Preço total: R$ 997
+* Entrada para iniciar: R$ 498,50
 * Saldo após a publicação: R$ 498,50
-
-### Prazo
-
-Até 7 dias úteis após a entrada, o briefing completo e o recebimento dos materiais necessários.
-
-### Custos externos
-
-Domínio, hospedagem e ferramentas de terceiros não estão incluídos automaticamente. Quando necessários, os custos e as responsabilidades são informados antes da contratação.
-
-### Não incluído
-
-* Gestão de Google Ads ou Meta Ads
-* Produção de fotos, vídeos ou identidade visual completa
-* Páginas, automações ou integrações adicionais
-* Manutenção mensal e testes A/B contínuos
+* Prazo: até 7 dias úteis após briefing e materiais
+* Ajustes: até 2 rodadas dentro do escopo
 
 ### CTA
 
-**Quero minha Landing Page**
+**Quero minha Landing Page por R$ 997**
 
-### Microcopy
+### Microtexto
 
-Preencha o formulário para eu avaliar sua necessidade e confirmar o escopo.
+Você fala diretamente comigo pelo WhatsApp. O briefing completo vem depois da contratação.
 
-### Aviso
+### Removido desta seção
 
-A Landing Page organiza a experiência depois do clique, mas não garante vendas, leads ou desempenho da campanha.
+* Lista do que não está incluído.
+* Advertências sobre garantia de resultados.
+* Parágrafos sobre custos de terceiros.
+* Frase pedindo preenchimento de formulário.
+* Frase sobre avaliar a necessidade.
+* Frase sobre confirmar o escopo.
+
+Essas informações foram transferidas para a FAQ.
 
 ---
 
-## 11. Perguntas frequentes
+## 10. Perguntas frequentes
 
 ### Etiqueta
 
@@ -406,360 +351,89 @@ A Landing Page organiza a experiência depois do clique, mas não garante vendas
 
 > **O que você precisa saber antes de iniciar**
 
-### 1. Quanto custa e como funciona o pagamento?
+### 1. O que preciso enviar para iniciar?
 
-O projeto padrão custa R$ 997: R$ 498,50 na contratação e R$ 498,50 após a página ser publicada e estar funcionando. Serviços fora do escopo são apresentados separadamente antes de qualquer execução.
+Depois da contratação, você recebe um briefing simples para informar sua oferta, público, diferenciais e materiais disponíveis. Você não precisa entregar os textos prontos: a estratégia e a copy fazem parte do projeto.
 
-### 2. Em quanto tempo a página fica pronta?
+### 2. Quanto custa e como funciona o pagamento?
 
-O prazo é de até 7 dias úteis após a entrada, o briefing completo e o recebimento dos materiais necessários. Pendências pausam a contagem.
+O projeto completo custa R$ 997. O pagamento é dividido em R$ 498,50 na contratação e R$ 498,50 após a Landing Page estar publicada e funcionando.
 
-### 3. Preciso já estar anunciando?
+### 3. Em quanto tempo a página fica pronta?
 
-Não. A página pode ser desenvolvida antes da campanha, desde que você tenha uma oferta definida e um plano real para anunciar.
+O prazo é de até 7 dias úteis após o pagamento da entrada, o recebimento do briefing completo e dos materiais necessários.
 
-### 4. Já tenho um site. Ainda preciso de uma Landing Page?
+### 4. A gestão dos anúncios está incluída?
 
-Depende. Um site normalmente oferece vários caminhos; a Landing Page concentra uma oferta e uma ação principal. Eu avalio seu caso antes da contratação.
+Não. O serviço inclui a criação e publicação da Landing Page. A gestão de Google Ads ou Meta Ads não faz parte deste projeto.
 
-### 5. A gestão dos anúncios está incluída?
+### 5. Domínio e hospedagem estão incluídos?
 
-Não. O valor de R$ 997 contempla a criação da Landing Page. A gestão de Google Ads ou Meta Ads é um serviço separado.
+Domínio, hospedagem e ferramentas de terceiros não estão incluídos automaticamente. Quando necessários, os custos e as responsabilidades são informados antes da contratação.
 
-### 6. Domínio e hospedagem estão incluídos?
+### 6. O projeto inclui fotos, vídeos ou identidade visual?
 
-Não automaticamente. A infraestrutura, as contas, os custos e as responsabilidades são definidos antes do início.
+Não inclui produção de fotos, vídeos ou identidade visual completa. São utilizados os materiais fornecidos pelo cliente e os recursos previstos no escopo aprovado.
 
-### 7. Posso solicitar alterações e manutenção?
+### 7. Posso solicitar alterações?
 
-O projeto inclui até 2 rodadas de ajustes dentro do escopo. Manutenção recorrente, novas seções, páginas, integrações ou funcionalidades são avaliadas separadamente.
+Sim. O projeto inclui até 2 rodadas de ajustes dentro do escopo aprovado.
 
-### 8. A página terá rastreamento e garante resultados?
+### 8. A Landing Page garante vendas ou leads?
 
-Os eventos previstos podem ser configurados quando os acessos necessários forem fornecidos. A página não garante vendas ou leads, pois o resultado também depende da oferta, da campanha, do orçamento, da demanda e do atendimento.
+Não. A Landing Page organiza a experiência depois do clique e facilita o contato, mas o resultado também depende da oferta, da campanha, do mercado, do investimento e de outros fatores.
+
+### 9. Já tenho um site. Ainda preciso de uma Landing Page?
+
+Depende. Um site normalmente oferece vários caminhos; a Landing Page concentra uma oferta e uma ação principal. Eu analiso seu caso junto com você antes da contratação.
 
 ---
 
-## 12. CTA final
+## 11. CTA final
 
 ### Etiqueta
 
-**Conte sobre seu projeto**
+**Pronto para iniciar?**
 
 ### Título
 
-> **Quer uma Landing Page pronta para anunciar?**
+> **Tenha sua Landing Page publicada e preparada para anunciar**
 
 ### Texto
 
-Responda algumas perguntas para eu avaliar sua necessidade e confirmar se ela se encaixa no projeto de R$ 997.
+Fale diretamente comigo pelo WhatsApp para confirmar o projeto e receber as orientações para contratação.
 
 ### CTA
 
-**Quero minha Landing Page**
+**Quero minha Landing Page por R$ 997**
 
-### Microcopy
+### Microtexto
 
-Leva cerca de 40 segundos. Após o envio, você poderá continuar pelo WhatsApp.
+Entrada de R$ 498,50 para iniciar. O briefing completo é enviado depois da contratação.
 
 ---
 
-## 13. Formulário modal
+## 12. CTA fixo mobile
 
-### 13.1. Tela inicial
+CTA fixo discreto na parte inferior, exibido somente no celular e após uma pequena rolagem.
 
-#### Etiqueta
+### Texto principal
 
-**Conte sobre seu projeto**
+**Quero iniciar por R$ 498,50**
 
-#### Título
+### Texto de apoio
 
-> **Antes de continuar, preciso entender sua necessidade**
+Projeto completo: R$ 997
 
-#### Texto
+### Regras
 
-Responda algumas perguntas rápidas para eu avaliar seu projeto e confirmar se ele se encaixa na proposta de R$ 997.
-
-#### Estimativa
-
-Leva cerca de 40 segundos.
-
-#### Botão
-
-**Começar**
-
-### 13.2. Indicador de progresso
-
-1. Contato
-2. Sobre o projeto
-3. Confirmar
-
-### 13.3. Pergunta sobre o nome
-
-#### Pergunta
-
-**Como posso chamar você?**
-
-#### Label
-
-Nome
-
-#### Placeholder
-
-Seu nome
-
-#### Botão
-
-**Continuar**
-
-#### Validação
-
-Informe seu nome para continuar.
-
-### 13.4. Pergunta sobre o WhatsApp
-
-#### Pergunta
-
-**Qual WhatsApp devo usar para responder?**
-
-#### Label
-
-WhatsApp
-
-#### Placeholder
-
-(00) 00000-0000
-
-#### Texto auxiliar
-
-Usarei esse número apenas para analisar sua solicitação e entrar em contato sobre o projeto.
-
-#### Botões
-
-* **Continuar**
-* **Voltar**
-
-#### Validação
-
-Informe um número de WhatsApp válido com DDD.
-
-### 13.5. Pergunta sobre o negócio
-
-#### Pergunta
-
-**Qual é o seu negócio ou serviço?**
-
-#### Label
-
-Negócio ou serviço
-
-#### Placeholder
-
-Ex.: clínica odontológica, advocacia ou móveis planejados
-
-#### Texto auxiliar
-
-Descreva em poucas palavras o que sua empresa oferece.
-
-#### Botões
-
-* **Continuar**
-* **Voltar**
-
-#### Validação
-
-Informe qual é o seu negócio ou serviço.
-
-### 13.6. Pergunta sobre anúncios
-
-#### Pergunta
-
-**Qual é a situação atual dos seus anúncios?**
-
-#### Opções
-
-* Já anuncio no Google Ads
-* Já anuncio no Meta Ads
-* Já anuncio nos dois
-* Ainda não anuncio, mas pretendo começar
-
-#### Botões
-
-* **Continuar**
-* **Voltar**
-
-#### Validação
-
-Selecione uma opção para continuar.
-
-### 13.7. Pergunta sobre site ou Landing Page
-
-#### Pergunta
-
-**Você já possui site ou Landing Page?**
-
-#### Opções
-
-* Sim
-* Não
-
-#### Botões
-
-* **Continuar**
-* **Voltar**
-
-#### Validação
-
-Selecione uma opção para continuar.
-
-### 13.8. URL atual
-
-Exibir somente quando a pessoa responder “Sim” à pergunta anterior.
-
-#### Pergunta
-
-**Qual é o endereço da página atual?**
-
-#### Label
-
-URL atual
-
-#### Placeholder
-
-https://www.seusite.com.br
-
-#### Texto auxiliar
-
-Esse campo é opcional. Se preferir, você poderá continuar sem informar o endereço.
-
-#### Botões
-
-* **Continuar**
-* **Voltar**
-
-#### Validação
-
-Quando preenchido, informe um endereço válido.
-
-### 13.9. Revisão
-
-#### Título
-
-> **Confira suas informações**
-
-#### Texto
-
-Revise os dados antes de enviar. Você pode voltar e corrigir qualquer resposta.
-
-#### Rótulos do resumo
-
-* Nome
-* WhatsApp
-* Negócio ou serviço
-* Situação dos anúncios
-* Site ou Landing Page atual
-* URL atual
-
-#### Ação por item
-
-**Editar**
-
-#### Consentimento
-
-Li e concordo com a Política de Privacidade e autorizo o uso destas informações para análise e contato sobre minha solicitação.
-
-#### Botões
-
-* **Enviar informações**
-* **Voltar**
-
-#### Validação do consentimento
-
-Confirme que leu a Política de Privacidade para enviar.
-
-### 13.10. Estado de envio
-
-#### Botão
-
-**Enviando informações…**
-
-#### Mensagem acessível
-
-Suas informações estão sendo enviadas. Aguarde.
-
-### 13.11. Sucesso
-
-#### Etiqueta
-
-**Informações recebidas**
-
-#### Título
-
-> **Obrigado, [nome]. Recebi os dados do seu projeto.**
-
-#### Texto
-
-Agora você pode continuar a conversa comigo pelo WhatsApp. As informações enviadas já estarão registradas para minha análise.
-
-#### CTA
-
-**Continuar no WhatsApp**
-
-#### Ação secundária
-
-**Voltar para a página**
-
-#### Mensagem previamente preenchida no WhatsApp
-
-Olá, Willian. Acabei de enviar as informações do meu projeto pela página da Anúncio & Site.
-
-### 13.12. Erro de validação
-
-#### Título
-
-**Revise as informações**
-
-#### Texto
-
-Alguns campos precisam ser corrigidos antes do envio.
-
-### 13.13. Falha técnica no envio
-
-#### Título
-
-**Não foi possível enviar agora**
-
-#### Texto
-
-Suas respostas foram preservadas. Tente enviar novamente.
-
-#### CTA principal
-
-**Tentar novamente**
-
-#### Ação secundária
-
-**Voltar e revisar**
-
-### 13.14. Contingência após tentativa válida
-
-Exibir somente depois que uma tentativa válida de envio falhar tecnicamente.
-
-#### Texto
-
-Se o problema continuar, você pode me avisar pelo WhatsApp. Suas informações permanecerão preenchidas nesta página.
-
-#### Botão
-
-**Avisar pelo WhatsApp**
-
-#### Mensagem previamente preenchida
-
-Olá, Willian. Preenchi o formulário da Anúncio & Site, mas ocorreu um erro no envio.
+* Não cobrir o banner de cookies, controles ou elementos importantes.
+* Não aparecer na primeira dobra quando gerar duplicação visual excessiva com o CTA da hero.
+* Ocultar enquanto o banner de consentimento estiver visível.
 
 ---
 
-## 14. Consentimento de medição
+## 13. Consentimento de medição
 
 > Este texto operacional deve permanecer alinhado à Política de Privacidade publicada.
 
@@ -799,7 +473,7 @@ Ajudam a medir campanhas e atribuir conversões às respectivas origens.
 
 ---
 
-## 15. Rodapé
+## 14. Rodapé
 
 ### Marca
 
@@ -817,7 +491,3 @@ Landing Pages para tráfego pago, desenvolvidas diretamente por Willian Souza.
 ### Direitos
 
 © [ano atual] Anúncio & Site. Todos os direitos reservados.
-
-### Regra
-
-Não exibir telefone, botão de WhatsApp, Instagram, blog, portfólio externo ou outros links comerciais no rodapé.

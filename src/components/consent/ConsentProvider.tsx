@@ -16,11 +16,13 @@ import { ConsentSettings } from "./ConsentSettings";
 interface ConsentContextType {
   openSettings: () => void;
   consent: ConsentPreferences | null;
+  bannerVisible: boolean;
 }
 
 const ConsentContext = createContext<ConsentContextType>({
   openSettings: () => {},
   consent: null,
+  bannerVisible: false,
 });
 
 export function useConsent() {
@@ -70,7 +72,7 @@ export function ConsentProvider({ children }: { children: ReactNode }) {
   const closeSettings = useCallback(() => setShowSettings(false), []);
 
   return (
-    <ConsentContext.Provider value={{ openSettings, consent }}>
+    <ConsentContext.Provider value={{ openSettings, consent, bannerVisible: showBanner }}>
       {children}
       {showBanner && (
         <ConsentBanner

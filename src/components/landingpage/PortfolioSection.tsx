@@ -1,12 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import { trackCtaClick, trackPortfolioOpen } from "@/lib/tracking";
-import { PROJECTS } from "@/lib/constants";
-import type { CtaLocation, ProjectId } from "@/types";
+import { trackPortfolioOpen } from "@/lib/tracking";
+import { PROJECTS, PRICE } from "@/lib/constants";
+import type { ProjectId } from "@/types";
+import { WhatsAppCta } from "./WhatsAppCta";
 
 interface PortfolioSectionProps {
-  onCtaClick: (location: CtaLocation) => void;
   onOpenProject: (project: (typeof PROJECTS)[number]) => void;
 }
 
@@ -71,17 +71,17 @@ function PortfolioCard({
   );
 }
 
-export function PortfolioSection({ onCtaClick, onOpenProject }: PortfolioSectionProps) {
+export function PortfolioSection({ onOpenProject }: PortfolioSectionProps) {
   return (
     <section className="bg-[var(--surface)]">
       <div className="max-w-[1200px] mx-auto px-6 py-16 md:py-24 space-y-12">
         <div className="max-w-[700px] space-y-4">
           <span className="text-xs font-medium text-[var(--brand)] uppercase tracking-wider">Projetos reais</span>
           <h2 className="text-[28px] md:text-[40px] font-bold text-[var(--text-primary)] leading-tight">
-            Algumas Landing Pages que desenvolvi
+            Projetos reais desenvolvidos por mim
           </h2>
           <p className="text-sm text-[var(--text-secondary)]">
-            Selecione um projeto para visualizar a página por dentro.
+            Veja Landing Pages criadas para negócios de diferentes segmentos.
           </p>
         </div>
 
@@ -126,15 +126,12 @@ export function PortfolioSection({ onCtaClick, onOpenProject }: PortfolioSection
         </div>
 
         <div className="space-y-3 lg:items-center lg:text-center">
-          <button
-            onClick={() => {
-              trackCtaClick("portfolio", "Quero minha Landing Page", "portfolio_primary");
-              onCtaClick("portfolio");
-            }}
-            className="h-12 px-6 text-base font-medium bg-[var(--brand)] text-white rounded-xl hover:bg-[var(--brand-hover)] transition-colors"
-          >
-            Quero minha Landing Page
-          </button>
+          <WhatsAppCta
+            location="portfolio"
+            ctaId="portfolio_primary"
+            ctaText={`Quero minha Landing Page por ${PRICE}`}
+            className="h-12 px-6 text-base font-medium bg-[var(--brand)] text-white rounded-xl hover:bg-[var(--brand-hover)] transition-colors inline-flex items-center"
+          />
           <p className="text-sm text-[var(--text-secondary)] lg:mx-auto lg:max-w-[580px]">Cada projeto recebe uma estrutura adequada à oferta e ao público do negócio.</p>
         </div>
       </div>

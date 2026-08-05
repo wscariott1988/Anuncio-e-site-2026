@@ -17,30 +17,29 @@ test("DEV hydration diagnostic: React attaches to DOM", async ({ page }) => {
   await page.goto(DEV_URL, { waitUntil: "networkidle" });
   await page.waitForTimeout(3000);
 
-  // 1. Check React internal props on a CTA button
+  // 1. Check React internal props on the header WhatsApp CTA link
   const reactProps = await page.evaluate(() => {
-    const btn = document.querySelector("button");
-    if (!btn) return "NO_BUTTON_FOUND";
-    const keys = Object.keys(btn);
+    const link = document.querySelector('a[data-whatsapp-cta="true"]');
+    if (!link) return "NO_WHATSAPP_CTA_FOUND";
+    const keys = Object.keys(link);
     const reactKeys = keys.filter((k) => k.startsWith("__react"));
     return reactKeys.length > 0 ? reactKeys : "NO_REACT_PROPS";
   });
-  console.log("React props on button:", JSON.stringify(reactProps));
+  console.log("React props on WhatsApp CTA:", JSON.stringify(reactProps));
 
-  // 2. Click CTA and check if dialog opens
-  const heroBtn = page.getByRole("button", { name: "Quero minha Landing Page" }).first();
-  await heroBtn.scrollIntoViewIfNeeded();
-  await heroBtn.click();
+  // 2. Click the header CTA and check it opens a wa.me popup
+  const headerCta = page.locator('a[data-whatsapp-cta="true"][data-cta-location="header"]');
+  await headerCta.scrollIntoViewIfNeeded();
+  const headerHref = await headerCta.getAttribute("href");
+  expect(headerHref).toMatch(/^https:\/\/wa\.me\//);
+  const popupPromise = page.waitForEvent("popup");
+  await headerCta.click();
+  const popup = await popupPromise;
+  const popupUrl = popup.url();
+  console.log("Popup URL after CTA click:", popupUrl);
+  await popup.close();
 
-  const dialogOpen = await page.locator("dialog[open]").count();
-  console.log("Dialog[open] after click:", dialogOpen);
-
-  // 3. Close dialog
-  if (dialogOpen > 0) {
-    await page.keyboard.press("Escape");
-  }
-
-  // 4. Check FAQ accordion
+  // 3. Check FAQ accordion
   const faqTrigger = page.locator("#trigger-faq_01");
   await faqTrigger.scrollIntoViewIfNeeded();
   const beforeClick = await faqTrigger.getAttribute("aria-expanded");
@@ -48,8 +47,8 @@ test("DEV hydration diagnostic: React attaches to DOM", async ({ page }) => {
   const afterClick = await faqTrigger.getAttribute("aria-expanded");
   console.log("FAQ aria-expanded before:", beforeClick, "after:", afterClick);
 
-  // 5. Open portfolio
-  const desktopGrid = page.locator(".hidden.md\\:grid.md\\:grid-cols-2");
+  // 4. Open portfolio
+  const desktopGrid = page.locator(".hidden.md\\:grid");
   const card = desktopGrid.locator('[aria-label="Ver projeto Mecânica Auto Brum por dentro"]');
   await card.scrollIntoViewIfNeeded();
   await card.click();
@@ -65,13 +64,13 @@ test("DEV hydration diagnostic: React attaches to DOM", async ({ page }) => {
   console.log("Console errors:", consoleErrors.filter((e) => !e.includes("WebSocket") && !e.includes("404")));
   console.log("Page errors:", pageErrors.filter((e) => !e.includes("WebSocket")));
   console.log("React hydrated:", reactProps !== "NO_REACT_PROPS" ? "YES" : "NO");
-  console.log("CTA opens modal:", dialogOpen > 0 ? "YES" : "NO");
+  console.log("CTA opens WhatsApp popup:", /wa\.me|api\.whatsapp\.com/.test(popupUrl) ? "YES" : "NO");
   console.log("FAQ works:", afterClick === "true" ? "YES" : "NO");
   console.log("Portfolio works:", portfolioDialog > 0 ? "YES" : "NO");
 
   // The page should be interactive
   expect(reactProps).not.toBe("NO_REACT_PROPS");
-  expect(dialogOpen).toBeGreaterThan(0);
+  expect(popupUrl).toMatch(/wa\.me|api\.whatsapp\.com/);
   expect(afterClick).toBe("true");
   expect(portfolioDialog).toBeGreaterThan(0);
 });

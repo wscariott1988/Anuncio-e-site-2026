@@ -1,5 +1,22 @@
 # Leads — armazenamento e Google Sheets
 
+> ## ⛔ SUSPENSO
+>
+> A partir da decisão do proprietário em 05/08/2026, o fluxo de captação da rota `/landingpage` **não utiliza mais formulário nem armazenamento de leads no Google Sheets**.
+>
+> - O endpoint `/api/leads` foi removido.
+> - O componente `LeadFormModal` foi removido.
+> - O WhatsApp é o único caminho inicial de contato, com mensagem pré-preenchida.
+> - O briefing completo é enviado somente depois da contratação.
+> - Este documento permanece como referência histórica da arquitetura antiga e não deve ser usado como fonte ativa.
+> - Se o formulário voltar a ser implementado, este documento deve ser revisado e reativado antes.
+
+> ## 0. Registro da suspensão
+>
+> Status: **suspenso em 05/08/2026** por decisão explícita do proprietário (Willian Souza).
+> Motivo: redução de atrito entre a chegada do visitante e o início da conversa pelo WhatsApp.
+> Reativar somente mediante nova solicitação explícita.
+
 > Fonte oficial para o formulário da rota `/landingpage`, o armazenamento dos leads via Google Apps Script e o Google Sheets como armazenamento único e definitivo.
 
 ## 1. Objetivo

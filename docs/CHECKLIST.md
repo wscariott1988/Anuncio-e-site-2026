@@ -18,7 +18,7 @@
 - [ ] `README.md` está na raiz.
 - [ ] `docs/CONTENT.md` contém a copy oficial.
 - [ ] `docs/LANDINGPAGE.md` contém a especificação funcional atual.
-- [ ] `docs/LEADS.md` contém a arquitetura e o esquema oficial da planilha.
+- [ ] `docs/LEADS.md` está marcado como suspenso (o armazenamento de leads não está em uso).
 - [ ] `docs/DESIGN.md` contém o sistema visual.
 - [ ] `docs/TRACKING.md` contém os eventos atuais.
 - [ ] `docs/CHECKLIST.md` contém esta versão.
@@ -38,6 +38,7 @@
 - [ ] Nenhuma dependência foi trocada por preferência.
 - [ ] Nenhum segundo lockfile foi criado.
 - [ ] Nenhum comando destrutivo de Git foi utilizado.
+- [ ] Não restaram scripts, imports, estados, estilos ou arquivos órfãos do formulário removido (`LeadFormModal`, `ClarityStrip`, `ProblemSection`, `api/leads`).
 
 ## 3. Oferta e conteúdo
 
@@ -52,9 +53,8 @@
 - [ ] O saldo é R$ 498,50 após publicação e funcionamento.
 - [ ] O prazo é de até 7 dias úteis.
 - [ ] O início do prazo depende da entrada, briefing e materiais.
+- [ ] O briefing é enviado somente depois da contratação.
 - [ ] Estão incluídas até duas rodadas de ajustes.
-- [ ] Custos externos estão explicados.
-- [ ] Itens fora do escopo estão explicados.
 - [ ] Não existe preço riscado.
 - [ ] Não existe desconto ou condição de lançamento.
 - [ ] Não existe urgência artificial.
@@ -67,18 +67,18 @@
 
 - [ ] Cabeçalho.
 - [ ] Hero.
-- [ ] Faixa de clareza.
-- [ ] Problema e solução.
+- [ ] Bloco de confiança.
+- [ ] Projetos reais.
 - [ ] O que está incluído.
-- [ ] Projetos desenvolvidos.
-- [ ] Como funciona.
+- [ ] Processo simples.
 - [ ] Quem é Willian Souza.
 - [ ] Investimento.
 - [ ] Perguntas frequentes.
 - [ ] CTA final.
 - [ ] Rodapé.
-- [ ] As seções aparecem na ordem definida.
-- [ ] O formulário não aparece aberto como seção final.
+- [ ] As seções aparecem na ordem definida em `LANDINGPAGE.md`.
+- [ ] Não existe formulário aberto como seção final.
+- [ ] Não existe modal de formulário.
 - [ ] Não existe página de obrigado.
 - [ ] Não existe menu institucional.
 - [ ] Não existem links que desviem da conversão.
@@ -87,19 +87,58 @@
 
 - [ ] O cabeçalho contém somente marca e CTA.
 - [ ] A marca leva ao topo da própria página.
-- [ ] O CTA do cabeçalho abre o formulário.
-- [ ] O CTA da hero abre o formulário.
-- [ ] O CTA do portfólio abre o formulário.
-- [ ] O CTA de investimento abre o formulário.
-- [ ] O CTA final abre o formulário.
-- [ ] Todos abrem a mesma instância lógica do formulário.
-- [ ] A origem de cada CTA é preservada.
-- [ ] Não existe CTA fixo no celular.
+- [ ] Todos os CTAs comerciais abrem diretamente o WhatsApp.
+- [ ] O CTA do cabeçalho (`header`) abre o WhatsApp.
+- [ ] O CTA da hero (`hero`) abre o WhatsApp.
+- [ ] O CTA do portfólio (`portfolio`) abre o WhatsApp.
+- [ ] O CTA de investimento (`investment`) abre o WhatsApp.
+- [ ] O CTA final (`final`) abre o WhatsApp.
+- [ ] O CTA fixo mobile (`sticky-mobile`) abre o WhatsApp.
+- [ ] Todos os CTAs usam a mesma mensagem pré-preenchida.
+- [ ] A origem de cada CTA é preservada em `data-cta-location`.
+- [ ] Nenhum CTA abre o formulário.
 - [ ] Não existe telefone direto.
-- [ ] Não existe WhatsApp direto.
-- [ ] Não existe botão flutuante de WhatsApp.
+- [ ] Não existe WhatsApp adicional no cabeçalho ou nas seções.
+- [ ] Não existe botão flutuante de WhatsApp além do CTA fixo mobile.
+- [ ] Não existe CTA para outra página comercial.
 
-## 6. Design
+## 6. WhatsApp
+
+- [ ] O número oficial está configurado centralmente (`NEXT_PUBLIC_WHATSAPP_NUMBER`).
+- [ ] O número foi testado.
+- [ ] O link funciona no celular.
+- [ ] O link funciona no desktop.
+- [ ] O link abre em nova aba.
+- [ ] O link usa `target="_blank"` e `rel="noopener noreferrer"`.
+- [ ] A mensagem pré-preenchida corresponde a `CONTENT.md`.
+- [ ] A mensagem está corretamente codificada na URL.
+- [ ] O link não é renderizado quando o número está ausente.
+- [ ] O clique não é bloqueado por `preventDefault`.
+- [ ] O clique não depende de `event_callback`.
+- [ ] O clique não usa `window.location` com atraso.
+- [ ] O clique dispara `cta_click` e `whatsapp_click` sem bloquear a navegação.
+- [ ] Não existe evento antigo `whatsapp_after_lead`.
+- [ ] O evento antigo `whatsapp_click` foi substituído pelo novo fluxo, quando aplicável.
+- [ ] O WhatsApp não aparece no rodapé.
+- [ ] O WhatsApp não aparece na FAQ.
+- [ ] O WhatsApp não aparece como contingência de formulário.
+
+## 7. CTA fixo mobile
+
+- [ ] Existe CTA fixo na parte inferior.
+- [ ] É exibido somente em telas de celular (`md:hidden`).
+- [ ] Não aparece no desktop.
+- [ ] Não aparece na primeira dobra quando o CTA da hero está visível.
+- [ ] Some quando o CTA da hero está visível.
+- [ ] Aparece após pequena rolagem.
+- [ ] Oculto enquanto o banner de consentimento está visível.
+- [ ] Oculto quando o rodapé está visível.
+- [ ] O CTA usa `cta_location = sticky-mobile`.
+- [ ] O CTA abre diretamente o WhatsApp com a mensagem oficial.
+- [ ] Não cobre conteúdo importante.
+- [ ] Exibe "Projeto completo: R$ 997" e a ação "Quero iniciar por R$ 498,50".
+
+## 8. Design
 
 - [ ] A direção visual segue `DESIGN.md`.
 - [ ] O visual é claro, premium e comercial.
@@ -107,7 +146,7 @@
 - [ ] Bento Box é usado seletivamente.
 - [ ] Glassmorphism aparece apenas como detalhe.
 - [ ] O CTA principal é sólido e contrastante.
-- [ ] Formulário e FAQ usam superfícies sólidas.
+- [ ] Textos longos usam superfícies sólidas.
 - [ ] A paleta está consistente.
 - [ ] A tipografia está consistente.
 - [ ] Espaçamentos e raios estão consistentes.
@@ -120,23 +159,27 @@
 - [ ] O preço está evidente sem dominar toda a página.
 - [ ] A página não parece curso, software ou template.
 
-## 7. Hero e materiais
+## 9. Hero e materiais
 
 - [ ] Existe uma única `h1`.
 - [ ] A oferta é compreensível rapidamente.
-- [ ] O preço está visível.
+- [ ] O preço total de R$ 997 está visível.
+- [ ] A forma de pagamento (entrada e saldo) está visível.
 - [ ] O prazo está visível.
 - [ ] As duas rodadas de ajustes estão visíveis.
 - [ ] O CTA aparece antes do mockup no celular.
 - [ ] O mockup representa desktop e celular.
+- [ ] O mockup usa capturas reais da ZARQ Planejados.
 - [ ] O mockup não contém dados fictícios.
+- [ ] O endereço visual usa `zarqplanejados.com.br` e não é um link.
 - [ ] A imagem principal possui largura e altura definidas.
 - [ ] O logotipo é real e aprovado.
 - [ ] A foto de Willian é real e aprovada.
 - [ ] A composição visual da hero está aprovada.
 - [ ] Nenhum placeholder permanece em produção.
+- [ ] O bloco de confiança corresponde a `CONTENT.md`.
 
-## 8. Projetos desenvolvidos
+## 10. Projetos desenvolvidos
 
 - [ ] Mecânica Auto Brum está presente.
 - [ ] ZARQ Planejados está presente.
@@ -161,8 +204,9 @@
 - [ ] Largura e altura estão informadas.
 - [ ] Capturas completas usam carregamento tardio.
 - [ ] Abrir um projeto não carrega os demais.
+- [ ] O CTA da seção abre o WhatsApp com `cta_location = portfolio`.
 
-## 9. Visualizador dos projetos
+## 11. Visualizador dos projetos
 
 - [ ] O card possui uma única área interativa válida.
 - [ ] O modal possui título acessível.
@@ -183,148 +227,104 @@
 - [ ] Fechar e reabrir retorna à visualização mobile.
 - [ ] A rolagem vertical da captura funciona.
 
-## 10. Formulário — abertura e experiência
+## 12. O que está incluído
 
-- [ ] Todos os CTAs abrem o mesmo modal.
-- [ ] O modal abre somente por ação do visitante.
-- [ ] O modal nunca abre automaticamente.
-- [ ] Não existe pop-up por tempo.
-- [ ] Não existe pop-up por rolagem.
-- [ ] Não existe pop-up de saída.
-- [ ] A tela inicial informa cerca de 40 segundos.
-- [ ] Uma pergunta é apresentada por vez.
-- [ ] O progresso mostra Contato, Sobre o projeto e Confirmar.
-- [ ] O número total de perguntas não gera ruído desnecessário.
-- [ ] É possível voltar.
-- [ ] Voltar preserva respostas.
-- [ ] Fechar e reabrir durante a visita preserva respostas.
-- [ ] Reabrir não altera a origem após o formulário ter iniciado.
-- [ ] Nenhum dado pessoal aparece na URL.
-- [ ] O modal funciona no celular.
-- [ ] O teclado virtual não esconde a ação.
-- [ ] Não existe rolagem horizontal.
+- [ ] Os 6 itens de `CONTENT.md` estão presentes (Estratégia e copy, Design responsivo, Desenvolvimento moderno, Formulário e WhatsApp, Rastreamento, Publicação e testes).
+- [ ] A nota das duas rodadas de ajustes está presente.
+- [ ] Não existem serviços inventados.
+- [ ] Não existe CTA nesta seção.
+- [ ] Existe uma única estrutura semântica (sem DOM duplicado por viewport).
+- [ ] Mobile usa grid de 1 coluna.
+- [ ] Tablet usa grid de 2 colunas.
+- [ ] Desktop usa grid uniforme de 3 colunas × 2 linhas.
 
-## 11. Formulário — campos e validação
+## 13. Processo simples
 
-- [ ] Nome.
-- [ ] WhatsApp.
-- [ ] Negócio ou serviço.
-- [ ] Situação atual dos anúncios.
-- [ ] Possui site ou Landing Page.
-- [ ] URL atual condicional.
-- [ ] Revisão das respostas.
-- [ ] Consentimento com Política de Privacidade.
-- [ ] Campos obrigatórios são validados.
-- [ ] A URL é opcional.
-- [ ] A URL é validada somente quando preenchida.
-- [ ] O telefone aceita número brasileiro com DDD.
-- [ ] O telefone aceita colagem.
-- [ ] O telefone é normalizado no envio.
-- [ ] Labels permanecem visíveis.
-- [ ] Placeholders não substituem labels.
-- [ ] Erros aparecem junto aos campos.
-- [ ] Erros não dependem somente da cor.
-- [ ] O foco vai ao primeiro erro quando necessário.
-- [ ] O consentimento não vem marcado.
-- [ ] A Política de Privacidade está acessível.
+- [ ] As 3 etapas de `CONTENT.md` estão presentes (Contratação, Briefing simples, Criação, revisão e publicação).
+- [ ] A faixa de prazo "até 7 dias úteis" está presente.
+- [ ] Não existe CTA nesta seção.
+- [ ] O texto deixa claro que Willian produz a copy.
+- [ ] Mobile usa leitura vertical.
+- [ ] Tablet usa grid 2 colunas.
+- [ ] Desktop usa três colunas em uma linha com o prazo abaixo.
 
-## 12. Formulário — servidor e armazenamento
+## 14. Quem é Willian Souza
 
-- [ ] O endpoint real está definido.
-- [ ] O endpoint do Apps Script web app está confirmado.
-- [ ] O secret do Apps Script está definido e testado.
-- [ ] A planilha `Leads — Anúncio & Site` está confirmada.
-- [ ] A aba possui o nome exato `Leads`.
-- [ ] Os 24 cabeçalhos correspondem exatamente a `docs/LEADS.md`.
-- [ ] Os 24 cabeçalhos estão na ordem oficial.
-- [ ] Não existem colunas inseridas entre as colunas oficiais.
-- [ ] O Apps Script possui acesso de edição na planilha.
-- [ ] O Apps Script utiliza LockService.
-- [ ] O navegador não envia diretamente para o Apps Script.
-- [ ] A forma de notificação está definida.
-- [ ] A política de retenção está definida.
-- [ ] Existe contingência operacional.
-- [ ] O servidor valida todos os dados antes de enviar ao Apps Script.
-- [ ] O servidor normaliza o telefone.
-- [ ] O servidor sanitiza conteúdo.
-- [ ] Valores livres não são interpretados como fórmulas no Sheets.
-- [ ] Existem limites de tamanho.
-- [ ] Existe proteção antispam proporcional.
-- [ ] Existe rate limit ou solução equivalente.
-- [ ] Existe chave de idempotência.
-- [ ] Duplo clique não cria dois leads.
-- [ ] Nova tentativa segura não cria dois leads.
-- [ ] O servidor devolve um `lead_id` opaco.
-- [ ] O mesmo envio seguro devolve o mesmo `lead_id`.
-- [ ] Uma única linha é gravada por `lead_id`.
-- [ ] `status_atendimento` inicia como `Novo`.
-- [ ] `observacoes` inicia vazio.
-- [ ] Reprocessamento não sobrescreve `status_atendimento`.
-- [ ] Reprocessamento não sobrescreve `observacoes`.
-- [ ] Falha de notificação não apaga lead armazenado.
-- [ ] Nenhum segredo aparece no cliente.
-- [ ] Nenhum dado sensível aparece no log.
+- [ ] A foto real de Willian está presente.
+- [ ] A seção informa que o projeto é conduzido diretamente por ele.
+- [ ] Não existe "nós" sugerindo equipe.
+- [ ] Não existem certificações inventadas.
+- [ ] Os indicadores correspondem a `CONTENT.md`.
+- [ ] Não afirma que foram criadas Landing Pages para mais de sete mil clientes.
+- [ ] Não é uma biografia extensa.
+- [ ] Desktop usa duas colunas (texto à esquerda, indicadores 2×2 à direita).
+- [ ] Mobile usa texto primeiro e indicadores 2×2 abaixo.
 
-## 13. Formulário — estados
+## 15. Investimento
 
-- [ ] O botão final diz “Enviar informações”.
-- [ ] O botão é desabilitado durante o envio.
-- [ ] O estado “Enviando informações…” aparece.
-- [ ] A largura do botão permanece estável.
-- [ ] `form_submit_attempt` não é conversão.
-- [ ] O sucesso aparece somente após confirmação do servidor.
-- [ ] O sucesso depende da confirmação do Apps Script.
-- [ ] A confirmação do Sheets não dispara um segundo sucesso.
-- [ ] Falha somente do Sheets não dispara `form_error`.
-- [ ] O sucesso acontece dentro do modal.
-- [ ] Atualizar a página não repete o sucesso.
-- [ ] Erro de validação preserva respostas.
-- [ ] Falha de rede preserva respostas.
-- [ ] Falha do servidor preserva respostas.
-- [ ] “Tentar novamente” é a primeira ação após falha.
-- [ ] Erros não expõem detalhes internos.
-- [ ] O WhatsApp de contingência não aparece por erro de preenchimento.
+- [ ] Preço total de R$ 997 presente.
+- [ ] Entrada de R$ 498,50 presente.
+- [ ] Saldo de R$ 498,50 presente.
+- [ ] Prazo de até 7 dias úteis presente.
+- [ ] Até duas rodadas de ajustes presente.
+- [ ] CTA presente.
+- [ ] Microtexto presente.
+- [ ] Não existe lista de "não incluído".
+- [ ] Não existem advertências sobre garantia de resultados.
+- [ ] Não existe frase pedindo formulário.
+- [ ] O CTA abre o WhatsApp com `cta_location = investment`.
 
-## 14. WhatsApp
+## 16. Perguntas frequentes
 
-- [ ] O número oficial está configurado centralmente.
-- [ ] O número foi testado.
-- [ ] O link funciona no celular.
-- [ ] O link funciona no desktop.
-- [ ] O link não é renderizado quando o número está ausente.
-- [ ] O WhatsApp aparece após lead confirmado.
-- [ ] A mensagem pós-lead corresponde a `CONTENT.md`.
-- [ ] `whatsapp_after_lead` dispara somente após o lead.
-- [ ] `whatsapp_after_lead` não gera outro lead.
-- [ ] O WhatsApp não aparece em erro de validação ou erro técnico.
-- [ ] O evento antigo `whatsapp_click` não existe.
+- [ ] As 9 perguntas de `CONTENT.md` estão presentes.
+- [ ] O acordeão é acessível.
+- [ ] A pergunta permanece visível quando aberta.
+- [ ] Permite abertura por teclado.
+- [ ] O estado expandido é comunicado.
+- [ ] Não existe botão direto para WhatsApp dentro da FAQ.
+- [ ] Não existe campo livre de dúvidas.
 
-## 15. Eventos
+## 17. CTA final
+
+- [ ] A copy de `CONTENT.md` está presente.
+- [ ] O CTA abre o WhatsApp com `cta_location = final`.
+- [ ] Não existe formulário aberto na seção.
+
+## 18. Rodapé
+
+- [ ] O rodapé usa a copy de `CONTENT.md`.
+- [ ] Política de Privacidade está acessível.
+- [ ] Termos de Uso estão acessíveis.
+- [ ] "Configurações de privacidade" está presente.
+- [ ] Não existem links jurídicos quebrados.
+- [ ] O conteúdo jurídico foi aprovado.
+- [ ] Não existe telefone no rodapé.
+- [ ] Não existe WhatsApp no rodapé.
+- [ ] Não existe Instagram no rodapé.
+- [ ] Não existe blog no rodapé.
+- [ ] Não existe portfólio externo no rodapé.
+
+## 19. Eventos
 
 - [ ] `cta_click`.
-- [ ] `form_open`.
-- [ ] `form_start`.
-- [ ] `form_step`.
-- [ ] `form_submit_attempt`.
-- [ ] `form_error`.
-- [ ] `generate_lead`.
-- [ ] `whatsapp_after_lead`.
+- [ ] `whatsapp_click`.
 - [ ] `portfolio_open`.
 - [ ] `portfolio_view_change`.
 - [ ] `faq_open`.
 - [ ] Os nomes seguem `snake_case`.
 - [ ] Os parâmetros seguem `TRACKING.md`.
-- [ ] `source_cta` é preservado.
-- [ ] `form_start` dispara apenas uma vez.
-- [ ] Cada `form_step` dispara apenas uma vez.
-- [ ] `generate_lead` dispara apenas uma vez.
-- [ ] `generate_lead` ocorre depois do armazenamento primário.
-- [ ] A sincronização com Sheets não repete `generate_lead`.
+- [ ] `cta_location` é preservado em cada CTA.
+- [ ] `cta_click` e `whatsapp_click` disparam juntos no clique do CTA.
+- [ ] `whatsapp_click` dispara sem `preventDefault`.
+- [ ] `whatsapp_click` não dispara duas vezes no mesmo clique.
+- [ ] `portfolio_view_change` dispara ao trocar Celular/Desktop.
+- [ ] `faq_open` dispara ao abrir cada pergunta.
+- [ ] Não existem `form_open`, `form_start`, `form_step`, `form_submit_attempt`, `form_error` nem `generate_lead`.
+- [ ] Nenhum evento é conversão.
 - [ ] React Strict Mode não duplica eventos.
-- [ ] Reabrir o modal não duplica a conversão.
-- [ ] Atualizar a página não duplica a conversão.
+- [ ] Clicar no mesmo CTA novamente não duplica eventos indevidamente.
 
-## 16. `dataLayer` e privacidade
+## 20. `dataLayer` e privacidade
 
 - [ ] Existe um módulo central de rastreamento.
 - [ ] Ausência do GTM não quebra a página.
@@ -337,147 +337,49 @@
 - [ ] Nenhuma alteração visual causada pelo GTM.
 - [ ] Nome não aparece no `dataLayer`.
 - [ ] Telefone não aparece no `dataLayer`.
-- [ ] Negócio ou serviço não aparece no `dataLayer`.
-- [ ] URL informada não aparece no `dataLayer`.
+- [ ] Mensagem do WhatsApp não aparece no `dataLayer`.
+- [ ] URL digitada não aparece no `dataLayer`.
 - [ ] Respostas não aparecem no `dataLayer`.
 - [ ] Dados pessoais não aparecem no console.
 - [ ] Dados pessoais não aparecem em URLs.
-- [ ] `lead_id` é opaco.
-- [ ] `lead_id` não deriva de telefone ou nome.
-- [ ] `event_id` é opaco.
-- [ ] Nenhum identificador opaco foi criado como dimensão de alta cardinalidade.
 - [ ] Microsoft Clarity é instalado exclusivamente pelo GTM.
 - [ ] Não existe snippet do Clarity no código.
 - [ ] Não existe `NEXT_PUBLIC_CLARITY_PROJECT_ID`.
 - [ ] Não existe script `clarity.ms` no HTML sem o GTM.
-- [ ] O formulário possui `data-clarity-mask="true"`.
-- [ ] Todos os campos do formulário estão dentro da área mascarada.
-- [ ] Nome não é enviado ao Clarity ou ao `dataLayer`.
-- [ ] Telefone não é enviado ao Clarity ou ao `dataLayer`.
-- [ ] Negócio ou serviço não é enviado ao Clarity ou ao `dataLayer`.
-- [ ] URL informada não é enviada ao Clarity ou ao `dataLayer`.
-- [ ] Respostas não são enviadas ao Clarity ou ao `dataLayer`.
-
-## 17. GA4
-
-- [ ] GA4 está instalado uma única vez.
-- [ ] `generate_lead` chega ao GA4.
-- [ ] `generate_lead` está marcado como evento principal.
-- [ ] Eventos de interação não estão marcados como conversão.
-- [ ] Não existe `generate_lead` recriado a partir de outro evento.
-- [ ] Formulários automáticos não duplicam `form_start`.
-- [ ] `form_submit` automático não é tratado como lead.
-- [ ] Existe somente um `page_view` por visualização.
-- [ ] Parâmetros foram conferidos no DebugView.
-
-## 18. Google Ads
-
-- [ ] Existe uma única ação principal para lead.
-- [ ] A categoria da conversão está correta.
-- [ ] A contagem está configurada como uma.
-- [ ] A conversão depende do servidor.
-- [ ] R$ 997 não foi usado como valor do lead.
-- [ ] Apenas um método foi escolhido: tag direta ou importação do GA4.
-- [ ] Não existe tag direta e importação duplicadas.
-- [ ] `transaction_id` usa o identificador do lead quando aplicável.
-- [ ] Conversion Linker foi validado quando aplicável.
-- [ ] `form_submit_attempt` não dispara Google Ads.
-- [ ] WhatsApp não dispara Google Ads.
-
-## 19. Meta Pixel
-
-- [ ] Meta Pixel está instalado uma única vez.
-- [ ] Um único evento `Lead` dispara após `generate_lead`.
-- [ ] O evento não dispara no clique do botão.
-- [ ] O evento não dispara na tentativa.
-- [ ] O evento não dispara no WhatsApp.
-- [ ] Nenhum dado pessoal é enviado.
-- [ ] Advanced Matching não foi adicionado.
-- [ ] CAPI não foi adicionada.
-- [ ] O Pixel respeita consentimento.
-- [ ] O evento foi validado na ferramenta de teste disponível.
-
-## 20. Origem e atribuição
-
-- [ ] `utm_source`.
-- [ ] `utm_medium`.
-- [ ] `utm_campaign`.
-- [ ] `utm_term`.
-- [ ] `utm_content`.
-- [ ] `gclid`.
-- [ ] `gbraid`.
-- [ ] `wbraid`.
-- [ ] `fbclid`.
-- [ ] `entry_path`.
-- [ ] `referrer_hostname`.
-- [ ] `source_cta`.
-- [ ] `lead_source`.
-- [ ] Parâmetros são capturados na entrada.
-- [ ] A origem permanece durante o formulário.
-- [ ] Apenas parâmetros permitidos são armazenados.
-- [ ] Existem limites de tamanho.
-- [ ] Parâmetros desconhecidos são descartados.
-- [ ] `lead_source` é normalizado.
-- [ ] A origem chega ao registro do lead.
-- [ ] A origem chega às colunas correspondentes da planilha.
-- [ ] Parâmetros ausentes permanecem vazios.
+- [ ] O formulário dos projetos entregues (quando aplicável) permanece mascarado com `data-clarity-mask="true"`.
+- [ ] Nenhuma PII é enviada ao Clarity ou ao `dataLayer`.
 
 ## 21. Consentimento
 
-O projeto utiliza **Consent Mode v2 avançado**: no estado negado, GTM, gtag.js e GA4 podem carregar e emitir pings sem cookies, que não são tratados como falha nem como coleta identificável. A medição identificável (cookies `_ga`, `_gid`, `_gcl_*` e equivalentes em armazenamento) só ocorre após `analytics_storage = granted`.
-
-- [ ] O controle de consentimento usa a copy aprovada.
 - [ ] O estado padrão é definido antes das tags.
-- [ ] `analytics_storage` inicia negado.
-- [ ] `ad_storage` inicia negado.
-- [ ] `ad_user_data` inicia negado.
-- [ ] `ad_personalization` inicia negado.
-- [ ] O comando `consent default` existe no `dataLayer` com as quatro categorias negadas antes da escolha.
-- [ ] O comando `consent update` existe no `dataLayer` após aceitar, recusar ou salvar preferências.
+- [ ] `analytics_storage`, `ad_storage`, `ad_user_data` e `ad_personalization` iniciam negados.
 - [ ] `wait_for_update: 500` está presente no consentimento padrão.
-- [ ] Os scripts de consentimento usam `strategy="beforeInteractive"`.
-- [ ] A preferência salva é restaurada automaticamente em visitas seguintes.
-- [ ] No estado negado, GTM, gtag.js e GA4 carregam e podem emitir pings sem cookies.
-- [ ] No estado negado, os pings GA4 carregam `pscdl=denied`, `npa=1` e `gcs=G[01]00`.
-- [ ] No estado negado, não existem cookies `_ga`, `_gid` ou `_gcl_*`.
-- [ ] No estado negado, não existem identificadores equivalentes em `localStorage` ou `sessionStorage`.
+- [ ] A preferência salva é restaurada automaticamente.
 - [ ] O banner aparece na primeira visita sem preferência.
 - [ ] O banner desaparece após aceitar ou recusar.
-- [ ] Os botões "Aceitar todos" e "Recusar opcionais" funcionam no banner.
 - [ ] O banner possui link para a Política de Privacidade.
-- [ ] O botão "Configurar" no banner abre o painel de configurações.
-- [ ] As categorias no painel são Analytics e Publicidade.
-- [ ] O mapeamento das categorias está correto (analytics → analytics_storage, publicidade → ad_storage/ad_user_data/ad_personalization).
+- [ ] O painel de configurações abre somente por ação do visitante.
 - [ ] "Salvar preferências" persiste e aplica a escolha.
-- [ ] O painel de configurações fecha com Esc.
-- [ ] O painel de configurações fecha ao clicar no fundo.
-- [ ] O fundo fica bloqueado durante abertura do painel.
-- [ ] "Aceitar todos" atualiza as quatro categorias para `granted` e permite cookies do GA4.
-- [ ] "Recusar opcionais" mantém as quatro categorias negadas e não cria cookies opcionais.
-- [ ] A revogação pelas "Configurações de privacidade" envia `consent update` para `denied` e impede novas coletas opcionais.
-- [ ] Não há afrouxamento genérico dos filtros de rede: apenas endpoints Google esperados no modo negado; demais rastreadores opcionais continuam bloqueados antes do consentimento.
-- [ ] “Aceitar medição” atualiza os estados previstos.
-- [ ] “Recusar recursos não essenciais” mantém os estados negados.
-- [ ] Preferências personalizadas funcionam.
-- [ ] A escolha fica persistida em `localStorage` com chave `anuncio_e_site_consent_v1`.
-- [ ] É possível alterar a escolha posteriormente pelo link "Configurações de privacidade".
+- [ ] É possível alterar a escolha pelo link "Configurações de privacidade".
 - [ ] O link "Configurações de privacidade" está presente no rodapé da Landing Page.
 - [ ] O link "Configurações de privacidade" está presente no rodapé das páginas jurídicas.
 - [ ] Meta Pixel não dispara quando publicidade está recusada.
-- [ ] Tags não essenciais respeitam a escolha.
 - [ ] O Microsoft Clarity não dispara quando Analytics está recusado.
 - [ ] O banner não menciona "Microsoft Clarity".
-- [ ] A Política de Privacidade menciona "Microsoft Clarity".
-- [ ] A validação real do Clarity ocorreu no painel (mapas de calor, gravações e mascaramento).
-- [ ] O formulário funciona com tudo recusado.
-- [ ] O sucesso funciona com tudo recusado.
-- [ ] O WhatsApp pós-lead funciona com tudo recusado.
-- [ ] O consentimento de medição não é confundido com o consentimento do formulário.
+- [ ] O WhatsApp funciona com medição recusada.
+- [ ] A página funciona com tudo recusado.
+- [ ] Nenhum dado pessoal é armazenado no `localStorage` como parte do consentimento.
+- [ ] A chave `anuncio_e_site_consent_v1` é usada.
+
+### Divergência de copy (pendência)
+
+- [ ] A copy do banner e do painel de consentimento corresponde a `CONTENT.md` §13 (seção "Consentimento de medição").
+- [ ] Se divergir, a aplicação da nova copy ao componente global foi confirmada com o proprietário (o provider é compartilhado pelo root layout e afeta todas as rotas).
 
 ## 22. SEO e metadata
 
-- [ ] Title correto.
-- [ ] Meta description correta.
+- [ ] Title correto: "Landing Page Profissional para Google Ads e Meta Ads por R$ 997 | Anúncio & Site".
+- [ ] Meta description corresponde a `LANDINGPAGE.md`.
 - [ ] Canonical aponta para `https://www.anuncioesite.com.br/landingpage`.
 - [ ] Open Graph está configurado.
 - [ ] A imagem social é real e aprovada.
@@ -492,53 +394,18 @@ O projeto utiliza **Consent Mode v2 avançado**: no estado negado, GTM, gtag.js 
 - [ ] Robots foi tratado.
 - [ ] Dados estruturados não possuem informações inventadas.
 
-## 23. Rodapé e documentos jurídicos
-
-- [ ] O rodapé usa a copy de `CONTENT.md`.
-- [ ] Política de Privacidade está acessível.
-- [ ] Termos de Uso estão acessíveis.
-- [ ] Não existem links jurídicos quebrados.
-- [ ] O conteúdo jurídico foi aprovado.
-- [ ] Não existe telefone no rodapé.
-- [ ] Não existe WhatsApp no rodapé.
-- [ ] Não existe Instagram no rodapé.
-- [ ] Não existe blog no rodapé.
-- [ ] Não existe portfólio externo no rodapé.
-
-## 23a. Páginas jurídicas
-
-- [ ] `/politica-de-privacidade` retorna status 200.
-- [ ] `/termos` retorna status 200.
-- [ ] Cada página possui uma única `h1`.
-- [ ] Cada página possui data de última atualização visível.
-- [ ] As datas correspondem a `docs/PRIVACY.md` e `docs/TERMS.md`.
-- [ ] O e-mail contato@grupows.com está presente com link `mailto:`.
-- [ ] Não existem dados fictícios de CPF, CNPJ ou responsável.
-- [ ] Não existe texto provisório ou placeholder.
-- [ ] O layout usa o componente `LegalPageLayout`.
-- [ ] O cabeçalho contém somente marca e link "Voltar para a Landing Page".
-- [ ] O rodapé contém marca, links para ambas as páginas jurídicas, e-mail e link para `/landingpage`.
-- [ ] Não existe link para `/` no cabeçalho ou rodapé das páginas jurídicas.
-- [ ] As páginas possuem `noindex` e `follow`.
-- [ ] A canonical está correta para cada página.
-- [ ] Não existem scripts ou dependências externas adicionadas.
-- [ ] Não existe `dangerouslySetInnerHTML`.
-- [ ] Não existe rolagem horizontal em 360, 390, 768 e 1440 px.
-- [ ] Não existem erros no console ao carregar cada página.
-
-## 24. Acessibilidade
+## 23. Acessibilidade
 
 - [ ] A página pode ser navegada por teclado.
 - [ ] O foco é visível.
 - [ ] A ordem de foco é lógica.
 - [ ] Landmarks são semânticos.
-- [ ] Botões possuem nomes acessíveis.
-- [ ] Campos possuem labels associadas.
-- [ ] Erros são anunciados.
+- [ ] Botões e links possuem nomes acessíveis.
+- [ ] Os CTAs de WhatsApp são links com texto acessível.
+- [ ] Os links de WhatsApp indicam que abrem em nova aba.
 - [ ] Estados de carregamento são anunciados.
 - [ ] Contraste foi verificado.
 - [ ] Alvos clicáveis possuem tamanho adequado.
-- [ ] O formulário funciona sem mouse.
 - [ ] A FAQ funciona sem mouse.
 - [ ] Os modais mantêm foco.
 - [ ] Os modais restauram foco.
@@ -546,7 +413,7 @@ O projeto utiliza **Consent Mode v2 avançado**: no estado negado, GTM, gtag.js 
 - [ ] `prefers-reduced-motion` é respeitado.
 - [ ] O conteúdo continua compreensível sem animação.
 
-## 25. Responsividade
+## 24. Responsividade
 
 - [ ] 320 px.
 - [ ] 375 px.
@@ -560,34 +427,22 @@ O projeto utiliza **Consent Mode v2 avançado**: no estado negado, GTM, gtag.js 
 - [ ] Botões não são cortados.
 - [ ] Cards não ficam comprimidos.
 - [ ] Mockups cabem na tela.
-- [ ] O teclado não cobre a ação.
-- [ ] Áreas seguras do aparelho foram respeitadas.
 - [ ] Elementos fixos não cobrem conteúdo.
+- [ ] O CTA fixo mobile não cobre o banner de consentimento.
 - [ ] Portfólio usa faixa horizontal com scroll-snap no mobile.
 - [ ] Portfólio usa grid no desktop.
 - [ ] Portfólio não possui autoplay nem animação automática.
-- [ ] Texto sr-only de orientação ao swipe está presente.
-- [ ] "O que está incluído" usa painel compacto com divide-y no mobile.
+- [ ] "O que está incluído" usa grid 1 coluna no mobile.
+- [ ] "O que está incluído" usa grid 2 colunas no tablet.
 - [ ] "O que está incluído" usa grid uniforme 3×2 no desktop.
-- [ ] "O que está incluído" usa grid 2×3 no tablet.
-- [ ] "O que está incluído" não possui col-span especial no desktop.
-- [ ] "Projetos desenvolvidos" usa faixa horizontal com scroll-snap no mobile.
-- [ ] "Projetos desenvolvidos" usa grid 2 colunas no tablet.
-- [ ] "Projetos desenvolvidos" usa grid 6 colunas no desktop com segunda linha centralizada.
-- [ ] "Projetos desenvolvidos" possui 5 cartões com mesma largura no desktop.
-- [ ] "Como funciona" usa leitura vertical no mobile.
-- [ ] "Como funciona" usa grid 2×2 no tablet.
-- [ ] "Como funciona" usa 4 colunas em uma linha no desktop.
-- [ ] "Como funciona" mantém "Prazo do projeto" como faixa separada abaixo das etapas.
-- [ ] "Quem é Willian Souza" usa grid-cols-2 (2×2) no mobile.
-- [ ] "Quem é Willian Souza" usa layout de duas colunas no desktop (texto à esquerda, indicadores 2×2 à direita).
-- [ ] "Quem é Willian Souza" usa apresentação acima e indicadores 2×2 abaixo no tablet.
-- [ ] "Projetos desenvolvidos" usa CTA centralizado no desktop.
-- [ ] "Projetos desenvolvidos" usa microcopy centralizada e limitada no desktop.
+- [ ] "Processo simples" usa leitura vertical no mobile.
+- [ ] "Processo simples" usa 3 colunas no desktop com o prazo abaixo.
+- [ ] "Quem é Willian Souza" usa indicadores 2×2 no mobile.
+- [ ] "Quem é Willian Souza" usa duas colunas no desktop.
 - [ ] Todos os textos e CTAs estão preservados nos padrões compactos.
 - [ ] Desktop não foi afetado pelos padrões compactos.
 
-## 26. Desempenho
+## 25. Desempenho
 
 - [ ] Build de produção foi usado no teste.
 - [ ] LCP foi medido.
@@ -604,13 +459,9 @@ O projeto utiliza **Consent Mode v2 avançado**: no estado negado, GTM, gtag.js 
 - [ ] Lighthouse foi executado em desktop.
 - [ ] Exceções de desempenho foram registradas.
 
-## 27. Segurança
+## 26. Segurança
 
 - [ ] HTTPS funciona.
-- [ ] Entradas são validadas no servidor.
-- [ ] Entradas são sanitizadas.
-- [ ] Tamanhos são limitados.
-- [ ] Existe proteção contra abuso.
 - [ ] Nenhuma credencial está no código.
 - [ ] Nenhum segredo usa `NEXT_PUBLIC_`.
 - [ ] `.env.local` não está versionado.
@@ -618,9 +469,10 @@ O projeto utiliza **Consent Mode v2 avançado**: no estado negado, GTM, gtag.js 
 - [ ] Erros não revelam detalhes internos.
 - [ ] Logs não armazenam dados pessoais desnecessários.
 - [ ] Dados pessoais não aparecem na URL.
+- [ ] A mensagem fixa do WhatsApp não contém dados pessoais do visitante.
 - [ ] CAPTCHA intrusivo não foi adicionado sem necessidade.
 
-## 28. Testes técnicos
+## 27. Testes técnicos
 
 - [ ] Dependências foram instaladas com o gerenciador correto.
 - [ ] O lockfile existente foi preservado.
@@ -640,36 +492,35 @@ O projeto utiliza **Consent Mode v2 avançado**: no estado negado, GTM, gtag.js 
 - [ ] Rotas existentes continuam funcionando.
 - [ ] Página 404 não foi prejudicada (rota `/` agora redireciona em vez de 404).
 
-## 29. Testes do formulário
+## 28. Testes do WhatsApp e CTAs
 
-- [ ] Envio válido.
-- [ ] Campo obrigatório vazio.
-- [ ] Telefone inválido.
-- [ ] URL inválida.
-- [ ] Consentimento não marcado.
-- [ ] Erro de rede.
-- [ ] Erro do servidor.
-- [ ] Rate limit.
-- [ ] Duplo clique.
-- [ ] Nova tentativa após erro.
-- [ ] Timeout seguido de confirmação.
-- [ ] Fechar e reabrir.
-- [ ] Voltar e editar.
-- [ ] Atualizar a página.
-- [ ] Lead confirmado pelo Apps Script uma única vez.
-- [ ] Mesmo `lead_id` gravado uma única vez na planilha.
-- [ ] Linha possui exatamente 24 colunas na ordem oficial.
-- [ ] UTMs presentes foram preservadas.
-- [ ] UTMs ausentes não foram inventadas.
-- [ ] Texto iniciado por caractere de fórmula permaneceu como texto.
-- [ ] Falha temporária do Sheets foi recuperada.
-- [ ] Falha persistente do Sheets manteve o lead pendente.
-- [ ] Recuperação do Sheets não gerou outra conversão.
-- [ ] Alterações manuais de status e observações foram preservadas.
-- [ ] Notificação recebida.
-- [ ] WhatsApp pós-lead.
-- [ ] WhatsApp por contingência.
-- [ ] Formulário com medição recusada.
+- [ ] Todos os CTAs possuem `data-whatsapp-cta="true"`.
+- [ ] Todos os CTAs possuem `data-cta-location` correto.
+- [ ] O href contém o número oficial sem formatação.
+- [ ] O href contém a mensagem codificada.
+- [ ] O href abre com `https://wa.me/...`.
+- [ ] Clicar no CTA do header abre o WhatsApp.
+- [ ] Clicar no CTA da hero abre o WhatsApp.
+- [ ] Clicar no CTA do portfólio abre o WhatsApp.
+- [ ] Clicar no CTA de investimento abre o WhatsApp.
+- [ ] Clicar no CTA final abre o WhatsApp.
+- [ ] Clicar no CTA fixo mobile abre o WhatsApp.
+- [ ] `cta_click` e `whatsapp_click` chegam ao `dataLayer` no clique.
+- [ ] A navegação não é bloqueada pelos eventos.
+- [ ] O fallback sem número não renderiza link quebrado.
+
+## 29. Testes de consentimento e medição
+
+- [ ] Banner aparece na primeira visita.
+- [ ] Aceitar medição permite cookies de medição.
+- [ ] Recusar recursos não essenciais mantém tudo negado.
+- [ ] Preferências personalizadas funcionam.
+- [ ] Revogação impede novas coletas opcionais.
+- [ ] O WhatsApp continua funcionando com medição recusada.
+- [ ] O CTA fixo mobile desaparece quando o banner está visível.
+- [ ] O CTA fixo mobile volta quando o banner é fechado.
+- [ ] O Microsoft Clarity não dispara sem Analytics aceito.
+- [ ] A validação real do Clarity ocorreu no painel (mapas de calor, gravações e mascaramento).
 
 ## 30. Ambiente e publicação
 
@@ -681,13 +532,8 @@ O projeto utiliza **Consent Mode v2 avançado**: no estado negado, GTM, gtag.js 
 - [ ] Deploy foi autorizado por Willian.
 - [ ] HTTPS funciona no domínio real.
 - [ ] `/landingpage` funciona no domínio real.
-- [ ] Formulário foi testado no domínio real.
-- [ ] Lead confirmado pelo Apps Script no teste real.
-- [ ] Lead chegou uma única vez à aba `Leads`.
-- [ ] WhatsApp foi testado no domínio real.
+- [ ] O WhatsApp foi testado no domínio real.
 - [ ] Eventos foram testados no domínio real.
-- [ ] Conversão do Google Ads foi validada.
-- [ ] Meta `Lead` foi validado.
 - [ ] Canonical foi validada.
 - [ ] Metadata foi validada.
 - [ ] Mobile foi testado no domínio real.
@@ -696,17 +542,9 @@ O projeto utiliza **Consent Mode v2 avançado**: no estado negado, GTM, gtag.js 
 ## 31. Dependências finais
 
 - [ ] Número oficial do WhatsApp.
-- [ ] Endpoint do Apps Script web app.
-- [ ] Secret do Apps Script.
-- [ ] Política de retenção.
-- [ ] Identificador da planilha.
-- [ ] Aba `Leads` com 24 colunas.
-- [ ] Apps Script com acesso de edição na planilha.
-- [ ] Idempotência e reprocessamento testados.
-- [ ] Notificação dos leads.
 - [ ] GTM.
 - [ ] GA4.
-- [ ] Google Ads.
+- [ ] Google Ads (conversão de clique apenas se aprovada).
 - [ ] Meta Pixel.
 - [ ] Microsoft Clarity (Project ID configurado no GTM).
 - [ ] Consentimento.
@@ -739,16 +577,13 @@ A Landing Page somente está pronta quando:
 
 - [ ] Willian aprovou a versão.
 - [ ] Todos os itens críticos foram validados.
-- [ ] O formulário armazenou um lead real no Google Sheets via Apps Script.
-- [ ] O mesmo `lead_id` chegou uma única vez ao Google Sheets.
-- [ ] A linha respeitou o esquema das 24 colunas de `docs/LEADS.md`.
-- [ ] Uma falha de Sheets foi simulada sem perda do lead.
-- [ ] O reprocessamento foi concluído sem duplicidade.
-- [ ] `generate_lead` disparou uma única vez.
-- [ ] Google Ads não recebeu duplicidade.
-- [ ] Meta não recebeu duplicidade.
-- [ ] Nenhum WhatsApp foi contabilizado como novo lead.
-- [ ] Dados pessoais não apareceram nas plataformas.
+- [ ] A copy corresponde a `CONTENT.md`.
+- [ ] Todos os CTAs abrem diretamente o WhatsApp com a mensagem oficial.
+- [ ] O formulário e o modal antigos não aparecem mais.
+- [ ] Não restaram artefatos do formulário removido.
+- [ ] O CTA fixo mobile respeita as regras.
+- [ ] Nenhuma conversão foi criada no clique sem aprovação.
+- [ ] Nenhum dado pessoal apareceu nas plataformas.
 - [ ] Homepage e outras rotas permaneceram intactas (redirect temporário `/` → `/landingpage` está ativo).
 - [ ] Build de produção foi concluído.
 - [ ] Testes no domínio real foram concluídos.

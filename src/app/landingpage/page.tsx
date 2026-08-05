@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { LandingPageClient } from "./client";
 
-const TITLE = "Landing Page para Tráfego Pago | Anúncio & Site";
+const TITLE = "Landing Page Profissional para Google Ads e Meta Ads por R$ 997 | Anúncio & Site";
 const DESCRIPTION =
-  "Landing Page completa para Google Ads e Meta Ads, com estratégia, copy, design, desenvolvimento e rastreamento. Projeto por R$ 997.";
+  "Landing Page profissional para tráfego pago, criada para Google Ads e Meta Ads por R$ 997. Estratégia, copy, design, desenvolvimento, rastreamento e publicação por Willian Souza. Entrada de R$ 498,50 para iniciar.";
 
 export const metadata: Metadata = {
   title: TITLE,

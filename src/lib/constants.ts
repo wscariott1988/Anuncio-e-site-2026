@@ -12,6 +12,9 @@ export const ROUNDS = "até 2 rodadas de ajustes";
 
 export const WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "";
 
+export const WHATSAPP_CTA_MESSAGE =
+  "Olá, Willian. Vi a Landing Page completa por R$ 997 e quero iniciar meu projeto. Pode me explicar os próximos passos?";
+
 export const PROJECTS: Project[] = [
   {
     id: "mecanica_auto_brum",
@@ -55,60 +58,59 @@ export const PROJECTS: Project[] = [
   },
 ];
 
-export const SITUACAO_OPCOES = [
-  "Já anuncio no Google Ads",
-  "Já anuncio no Meta Ads",
-  "Já anuncio nos dois",
-  "Ainda não anuncio, mas pretendo começar",
-] as const;
-
 export const FAQ_ITEMS: FaqItem[] = [
   {
     id: "faq_01",
-    question: "Quanto custa e como funciona o pagamento?",
+    question: "O que preciso enviar para iniciar?",
     answer:
-      "O projeto padrão custa R$ 997: R$ 498,50 na contratação e R$ 498,50 após a página ser publicada e estar funcionando. Serviços fora do escopo são apresentados separadamente antes de qualquer execução.",
+      "Depois da contratação, você recebe um briefing simples para informar sua oferta, público, diferenciais e materiais disponíveis. Você não precisa entregar os textos prontos: a estratégia e a copy fazem parte do projeto.",
   },
   {
     id: "faq_02",
-    question: "Em quanto tempo a página fica pronta?",
+    question: "Quanto custa e como funciona o pagamento?",
     answer:
-      "O prazo é de até 7 dias úteis após a entrada, o briefing completo e o recebimento dos materiais necessários. Pendências pausam a contagem.",
+      "O projeto completo custa R$ 997. O pagamento é dividido em R$ 498,50 na contratação e R$ 498,50 após a Landing Page estar publicada e funcionando.",
   },
   {
     id: "faq_03",
-    question: "Preciso já estar anunciando?",
+    question: "Em quanto tempo a página fica pronta?",
     answer:
-      "Não. A página pode ser desenvolvida antes da campanha, desde que você tenha uma oferta definida e um plano real para anunciar.",
+      "O prazo é de até 7 dias úteis após o pagamento da entrada, o recebimento do briefing completo e dos materiais necessários.",
   },
   {
     id: "faq_04",
-    question: "Já tenho um site. Ainda preciso de uma Landing Page?",
+    question: "A gestão dos anúncios está incluída?",
     answer:
-      "Depende. Um site normalmente oferece vários caminhos; a Landing Page concentra uma oferta e uma ação principal. Eu avalio seu caso antes da contratação.",
+      "Não. O serviço inclui a criação e publicação da Landing Page. A gestão de Google Ads ou Meta Ads não faz parte deste projeto.",
   },
   {
     id: "faq_05",
-    question: "A gestão dos anúncios está incluída?",
+    question: "Domínio e hospedagem estão incluídos?",
     answer:
-      "Não. O valor de R$ 997 contempla a criação da Landing Page. A gestão de Google Ads ou Meta Ads é um serviço separado.",
+      "Domínio, hospedagem e ferramentas de terceiros não estão incluídos automaticamente. Quando necessários, os custos e as responsabilidades são informados antes da contratação.",
   },
   {
     id: "faq_06",
-    question: "Domínio e hospedagem estão incluídos?",
+    question: "O projeto inclui fotos, vídeos ou identidade visual?",
     answer:
-      "Não automaticamente. A infraestrutura, as contas, os custos e as responsabilidades são definidos antes do início.",
+      "Não inclui produção de fotos, vídeos ou identidade visual completa. São utilizados os materiais fornecidos pelo cliente e os recursos previstos no escopo aprovado.",
   },
   {
     id: "faq_07",
-    question: "Posso solicitar alterações e manutenção?",
+    question: "Posso solicitar alterações?",
     answer:
-      "O projeto inclui até 2 rodadas de ajustes dentro do escopo. Manutenção recorrente, novas seções, páginas, integrações ou funcionalidades são avaliadas separadamente.",
+      "Sim. O projeto inclui até 2 rodadas de ajustes dentro do escopo aprovado.",
   },
   {
     id: "faq_08",
-    question: "A página terá rastreamento e garante resultados?",
+    question: "A Landing Page garante vendas ou leads?",
     answer:
-      "Os eventos previstos podem ser configurados quando os acessos necessários forem fornecidos. A página não garante vendas ou leads, pois o resultado também depende da oferta, da campanha, do orçamento, da demanda e do atendimento.",
+      "Não. A Landing Page organiza a experiência depois do clique e facilita o contato, mas o resultado também depende da oferta, da campanha, do mercado, do investimento e de outros fatores.",
+  },
+  {
+    id: "faq_09",
+    question: "Já tenho um site. Ainda preciso de uma Landing Page?",
+    answer:
+      "Depende. Um site normalmente oferece vários caminhos; a Landing Page concentra uma oferta e uma ação principal. Eu analiso seu caso junto com você antes da contratação.",
   },
 ];

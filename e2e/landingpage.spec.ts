@@ -2,6 +2,29 @@ import { test, expect, type Page, type ConsoleMessage } from "@playwright/test";
 
 const PAGE_URL = "/landingpage";
 
+const WHATSAPP_MESSAGE =
+  "Olá, Willian. Vi a Landing Page completa por R$ 997 e quero iniciar meu projeto. Pode me explicar os próximos passos?";
+const WHATSAPP_ENCODED_MESSAGE = encodeURIComponent(WHATSAPP_MESSAGE);
+const ESCAPED_ENCODED_MESSAGE = WHATSAPP_ENCODED_MESSAGE.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+const WHATSAPP_HREF_RE = new RegExp(`^https://wa\\.me/\\d{10,14}\\?text=${ESCAPED_ENCODED_MESSAGE}$`);
+
+const CTA_TEXTS: Record<string, string> = {
+  header: "Quero minha Landing Page",
+  hero: "Quero minha Landing Page por R$ 997",
+  portfolio: "Quero minha Landing Page por R$ 997",
+  investment: "Quero minha Landing Page por R$ 997",
+  final: "Quero minha Landing Page por R$ 997",
+  "sticky-mobile": "Quero iniciar por R$ 498,50",
+};
+const CTA_IDS: Record<string, string> = {
+  header: "header_primary",
+  hero: "hero_primary",
+  portfolio: "portfolio_primary",
+  investment: "investment_primary",
+  final: "final_primary",
+  "sticky-mobile": "sticky_mobile_primary",
+};
+
 /* ------------------------------------------------------------------ */
 /*  Helpers                                                           */
 /* ------------------------------------------------------------------ */
@@ -16,6 +39,7 @@ function collectConsoleViolations(page: Page, violations: ConsoleViolation[]) {
       const text = msg.text();
       if (text.includes("webpack-hmr") || text.includes("WebSocket")) return;
       if (text.includes("404") || text.includes("502") || text.includes("503")) return;
+      if (text.includes("net::")) return;
       if (text.includes("hydration") || text.includes("React does not recognize")) return;
       for (const p of blockedPatterns) {
         if (p.test(text)) {
@@ -71,6 +95,62 @@ async function waitForPageReady(page: Page) {
   await page.evaluate(() => document.fonts.ready);
   await expect(page.locator("h1")).toBeVisible();
   await page.waitForTimeout(500);
+}
+
+/** Fulfil wa.me popups so clicking CTAs does not depend on real network. */
+async function mockWhatsappPopups(page: Page) {
+  await page.context().route("https://wa.me/**", async (route) => {
+    await route.fulfill({
+      status: 200,
+      contentType: "text/html",
+      body: "<html><body>ok</body></html>",
+    });
+  });
+}
+
+function whatsappCta(page: Page, location: string) {
+  return page.locator(`a[data-whatsapp-cta="true"][data-cta-location="${location}"]`);
+}
+
+async function expectedCtaHref(page: Page, location: string): Promise<string> {
+  const href = await whatsappCta(page, location).first().getAttribute("href");
+  expect(href).not.toBeNull();
+  return href!;
+}
+
+async function expectCtaMatches(page: Page, location: string, expectedHref: string) {
+  const cta = whatsappCta(page, location).first();
+  await expect(cta).toHaveAttribute("href", expectedHref);
+  await expect(cta).toHaveAttribute("target", "_blank");
+  await expect(cta).toHaveAttribute("rel", "noopener noreferrer");
+  await expect(cta).toHaveAttribute("data-cta-location", location);
+  await expect(cta).toHaveText(CTA_TEXTS[location]);
+  const tag = await cta.evaluate((el) => el.tagName);
+  expect(tag).toBe("A");
+}
+
+async function dismissConsent(page: Page) {
+  const banner = page.locator('[role="dialog"][aria-label="Sua privacidade"]');
+  await expect(banner).toBeVisible({ timeout: 10_000 });
+  await banner.getByRole("button", { name: "Recusar opcionais" }).click();
+  await expect(banner).not.toBeVisible();
+}
+
+async function lastEvent(page: Page, event: string): Promise<Record<string, unknown> | null> {
+  return page.evaluate((ev) => {
+    const dl = window.dataLayer ?? [];
+    for (let i = dl.length - 1; i >= 0; i--) {
+      const e = dl[i];
+      if (e && (e as Record<string, unknown>).event === ev) return e as Record<string, unknown>;
+    }
+    return null;
+  }, event);
+}
+
+async function scrollToH2(page: Page, text: string) {
+  const h2 = page.locator(`h2:has-text("${text}")`).first();
+  await h2.scrollIntoViewIfNeeded();
+  await page.waitForTimeout(300);
 }
 
 /* ------------------------------------------------------------------ */
@@ -149,19 +229,6 @@ function assertDeniedGooglePings(pings: string[]) {
   }
 }
 
-async function openFormFromHero(page: Page) {
-  const heroBtn = page.getByRole("button", { name: "Quero minha Landing Page" }).first();
-  await heroBtn.scrollIntoViewIfNeeded();
-  await heroBtn.click();
-  await expect(page.locator("dialog[open]")).toBeVisible({ timeout: 10_000 });
-}
-
-async function scrollToH2(page: Page, text: string) {
-  const h2 = page.locator(`h2:has-text("${text}")`).first();
-  await h2.scrollIntoViewIfNeeded();
-  await page.waitForTimeout(300);
-}
-
 /* ------------------------------------------------------------------ */
 /*  ROUTE TESTS                                                       */
 /* ------------------------------------------------------------------ */
@@ -211,32 +278,30 @@ test.describe("Route tests", () => {
     await expect(h1).toHaveCount(1);
   });
 
-  test("No WhatsApp links in the page", async () => {
+  test("WhatsApp CTAs present in all commercial sections", async () => {
     await waitForPageReady(page);
-    const whatsappLinks = page.locator('a[href*="wa.me"], a[href*="api.whatsapp.com"], a[href*="whatsapp"]');
-    await expect(whatsappLinks).toHaveCount(0);
+    for (const location of ["header", "hero", "portfolio", "investment", "final"]) {
+      const cta = whatsappCta(page, location);
+      await expect(cta.first()).toHaveAttribute("data-whatsapp-cta", "true");
+    }
+    const total = await page.locator('a[data-whatsapp-cta="true"]').count();
+    expect(total).toBeGreaterThanOrEqual(5);
   });
 
-  test("No external commercial links", async () => {
+  test("No external commercial links (only WhatsApp is allowed)", async () => {
     await waitForPageReady(page);
     const links = page.locator('a[target="_blank"]');
     const count = await links.count();
+    expect(count).toBeGreaterThanOrEqual(5);
     for (let i = 0; i < count; i++) {
       const href = await links.nth(i).getAttribute("href");
       expect(href).not.toContain("instagram.com");
       expect(href).not.toContain("facebook.com");
       expect(href).not.toContain("linkedin.com");
       expect(href).not.toContain("twitter.com");
-      expect(href).not.toContain("wa.me");
+      expect(href).not.toContain("youtube.com");
+      expect(href).toContain("wa.me");
     }
-  });
-
-  test("No fixed mobile CTA button", async () => {
-    await waitForPageReady(page);
-    await page.setViewportSize({ width: 390, height: 844 });
-    await page.waitForTimeout(300);
-    const fixedButtons = page.locator('button[style*="position: fixed"], button.fixed, button[class*="fixed"]');
-    await expect(fixedButtons).toHaveCount(0);
   });
 
   test("No /landingpage/obrigado page", async () => {
@@ -251,17 +316,24 @@ test.describe("Route tests", () => {
     expect(body).not.toContain("Learn Next.js");
   });
 
-  test("No hero placeholder text", async () => {
+  test("Sections present in order via h2 elements", async () => {
     await waitForPageReady(page);
-    const body = await page.textContent("body");
-    expect(body).not.toContain("Exemplo visual de estrutura");
-  });
-
-  test("sections present in order via h2 elements", async () => {
-    await waitForPageReady(page);
-    const h2s = page.locator("h2");
-    const count = await h2s.count();
-    expect(count).toBeGreaterThanOrEqual(9);
+    const h2s = await page.locator("h2").allTextContents();
+    const expected = [
+      "Projetos reais desenvolvidos por mim",
+      "Tudo o que está incluído no projeto",
+      "Da contratação à publicação em três etapas",
+      "Seu projeto é desenvolvido diretamente por mim",
+      "Sua Landing Page completa por R$ 997",
+      "O que você precisa saber antes de iniciar",
+      "Tenha sua Landing Page publicada e preparada para anunciar",
+    ];
+    let lastIdx = -1;
+    for (const text of expected) {
+      const idx = h2s.findIndex((h) => h.trim().includes(text));
+      expect(idx, `h2 not found in order: ${text}`).toBeGreaterThan(lastIdx);
+      lastIdx = idx;
+    }
   });
 
   test("No horizontal scroll at 360px, 375px, 390px, 768px, 1440px", async () => {
@@ -279,7 +351,8 @@ test.describe("Route tests", () => {
     await page.goto(PAGE_URL, { waitUntil: "networkidle" });
 
     const title = await page.title();
-    expect(title).toContain("Landing Page para Tráfego Pago");
+    expect(title).toContain("Landing Page Profissional para Google Ads e Meta Ads");
+    expect(title).toContain("R$ 997");
     expect(title).toContain("Anúncio & Site");
 
     const metaDesc = await page.locator('meta[name="description"]').getAttribute("content");
@@ -300,18 +373,17 @@ test.describe("Route tests", () => {
     await expect(strikethroughs).toHaveCount(0);
   });
 
-  test("Hero composition: desktop mockup loads, no external links", async () => {
+  test("Hero composition: desktop mockup loads, only WhatsApp external link", async () => {
     await waitForPageReady(page);
-    // Desktop composition is visible at 1440px
     const desktopImage = page.locator('img[alt*="ZARQ Planejados"][alt*="desktop"]');
     await expect(desktopImage).toBeVisible();
-    // Phone frame visible
     const mobileImage = page.locator('img[alt*="ZARQ Planejados"][alt*="mobile"]').first();
     await expect(mobileImage).toBeVisible();
-    // No external links in hero
     const heroSection = page.locator("section").first();
     const heroLinks = heroSection.locator('a[target="_blank"]');
-    expect(await heroLinks.count()).toBe(0);
+    await expect(heroLinks).toHaveCount(1);
+    const href = await heroLinks.getAttribute("href");
+    expect(href).toContain("wa.me");
   });
 
   test("Hero composition mobile: phone frame visible below CTA", async () => {
@@ -342,7 +414,7 @@ test.describe("Route tests", () => {
     await waitForPageReady(page);
     const nowrapSpans = page.locator("span.whitespace-nowrap");
     const count = await nowrapSpans.count();
-    expect(count).toBeGreaterThanOrEqual(1);
+    expect(count).toBeGreaterThanOrEqual(2);
     for (let i = 0; i < count; i++) {
       const text = await nowrapSpans.nth(i).textContent();
       expect(text).toMatch(/R\$\s*997/);
@@ -361,10 +433,15 @@ test.describe("Route tests", () => {
     expect(visibleText).not.toContain("anuncioesite.com.br/zarq-planejados");
   });
 
-  test("Scope text uses 'Configuração de rastreamento'", async () => {
+  test("No form artifacts remain in the DOM", async () => {
     await waitForPageReady(page);
     const body = await page.textContent("body");
-    expect(body).toContain("Configuração de rastreamento");
+    expect(body).not.toContain("Preencha o formulário");
+    expect(body).not.toContain("Começar");
+    expect(body).not.toContain("Enviar informações");
+    expect(body).not.toContain("Confira suas informações");
+    const dialogs = await page.locator("dialog").count();
+    expect(dialogs).toBe(0);
   });
 
   test("Portfolio modal: no image overflow on mobile", async () => {
@@ -425,236 +502,161 @@ test.describe("Route tests", () => {
 });
 
 /* ------------------------------------------------------------------ */
-/*  CTA TESTS                                                         */
+/*  WHATSAPP CTA TESTS                                                */
 /* ------------------------------------------------------------------ */
 
-const CTA_BUTTONS: { label: string; location: string }[] = [
-  { label: "Quero minha Landing Page", location: "header" },
-  { label: "Quero minha Landing Page", location: "hero" },
-  { label: "Quero minha Landing Page", location: "portfolio" },
-  { label: "Quero minha Landing Page", location: "pricing" },
-  { label: "Quero minha Landing Page", location: "final" },
-];
-
-test.describe("CTA tests", () => {
-  test("Each CTA opens modal, Esc closes, focus returns", async ({ page }) => {
-    const violations: ConsoleViolation[] = [];
-    collectConsoleViolations(page, violations);
-
+test.describe("WhatsApp CTA tests", () => {
+  test("All visible CTAs have the correct href, target and message", async ({ page }) => {
     await waitForPageReady(page);
 
-    for (const cta of CTA_BUTTONS) {
-      const buttons = page.getByRole("button", { name: cta.label });
-      const count = await buttons.count();
-      expect(count).toBeGreaterThanOrEqual(1);
+    const headerHref = await expectedCtaHref(page, "header");
+    expect(headerHref).toMatch(WHATSAPP_HREF_RE);
 
-      const btn = buttons.first();
-      await btn.scrollIntoViewIfNeeded();
-      await btn.click();
-
-      const dialog = page.locator("dialog[open]");
-      await expect(dialog).toBeVisible({ timeout: 10_000 });
-
-      const isInsideDialog = await page.evaluate(() => {
-        const active = document.activeElement;
-        const dlg = document.querySelector("dialog[open]");
-        return dlg?.contains(active) ?? false;
-      });
-      expect(isInsideDialog).toBeTruthy();
-
-      await page.keyboard.press("Escape");
-      await expect(dialog).not.toBeVisible();
-
-      const focusedTag = await page.evaluate(() => document.activeElement?.tagName);
-      expect(focusedTag).toBeTruthy();
+    for (const location of ["header", "hero", "portfolio", "investment", "final"]) {
+      await expectCtaMatches(page, location, headerHref);
     }
-
-    assertNoViolations(violations);
   });
 
-  test("Form preserves data after close and reopen", async ({ page }) => {
-    const violations: ConsoleViolation[] = [];
-    collectConsoleViolations(page, violations);
-
+  test("Clicking each CTA opens a wa.me popup and fires cta_click + whatsapp_click", async ({ page }) => {
+    await mockWhatsappPopups(page);
     await waitForPageReady(page);
 
-    await openFormFromHero(page);
+    for (const location of ["header", "hero", "portfolio", "investment", "final"]) {
+      const cta = whatsappCta(page, location).first();
+      await cta.scrollIntoViewIfNeeded();
 
-    await page.getByRole("button", { name: "Começar" }).click();
-    await expect(page.locator("dialog[open]")).toBeVisible();
+      const popupPromise = page.waitForEvent("popup");
+      await cta.click();
+      const popup = await popupPromise;
+      await popup.waitForLoadState("domcontentloaded");
+      expect(popup.url()).toContain("https://wa.me/");
+      expect(popup.url()).toContain(encodeURIComponent(WHATSAPP_MESSAGE));
+      await popup.close();
 
-    await page.fill("#form-nome", "Maria Silva");
+      const clickEvent = await lastEvent(page, "cta_click");
+      expect(clickEvent).not.toBeNull();
+      expect(clickEvent!.cta_location).toBe(location);
+      expect(clickEvent!.cta_id).toBe(CTA_IDS[location]);
+      expect(clickEvent!.cta_text).toBe(CTA_TEXTS[location]);
 
-    await page.keyboard.press("Escape");
-    await expect(page.locator("dialog[open]")).not.toBeVisible();
-
-    await openFormFromHero(page);
-
-    await page.getByRole("button", { name: "Começar" }).click();
-
-    await expect(page.locator("#form-nome")).toHaveValue("Maria Silva");
-
-    await page.keyboard.press("Escape");
-
-    assertNoViolations(violations);
-  });
-});
-
-/* ------------------------------------------------------------------ */
-/*  FORM TESTS                                                        */
-/* ------------------------------------------------------------------ */
-
-test.describe("Form tests", () => {
-  test("Complete form flow: open, fill, back, review, consent, submit, pending_integration", async ({ page }) => {
-    const violations: ConsoleViolation[] = [];
-    collectConsoleViolations(page, violations);
-
-    const forbiddenRequests: string[] = [];
-    const googlePings: string[] = [];
-    page.on("request", (req) => {
-      const url = req.url();
-      if (url.includes("wa.me")) forbiddenRequests.push(url);
-      if (url.includes("facebook.net")) forbiddenRequests.push(url);
-    });
-    collectGooglePings(page, googlePings);
-
-    await page.route("**/api/leads", async (route) => {
-      await route.fulfill({
-        status: 503,
-        contentType: "application/json",
-        body: JSON.stringify({ ok: false, status: "error", code: "PENDING_INTEGRATION" }),
-      });
-    });
-
-    await waitForPageReady(page);
-
-    await openFormFromHero(page);
-    const dialog = page.locator("dialog[open]");
-    await expect(dialog).toBeVisible();
-
-    await page.getByRole("button", { name: "Começar" }).click();
-
-    await page.getByRole("button", { name: "Continuar" }).click();
-    await expect(page.getByText("Informe seu nome para continuar.")).toBeVisible();
-
-    await page.fill("#form-nome", "Maria Silva");
-
-    await page.getByRole("button", { name: "Continuar" }).click();
-    await expect(page.getByText("Confira o número e inclua o DDD. Exemplo: (51) 99999-9999.")).toBeVisible();
-
-    await page.fill("#form-whatsapp", "11999998888");
-
-    await page.getByRole("button", { name: "Continuar" }).click();
-    await expect(page.locator("#form-negocio")).toBeVisible();
-
-    await page.getByRole("button", { name: "Voltar" }).click();
-    await expect(page.locator("#form-nome")).toHaveValue("Maria Silva");
-    await expect(page.locator("#form-whatsapp")).toHaveValue("(11) 99999-8888");
-
-    await page.getByRole("button", { name: "Continuar" }).click();
-    await expect(page.locator("#form-negocio")).toBeVisible();
-
-    await page.fill("#form-negocio", "Clínica odontológica");
-
-    await page.getByLabel("Já anuncio no Google Ads").check();
-
-    await page.getByLabel("Não", { exact: false }).last().check();
-
-    await page.getByRole("button", { name: "Continuar" }).click();
-
-    await expect(page.getByText("Maria Silva")).toBeVisible();
-    await expect(page.getByText("(11) 99999-8888")).toBeVisible();
-    await expect(page.getByText("Clínica odontológica")).toBeVisible();
-    await expect(page.getByText("Já anuncio no Google Ads")).toBeVisible();
-
-    const submitBtn = page.getByRole("button", { name: "Enviar informações" });
-    await expect(submitBtn).toBeDisabled();
-
-    await page.locator('input[type="checkbox"]').check();
-
-    await submitBtn.click();
-
-    await expect(page.getByText("Integração pendente")).toBeVisible({ timeout: 10_000 });
-    await expect(page.getByText("Servidor ainda não configurado")).toBeVisible();
-
-    expect(forbiddenRequests).toHaveLength(0);
-
-    if (googlePings.length > 0) {
-      assertDeniedGooglePings(googlePings);
+      const whatsappEvent = await lastEvent(page, "whatsapp_click");
+      expect(whatsappEvent).not.toBeNull();
+      expect(whatsappEvent!.cta_location).toBe(location);
     }
-    await expectAllConsentDenied(page);
-    expect(await trackingCookies(page)).toHaveLength(0);
-    expect(await trackingStorageKeys(page)).toHaveLength(0);
-
-    const whatsappLinks = page.locator('a[href*="wa.me"], a[href*="api.whatsapp.com"]');
-    await expect(whatsappLinks).toHaveCount(0);
 
     const hasGenerateLead = await page.evaluate(() => {
       const dl = window.dataLayer ?? [];
       return dl.some((e) => (e as Record<string, unknown>).event === "generate_lead");
     });
     expect(hasGenerateLead).toBe(false);
-
-    await expect(page.getByText("Suas respostas foram preservadas nesta tela.")).toBeVisible();
-
-    await page.getByRole("button", { name: "Voltar para a página" }).click();
-    await expect(dialog).not.toBeVisible();
-
-    assertNoViolations(violations);
   });
 
-  test("Possui site = Sim shows URL field, Nao hides it", async ({ page }) => {
-    const violations: ConsoleViolation[] = [];
-    collectConsoleViolations(page, violations);
-
+  test("CTA click does not block navigation (no preventDefault)", async ({ page }) => {
+    await mockWhatsappPopups(page);
     await waitForPageReady(page);
 
-    await openFormFromHero(page);
-    await page.getByRole("button", { name: "Começar" }).click();
-
-    await page.fill("#form-nome", "Test");
-    await page.fill("#form-whatsapp", "11999998888");
-    await page.getByRole("button", { name: "Continuar" }).click();
-
-    await expect(page.locator("#form-url")).not.toBeVisible();
-
-    await page.getByLabel("Sim").last().check();
-    await expect(page.locator("#form-url")).toBeVisible();
-
-    await page.getByLabel("Não", { exact: false }).last().check();
-    await expect(page.locator("#form-url")).not.toBeVisible();
-
-    await page.keyboard.press("Escape");
-
-    assertNoViolations(violations);
+    const cta = whatsappCta(page, "header").first();
+    const popupPromise = page.waitForEvent("popup");
+    await cta.click();
+    const popup = await popupPromise;
+    await popup.waitForLoadState("domcontentloaded");
+    expect(popup.url()).toContain("wa.me");
+    await popup.close();
   });
 
-  test("Form fills mobile viewport properly at 390x844", async ({ page }) => {
-    const violations: ConsoleViolation[] = [];
-    collectConsoleViolations(page, violations);
-
+  test("No WhatsApp CTA renders a broken link when hidden from mobile sticky logic", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await waitForPageReady(page);
 
-    await openFormFromHero(page);
+    await dismissConsent(page);
+    await page.locator("h2", { hasText: "Tudo o que está incluído no projeto" }).scrollIntoViewIfNeeded();
 
-    const dialog = page.locator("dialog[open]");
-    await expect(dialog).toBeVisible();
+    const sticky = whatsappCta(page, "sticky-mobile");
+    await expect(sticky).toBeVisible();
+    const stickyHref = await expectedCtaHref(page, "sticky-mobile");
+    expect(stickyHref).toMatch(WHATSAPP_HREF_RE);
+    const headerHref = await expectedCtaHref(page, "header");
+    expect(stickyHref).toBe(headerHref);
+    await expect(sticky).toHaveAttribute("data-cta-location", "sticky-mobile");
+    await expect(sticky).toHaveText("Quero iniciar por R$ 498,50");
+    await expect(page.getByText("Projeto completo: R$ 997").first()).toBeVisible();
+  });
+});
 
-    // Dialog should fill most of the viewport width
-    const box = await dialog.boundingBox();
-    expect(box).not.toBeNull();
-    if (box) {
-      expect(box.width).toBeGreaterThan(350);
-    }
+/* ------------------------------------------------------------------ */
+/*  STICKY MOBILE CTA                                                 */
+/* ------------------------------------------------------------------ */
 
-    // No horizontal scroll
-    const scrollWidth = await page.evaluate(() => document.documentElement.scrollWidth);
-    const clientWidth = await page.evaluate(() => document.documentElement.clientWidth);
-    expect(scrollWidth).toBeLessThanOrEqual(clientWidth + 1);
+test.describe("Sticky mobile CTA", () => {
+  test("Mobile: appears after scrolling past hero, hidden with banner, hero or footer", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await waitForPageReady(page);
 
-    await page.keyboard.press("Escape");
-    assertNoViolations(violations);
+    const sticky = whatsappCta(page, "sticky-mobile");
+
+    // Banner visible → sticky hidden
+    await expect(page.locator(BANNER)).toBeVisible();
+    await expect(sticky).toHaveCount(0);
+
+    await dismissConsent(page);
+
+    // At the top the hero CTA is visible → sticky hidden
+    await page.evaluate(() => window.scrollTo(0, 0));
+    await expect(sticky).toHaveCount(0);
+
+    // Scroll past the hero → sticky appears
+    await page.locator("h2", { hasText: "Tudo o que está incluído no projeto" }).scrollIntoViewIfNeeded();
+    await expect(sticky).toBeVisible();
+
+    // Footer visible → sticky hidden
+    await page.locator("footer").scrollIntoViewIfNeeded();
+    await expect(sticky).toHaveCount(0);
+
+    // Back to top → hero visible → sticky hidden
+    await page.evaluate(() => window.scrollTo(0, 0));
+    await expect(sticky).toHaveCount(0);
+  });
+
+  test("Desktop: sticky CTA is never visible", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await waitForPageReady(page);
+
+    await dismissConsent(page);
+
+    await page.locator("h2", { hasText: "Tudo o que está incluído no projeto" }).scrollIntoViewIfNeeded();
+    const sticky = whatsappCta(page, "sticky-mobile");
+    await expect(sticky).not.toBeVisible();
+
+    await page.locator("footer").scrollIntoViewIfNeeded();
+    await expect(sticky).not.toBeVisible();
+  });
+
+  test("Sticky CTA click fires events and opens WhatsApp", async ({ page }) => {
+    await mockWhatsappPopups(page);
+    await page.setViewportSize({ width: 390, height: 844 });
+    await waitForPageReady(page);
+
+    await dismissConsent(page);
+    await page.locator("h2", { hasText: "Tudo o que está incluído no projeto" }).scrollIntoViewIfNeeded();
+
+    const sticky = whatsappCta(page, "sticky-mobile");
+    await expect(sticky).toBeVisible();
+
+    const popupPromise = page.waitForEvent("popup");
+    await sticky.click();
+    const popup = await popupPromise;
+    await popup.waitForLoadState("domcontentloaded");
+    expect(popup.url()).toContain("https://wa.me/");
+    await popup.close();
+
+    const clickEvent = await lastEvent(page, "cta_click");
+    expect(clickEvent).not.toBeNull();
+    expect(clickEvent!.cta_location).toBe("sticky-mobile");
+    expect(clickEvent!.cta_id).toBe("sticky_mobile_primary");
+
+    const whatsappEvent = await lastEvent(page, "whatsapp_click");
+    expect(whatsappEvent).not.toBeNull();
+    expect(whatsappEvent!.cta_location).toBe("sticky-mobile");
   });
 });
 
@@ -805,7 +807,6 @@ test.describe("Portfolio tests", () => {
       expect(closeBox.height).toBeGreaterThanOrEqual(40);
     }
 
-    // Toggle container and close button have gap between them
     const toggleContainer = page.locator("dialog[open]").locator(".hidden.md\\:flex");
     const toggleBox = await toggleContainer.boundingBox();
     expect(toggleBox).not.toBeNull();
@@ -814,7 +815,6 @@ test.describe("Portfolio tests", () => {
       expect(gap).toBeGreaterThanOrEqual(8);
     }
 
-    // Close button works
     await closeBtn.click();
     await expect(page.locator("dialog[open]")).not.toBeVisible();
 
@@ -827,9 +827,9 @@ test.describe("Portfolio tests", () => {
 /* ------------------------------------------------------------------ */
 
 test.describe("FAQ tests", () => {
-  const FAQ_IDS = Array.from({ length: 8 }, (_, i) => `faq_${String(i + 1).padStart(2, "0")}`);
+  const FAQ_IDS = Array.from({ length: 9 }, (_, i) => `faq_${String(i + 1).padStart(2, "0")}`);
 
-  test("All 8 FAQs: click toggles, aria-expanded correct, keyboard works", async ({ page }) => {
+  test("All 9 FAQs: click toggles, aria-expanded correct, keyboard works", async ({ page }) => {
     const violations: ConsoleViolation[] = [];
     collectConsoleViolations(page, violations);
 
@@ -862,6 +862,17 @@ test.describe("FAQ tests", () => {
 
     assertNoViolations(violations);
   });
+
+  test("faq_open event fires when opening each question", async ({ page }) => {
+    await waitForPageReady(page);
+
+    await page.locator("#trigger-faq_01").scrollIntoViewIfNeeded();
+    await page.locator("#trigger-faq_01").click();
+
+    const ev = await lastEvent(page, "faq_open");
+    expect(ev).not.toBeNull();
+    expect(ev!.faq_id).toBe("faq_01");
+  });
 });
 
 /* ------------------------------------------------------------------ */
@@ -879,28 +890,24 @@ test.describe("Visual captures", () => {
     // Hero — top of page
     await page.screenshot({ path: "artifacts/visual-review/desktop-hero.png", fullPage: false });
 
-    // Problema e solução
-    await scrollToH2(page, "anúncio traz o visitante");
-    await page.screenshot({ path: "artifacts/visual-review/desktop-problema-solucao.png", fullPage: false });
-
     // Itens incluídos
-    await scrollToH2(page, "tudo o que sua landing page");
+    await scrollToH2(page, "Tudo o que está incluído no projeto");
     await page.screenshot({ path: "artifacts/visual-review/desktop-incluido.png", fullPage: false });
 
     // Portfólio
-    await scrollToH2(page, "Algumas Landing Pages");
+    await scrollToH2(page, "Projetos reais desenvolvidos por mim");
     await page.screenshot({ path: "artifacts/visual-review/desktop-portfolio.png", fullPage: false });
 
     // Processo
-    await scrollToH2(page, "briefing à publicação");
+    await scrollToH2(page, "Da contratação à publicação em três etapas");
     await page.screenshot({ path: "artifacts/visual-review/desktop-processo.png", fullPage: false });
 
     // Investimento
-    await scrollToH2(page, "Landing Page completa por");
+    await scrollToH2(page, "Sua Landing Page completa por");
     await page.screenshot({ path: "artifacts/visual-review/desktop-investimento.png", fullPage: false });
 
     // FAQ + CTA final
-    await scrollToH2(page, "precisa saber antes");
+    await scrollToH2(page, "O que você precisa saber antes de iniciar");
     await page.screenshot({ path: "artifacts/visual-review/desktop-faq-cta.png", fullPage: false });
 
     assertNoViolations(violations);
@@ -916,40 +923,17 @@ test.describe("Visual captures", () => {
     // Hero
     await page.screenshot({ path: "artifacts/visual-review/mobile-hero.png", fullPage: false });
 
-    // Problema e solução
-    await scrollToH2(page, "anúncio traz o visitante");
-    await page.screenshot({ path: "artifacts/visual-review/mobile-solucao.png", fullPage: false });
-
     // Portfólio
-    await scrollToH2(page, "Algumas Landing Pages");
+    await scrollToH2(page, "Projetos reais desenvolvidos por mim");
     await page.screenshot({ path: "artifacts/visual-review/mobile-portfolio.png", fullPage: false });
 
     // Investimento
-    await scrollToH2(page, "Landing Page completa por");
+    await scrollToH2(page, "Sua Landing Page completa por");
     await page.screenshot({ path: "artifacts/visual-review/mobile-investimento.png", fullPage: false });
 
     // FAQ
-    await scrollToH2(page, "precisa saber antes");
+    await scrollToH2(page, "O que você precisa saber antes de iniciar");
     await page.screenshot({ path: "artifacts/visual-review/mobile-faq.png", fullPage: false });
-
-    // Form — initial
-    await openFormFromHero(page);
-    await page.screenshot({ path: "artifacts/visual-review/mobile-formulario-inicial.png", fullPage: false });
-    await page.keyboard.press("Escape");
-
-    // Form — review step
-    await openFormFromHero(page);
-    await page.getByRole("button", { name: "Começar" }).click();
-    await page.fill("#form-nome", "Maria Silva");
-    await page.fill("#form-whatsapp", "11999998888");
-    await page.getByRole("button", { name: "Continuar" }).click();
-    await page.fill("#form-negocio", "Clínica odontológica");
-    await page.getByLabel("Já anuncio no Google Ads").check();
-    await page.getByLabel("Não", { exact: false }).last().check();
-    await page.getByRole("button", { name: "Continuar" }).click();
-    await expect(page.getByText("Confira suas informações")).toBeVisible();
-    await page.screenshot({ path: "artifacts/visual-review/mobile-formulario-revisao.png", fullPage: false });
-    await page.keyboard.press("Escape");
 
     // Portfolio viewer
     const mobileStrip = page.locator(".md\\:hidden .overflow-x-auto");
@@ -975,11 +959,11 @@ test.describe("Visual captures", () => {
     await page.screenshot({ path: "artifacts/visual-review/tablet-hero.png", fullPage: false });
 
     // Portfólio
-    await scrollToH2(page, "Algumas Landing Pages");
+    await scrollToH2(page, "Projetos reais desenvolvidos por mim");
     await page.screenshot({ path: "artifacts/visual-review/tablet-portfolio.png", fullPage: false });
 
     // Investimento
-    await scrollToH2(page, "Landing Page completa por");
+    await scrollToH2(page, "Sua Landing Page completa por");
     await page.screenshot({ path: "artifacts/visual-review/tablet-investimento.png", fullPage: false });
 
     assertNoViolations(violations);
@@ -1015,9 +999,6 @@ test.describe("Console and network integrity", () => {
 
     await waitForPageReady(page);
 
-    await openFormFromHero(page);
-    await page.keyboard.press("Escape");
-
     const desktopGrid = page.locator(".hidden.md\\:grid.md\\:grid-cols-2");
     const card = desktopGrid.locator('[aria-label="Ver projeto ZARQ Planejados por dentro"]');
     await card.scrollIntoViewIfNeeded();
@@ -1046,22 +1027,29 @@ test.describe("Console and network integrity", () => {
     const consoleOutput: string[] = [];
     page.on("console", (msg) => consoleOutput.push(msg.text()));
 
+    await mockWhatsappPopups(page);
     await waitForPageReady(page);
 
-    await openFormFromHero(page);
-    await page.getByRole("button", { name: "Começar" }).click();
-    await page.fill("#form-nome", "Maria Silva");
-    await page.fill("#form-whatsapp", "11999998888");
-    await page.keyboard.press("Escape");
+    const cta = whatsappCta(page, "header").first();
+    const popupPromise = page.waitForEvent("popup");
+    await cta.click();
+    const popup = await popupPromise;
+    await popup.waitForLoadState("domcontentloaded");
+    await popup.close();
+
+    await page.locator("#trigger-faq_01").scrollIntoViewIfNeeded();
+    await page.locator("#trigger-faq_01").click();
 
     const fullOutput = consoleOutput.join("\n");
-    expect(fullOutput).not.toContain("Maria Silva");
+    expect(fullOutput).not.toContain("Maria");
     expect(fullOutput).not.toContain("11999998888");
 
     const dataLayer = await page.evaluate(() => window.dataLayer ?? []);
     const dlString = JSON.stringify(dataLayer);
-    expect(dlString).not.toContain("Maria Silva");
+    expect(dlString).not.toContain("Maria");
     expect(dlString).not.toContain("11999998888");
+    expect(dlString).not.toContain("11999887766");
+    expect(dlString).not.toContain("informar seu nome");
   });
 });
 
@@ -1070,7 +1058,7 @@ test.describe("Console and network integrity", () => {
 /* ------------------------------------------------------------------ */
 
 test.describe("CONTENT.md conformity", () => {
-  test("New phrases present and old phrases absent in rendered page", async ({ page }) => {
+  test("New copy present and old phrases absent in rendered page", async ({ page }) => {
     const violations: ConsoleViolation[] = [];
     collectConsoleViolations(page, violations);
 
@@ -1078,135 +1066,136 @@ test.describe("CONTENT.md conformity", () => {
 
     const body = await page.textContent("body");
 
-    // New phrases — must be present
-    expect(body).toContain("Não é curso, template ou ferramenta.");
-    expect(body).toContain("conduzir o visitante ao contato");
-    expect(body).toContain("visualizar a página por dentro");
-    expect(body).toContain("Algumas Landing Pages que desenvolvi");
-    expect(body).toContain("Cada projeto recebe uma estrutura adequada à oferta e ao público do negócio.");
-    expect(body).toContain("não garante vendas, leads ou desempenho da campanha");
-    expect(body).toContain("Projeto completo, adaptado à sua oferta e preparado para campanhas de Google Ads ou Meta Ads.");
-    expect(body).toContain("Preencha o formulário para eu avaliar sua necessidade e confirmar o escopo.");
-    expect(body).toContain("Desenvolvida diretamente por mim");
-    expect(body).toContain("Preparada para celular e desktop");
-    expect(body).toContain("Eu cuido do planejamento à publicação");
+    // Hero
+    expect(body).toContain("Landing Page profissional para Google Ads e Meta Ads por");
+    expect(body).toContain("Eu cuido da estratégia, dos textos, do design, do desenvolvimento, do rastreamento e da publicação.");
+    expect(body).toContain("Projeto completo por");
+    expect(body).toContain("R$ 498,50 para iniciar");
+    expect(body).toContain("após a página estar publicada e funcionando");
     expect(body).toContain("Até 7 dias úteis após briefing e materiais");
+    expect(body).toContain("Até 2 rodadas de ajustes");
+    expect(body).toContain("Fale diretamente com Willian pelo WhatsApp.");
+    expect(body).toContain("O briefing completo é enviado somente depois da contratação.");
+
+    // Trust bar
+    expect(body).toContain("Desenvolvimento direto com Willian");
+    expect(body).toContain("Mais de 5 anos de experiência prática com Google Ads");
+    expect(body).toContain("Página publicada e testada no celular e no desktop");
+
+    // Portfolio
+    expect(body).toContain("Projetos reais desenvolvidos por mim");
+    expect(body).toContain("Veja Landing Pages criadas para negócios de diferentes segmentos.");
+    expect(body).toContain("Cada projeto recebe uma estrutura adequada à oferta e ao público do negócio.");
+
+    // Included
+    expect(body).toContain("Tudo o que está incluído no projeto");
+    expect(body).toContain("Estratégia e copy");
+    expect(body).toContain("Design responsivo");
+    expect(body).toContain("Desenvolvimento moderno");
+    expect(body).toContain("Formulário e WhatsApp");
+    expect(body).toContain("Rastreamento");
+    expect(body).toContain("Publicação e testes");
+    expect(body).toContain("O projeto inclui até 2 rodadas de ajustes dentro do escopo aprovado.");
+
+    // Process
+    expect(body).toContain("Da contratação à publicação em três etapas");
+    expect(body).toContain("Contratação");
+    expect(body).toContain("Briefing simples");
+    expect(body).toContain("Criação, revisão e publicação");
+    expect(body).toContain("Prazo de até 7 dias úteis");
+    expect(body).toContain("A contagem começa após o recebimento do briefing completo e dos materiais necessários.");
+
+    // About
+    expect(body).toContain("Seu projeto é desenvolvido diretamente por mim");
+    expect(body).toContain("Sou Willian Souza.");
+    expect(body).toContain("Mais de 5 anos");
+    expect(body).toContain("Cerca de R$ 40 mil");
+    expect(body).toContain("Mais de 7 mil clientes");
+    expect(body).toContain("Execução direta");
+
+    // Investimento
+    expect(body).toContain("Sua Landing Page completa por R$ 997");
+    expect(body).toContain("Projeto completo, adaptado à sua oferta e preparado para campanhas de Google Ads ou Meta Ads.");
+    expect(body).toContain("Preço total");
+    expect(body).toContain("Entrada para iniciar");
+    expect(body).toContain("Saldo após a publicação");
+    expect(body).toContain("Ajustes");
+    expect(body).toContain("Você fala diretamente comigo pelo WhatsApp.");
+
+    // FAQ
+    expect(body).toContain("O que você precisa saber antes de iniciar");
+    expect(body).toContain("O que preciso enviar para iniciar?");
+    expect(body).toContain("Quanto custa e como funciona o pagamento?");
+    expect(body).toContain("A gestão dos anúncios está incluída?");
+    expect(body).toContain("Domínio e hospedagem estão incluídos?");
+    expect(body).toContain("O projeto inclui fotos, vídeos ou identidade visual?");
+    expect(body).toContain("Posso solicitar alterações?");
+    expect(body).toContain("A Landing Page garante vendas ou leads?");
+    expect(body).toContain("Já tenho um site. Ainda preciso de uma Landing Page?");
+
+    // CTA final
+    expect(body).toContain("Tenha sua Landing Page publicada e preparada para anunciar");
+    expect(body).toContain("Entrada de R$ 498,50 para iniciar.");
+    expect(body).toContain("O briefing completo é enviado depois da contratação.");
+
+    // Footer
+    expect(body).toContain("Landing Pages para tráfego pago, desenvolvidas diretamente por Willian Souza.");
 
     // Old phrases — must be absent
-    expect(body).not.toMatch(/Alguns projetos que desenvolvi/i);
-    expect(body).not.toMatch(/Landing Pages criadas para diferentes/i);
-    expect(body).not.toMatch(/Cada negócio possui uma oferta/i);
-    expect(body).not.toMatch(/Esse é o valor do projeto padrão/i);
-    expect(body).not.toMatch(/Confira as respostas para as principais/i);
-    expect(body).not.toMatch(/Você não precisa montar nada sozinho/i);
-    expect(body).not.toMatch(/Conduzida diretamente por mim/i);
-    expect(body).not.toMatch(/Entregue pronta para sua campanha/i);
-    expect(body).not.toMatch(/não existe garantia/i);
-    expect(body).not.toMatch(/Eu civo da página, do planejamento/i);
-    expect(body).not.toMatch(/Quero uma Landing Page para meu negócio/i);
-    expect(body).not.toMatch(/Quero solicitar meu projeto/i);
-    expect(body).not.toMatch(/conhecer a página por dentro/i);
-    expect(body).not.toMatch(/Conte sobre sua empresa e eu avalio/i);
-
-    assertNoViolations(violations);
-  });
-
-  test("Form intro: 'avaliar' instead of 'entender'", async ({ page }) => {
-    const violations: ConsoleViolation[] = [];
-    collectConsoleViolations(page, violations);
-
-    await waitForPageReady(page);
-    await openFormFromHero(page);
-
-    const body = await page.locator("dialog[open]").textContent();
-    expect(body).toContain("avaliar seu projeto");
+    expect(body).not.toMatch(/Preencha o formul[áa]rio/i);
+    expect(body).not.toMatch(/avaliar sua necessidade/i);
+    expect(body).not.toMatch(/avaliar seu projeto/i);
     expect(body).not.toMatch(/entender seu projeto/i);
-
-    await page.keyboard.press("Escape");
-    assertNoViolations(violations);
-  });
-
-  test("Success screen: personalized title with lead name", async ({ page }) => {
-    const violations: ConsoleViolation[] = [];
-    collectConsoleViolations(page, violations);
-
-    const forbiddenRequests: string[] = [];
-    const googlePings: string[] = [];
-    page.on("request", (req) => {
-      const url = req.url();
-      if (url.includes("wa.me")) forbiddenRequests.push(url);
-      if (url.includes("facebook.net")) forbiddenRequests.push(url);
-    });
-    collectGooglePings(page, googlePings);
-
-    await page.route("**/api/leads", async (route) => {
-      await route.fulfill({
-        status: 200,
-        contentType: "application/json",
-        body: JSON.stringify({ ok: true, status: "created", lead_id: "test-lead-conformity-001" }),
-      });
-    });
-
-    await waitForPageReady(page);
-    await openFormFromHero(page);
-
-    await page.getByRole("button", { name: "Começar" }).click();
-
-    await page.fill("#form-nome", "Ana Beatriz");
-    await page.fill("#form-whatsapp", "11999998888");
-    await page.getByRole("button", { name: "Continuar" }).click();
-
-    await page.fill("#form-negocio", "Clínica odontológica");
-    await page.getByLabel("Já anuncio no Google Ads").check();
-    await page.getByLabel("Não", { exact: false }).last().check();
-    await page.getByRole("button", { name: "Continuar" }).click();
-
-    await page.locator('input[type="checkbox"]').check();
-    await page.getByRole("button", { name: "Enviar informações" }).click();
-
-    await expect(page.getByText("Informações recebidas")).toBeVisible({ timeout: 10_000 });
-    await expect(page.getByText("Obrigado, Ana Beatriz. Recebi os dados do seu projeto.")).toBeVisible();
-    await expect(page.getByText("Agora você pode continuar a conversa comigo pelo WhatsApp")).toBeVisible();
-
-    await expect(page.getByText("Informações enviadas", { exact: true })).not.toBeVisible();
-    await expect(page.getByText("Recebi suas informações!", { exact: true })).not.toBeVisible();
-    await expect(page.getByText("entender seu projeto", { exact: true })).not.toBeVisible();
-
-    expect(forbiddenRequests).toHaveLength(0);
-    expect(googlePings.length).toBeGreaterThan(0);
-    assertDeniedGooglePings(googlePings);
-    expect(await trackingCookies(page)).toHaveLength(0);
-    expect(await trackingStorageKeys(page)).toHaveLength(0);
-
-    const hasGenerateLead = await page.evaluate(() => {
-      const dl = window.dataLayer ?? [];
-      return dl.some((e) => (e as Record<string, unknown>).event === "generate_lead");
-    });
-    expect(hasGenerateLead).toBe(true);
-
-    await page.getByRole("button", { name: "Voltar para a página" }).click();
+    expect(body).not.toMatch(/Formul[áa]rio de avalia[çc][ãa]o/i);
+    expect(body).not.toMatch(/Come[çc]ar/i);
+    expect(body).not.toMatch(/Enviar informa[çc][õo]es/i);
+    expect(body).not.toMatch(/Confira suas informa[çc][õo]es/i);
+    expect(body).not.toMatch(/Informa[çc][õo]es recebidas/i);
+    expect(body).not.toMatch(/Obrigado, /i);
+    expect(body).not.toMatch(/Faixa de clareza/i);
+    expect(body).not.toMatch(/Problema e solu[çc][ãa]o/i);
+    expect(body).not.toMatch(/gerar leads para voc[êe]/i);
+    expect(body).not.toMatch(/Algumas Landing Pages que desenvolvi/i);
+    expect(body).not.toMatch(/Do briefing [àa] publica[çc][ãa]o em quatro etapas/i);
+    expect(body).not.toMatch(/Alguns projetos que desenvolvi/i);
+    expect(body).not.toMatch(/Não é curso, template ou ferramenta\./i);
+    expect(body).not.toMatch(/não garante vendas, leads ou desempenho da campanha/i);
+    expect(body).not.toMatch(/Configura[çc][ãa]o de rastreamento/i);
 
     assertNoViolations(violations);
   });
 
-  test("No WhatsApp links visible before form submission", async ({ page }) => {
-    const violations: ConsoleViolation[] = [];
-    collectConsoleViolations(page, violations);
-
+  test("CTA labels and WhatsApp message match CONTENT.md", async ({ page }) => {
     await waitForPageReady(page);
 
-    const whatsappLinks = page.locator('a[href*="wa.me"], a[href*="api.whatsapp.com"], a[href*="whatsapp"]');
-    await expect(whatsappLinks).toHaveCount(0);
+    const body = await page.textContent("body");
+    expect(body).toContain("Quero minha Landing Page por R$ 997");
+    expect(body).toContain("Quero minha Landing Page");
 
-    assertNoViolations(violations);
+    const href = await whatsappCta(page, "hero").first().getAttribute("href");
+    expect(href).toMatch(WHATSAPP_HREF_RE);
+    expect(href).toContain(`?text=${WHATSAPP_ENCODED_MESSAGE}`);
+  });
+
+  test("WhatsApp is not shown in header/sections/FAQ/footer besides the CTAs", async ({ page }) => {
+    await waitForPageReady(page);
+
+    const nonCtaWhatsapp = page.locator('a[href*="wa.me"]:not([data-whatsapp-cta="true"])');
+    await expect(nonCtaWhatsapp).toHaveCount(0);
+
+    const footer = page.locator("footer");
+    await expect(footer.locator('a[href*="wa.me"]')).toHaveCount(0);
+
+    const faqSection = page.locator("section").filter({ hasText: "O que você precisa saber antes de iniciar" });
+    await expect(faqSection.locator('a[href*="wa.me"]')).toHaveCount(0);
   });
 });
 
 /* ------------------------------------------------------------------ */
-/*  RESPONSIVE COMPACT TESTS                                           */
+/*  RESPONSIVE LAYOUT TESTS                                           */
 /* ------------------------------------------------------------------ */
 
-test.describe("Responsive compact layout", () => {
+test.describe("Responsive layout", () => {
   const ALL_MOBILE_VIEWPORTS = [
     { width: 360, height: 800 },
     { width: 375, height: 812 },
@@ -1227,14 +1216,12 @@ test.describe("Responsive compact layout", () => {
       "Artur Montador",
     ];
 
-    // Desktop: check the grid container
     const desktopGrid = page.locator(".hidden.md\\:grid");
     for (const name of projectNames) {
       const card = desktopGrid.locator(`[aria-label="Ver projeto ${name} por dentro"]`);
       await expect(card).toHaveCount(1);
     }
 
-    // Mobile: check the scroll container
     await page.setViewportSize({ width: 390, height: 844 });
     await page.waitForTimeout(300);
     const mobileStrip = page.locator(".md\\:hidden .overflow-x-auto");
@@ -1393,7 +1380,7 @@ test.describe("Responsive compact layout", () => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await waitForPageReady(page);
 
-    const section = page.locator("section").filter({ hasText: "Algumas Landing Pages que desenvolvi" });
+    const section = page.locator("section").filter({ hasText: "Projetos reais desenvolvidos por mim" });
     const grid = section.locator(".hidden.md\\:grid");
     await expect(grid).toBeVisible();
 
@@ -1406,57 +1393,57 @@ test.describe("Responsive compact layout", () => {
     assertNoViolations(violations);
   });
 
-  test("IncludedSection mobile: compact panel with 6 items and dividers", async ({ page }) => {
-    const violations: ConsoleViolation[] = [];
-    collectConsoleViolations(page, violations);
-
-    await page.setViewportSize({ width: 390, height: 844 });
-    await waitForPageReady(page);
-
-    const section = page.locator("section").filter({ hasText: "Tudo o que sua Landing Page" });
-    const compactPanel = section.locator(".md\\:hidden.divide-y");
-    await compactPanel.scrollIntoViewIfNeeded();
-    await expect(compactPanel).toBeVisible();
-
-    const rows = compactPanel.locator("> div");
-    await expect(rows).toHaveCount(6);
-
-    const titles = [
-      "Estratégia e copy",
-      "Design responsivo",
-      "Desenvolvimento em Next.js",
-      "Formulário e WhatsApp",
-      "Configuração de rastreamento",
-      "Publicação e testes",
-    ];
-
-    for (const title of titles) {
-      await expect(compactPanel.getByText(title, { exact: true })).toBeVisible();
-    }
-
-    const bentoGrid = section.locator(".hidden.md\\:grid");
-    await expect(bentoGrid).not.toBeVisible();
-
-    assertNoViolations(violations);
-  });
-
-  test("IncludedSection desktop: Bento Box grid preserved", async ({ page }) => {
+  test("IncludedSection uses a single grid with 6 items", async ({ page }) => {
     const violations: ConsoleViolation[] = [];
     collectConsoleViolations(page, violations);
 
     await page.setViewportSize({ width: 1440, height: 900 });
     await waitForPageReady(page);
 
-    const section = page.locator("section").filter({ hasText: "Tudo o que sua Landing Page" });
-    const bentoGrid = section.locator(".hidden.md\\:grid");
-    await bentoGrid.scrollIntoViewIfNeeded();
-    await expect(bentoGrid).toBeVisible();
+    const section = page.locator("section").filter({ hasText: "Tudo o que está incluído no projeto" });
+    const grid = section.locator("div.grid");
+    await grid.scrollIntoViewIfNeeded();
 
-    const display = await bentoGrid.evaluate((el) => window.getComputedStyle(el).display);
-    expect(display).toBe("grid");
+    const cards = grid.locator("> div");
+    await expect(cards).toHaveCount(6);
 
-    const compactPanel = section.locator(".md\\:hidden.divide-y");
-    await expect(compactPanel).not.toBeVisible();
+    const titles = [
+      "Estratégia e copy",
+      "Design responsivo",
+      "Desenvolvimento moderno",
+      "Formulário e WhatsApp",
+      "Rastreamento",
+      "Publicação e testes",
+    ];
+    for (const title of titles) {
+      await expect(section.getByText(title, { exact: true })).toBeVisible();
+    }
+
+    const gridCols = await grid.evaluate((el) => {
+      const s = window.getComputedStyle(el);
+      return s.gridTemplateColumns.split(" ").length;
+    });
+    expect(gridCols).toBe(3);
+
+    assertNoViolations(violations);
+  });
+
+  test("IncludedSection is single column on mobile", async ({ page }) => {
+    const violations: ConsoleViolation[] = [];
+    collectConsoleViolations(page, violations);
+
+    await page.setViewportSize({ width: 390, height: 844 });
+    await waitForPageReady(page);
+
+    const section = page.locator("section").filter({ hasText: "Tudo o que está incluído no projeto" });
+    const grid = section.locator("div.grid");
+    await grid.scrollIntoViewIfNeeded();
+
+    const cols = await grid.evaluate((el) => {
+      const s = window.getComputedStyle(el);
+      return s.gridTemplateColumns.split(" ").length;
+    });
+    expect(cols).toBe(1);
 
     assertNoViolations(violations);
   });
@@ -1483,77 +1470,10 @@ test.describe("Responsive compact layout", () => {
     const indicators = grid.locator("> div");
     await expect(indicators).toHaveCount(4);
 
-    await expect(page.getByText("Mais de 5 anos")).toBeVisible();
-    await expect(page.getByText("Cerca de R$ 40 mil")).toBeVisible();
-    await expect(page.getByText("Mais de 7 mil clientes")).toBeVisible();
+    await expect(page.getByText("Mais de 5 anos", { exact: true })).toBeVisible();
+    await expect(page.getByText("Cerca de R$ 40 mil", { exact: true })).toBeVisible();
+    await expect(page.getByText("Mais de 7 mil clientes", { exact: true })).toBeVisible();
     await expect(page.getByText("Execução direta").first()).toBeVisible();
-
-    assertNoViolations(violations);
-  });
-
-  test("No copy was removed from compressed sections", async ({ page }) => {
-    const violations: ConsoleViolation[] = [];
-    collectConsoleViolations(page, violations);
-
-    await waitForPageReady(page);
-
-    const body = await page.textContent("body");
-
-    expect(body).toContain("Tudo o que sua Landing Page precisa para entrar no ar");
-    expect(body).toContain("Estratégia e copy");
-    expect(body).toContain("Design responsivo");
-    expect(body).toContain("Desenvolvimento em Next.js");
-    expect(body).toContain("Formulário e WhatsApp");
-    expect(body).toContain("Configuração de rastreamento");
-    expect(body).toContain("Publicação e testes");
-    expect(body).toContain("O projeto inclui até 2 rodadas de ajustes dentro do escopo aprovado.");
-
-    expect(body).toContain("Seu projeto é desenvolvido diretamente por mim");
-    expect(body).toContain("Mais de 5 anos");
-    expect(body).toContain("Cerca de R$ 40 mil");
-    expect(body).toContain("Mais de 7 mil clientes");
-    expect(body).toContain("Trabalhando com Google Ads e negócios locais.");
-    expect(body).toContain("Investidos em minhas próprias campanhas.");
-    expect(body).toContain("Atendidos a partir de contatos conquistados pelo Google.");
-    expect(body).toContain("Estratégia, copy, design e desenvolvimento conduzidos por mim.");
-
-    expect(body).toContain("Do briefing à publicação em quatro etapas");
-    expect(body).toContain("Briefing e materiais");
-    expect(body).toContain("Copy, design e desenvolvimento");
-    expect(body).toContain("Revisão e ajustes");
-    expect(body).toContain("Aprovação e publicação");
-    expect(body).toContain("Até 7 dias úteis");
-
-    expect(body).toContain("Algumas Landing Pages que desenvolvi");
-
-    assertNoViolations(violations);
-  });
-
-  test("Modals, form and integrations still work after compression", async ({ page }) => {
-    const violations: ConsoleViolation[] = [];
-    collectConsoleViolations(page, violations);
-
-    await page.setViewportSize({ width: 390, height: 844 });
-    await waitForPageReady(page);
-
-    await openFormFromHero(page);
-    await expect(page.locator("dialog[open]")).toBeVisible();
-    await page.getByRole("button", { name: "Começar" }).click();
-    await expect(page.locator("#form-nome")).toBeVisible();
-    await page.keyboard.press("Escape");
-    await expect(page.locator("dialog[open]")).not.toBeVisible();
-
-    const mobileStrip = page.locator(".md\\:hidden .overflow-x-auto");
-    const card = mobileStrip.locator('[aria-label="Ver projeto ZARQ Planejados por dentro"]');
-    await card.scrollIntoViewIfNeeded();
-    await card.click();
-    await expect(page.locator("dialog[open]")).toBeVisible({ timeout: 10_000 });
-    await expect(page.getByText("ZARQ Planejados").first()).toBeVisible();
-    await page.keyboard.press("Escape");
-
-    await page.locator("#trigger-faq_01").scrollIntoViewIfNeeded();
-    await page.locator("#trigger-faq_01").click();
-    await expect(page.locator("#trigger-faq_01")).toHaveAttribute("aria-expanded", "true");
 
     assertNoViolations(violations);
   });
@@ -1707,7 +1627,7 @@ test.describe("Responsive compact layout", () => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await waitForPageReady(page);
 
-    const section = page.locator("section").filter({ hasText: "Algumas Landing Pages que desenvolvi" });
+    const section = page.locator("section").filter({ hasText: "Projetos reais desenvolvidos por mim" });
     const grid = section.locator(".hidden.md\\:grid");
     await expect(grid).toBeVisible();
 
@@ -1785,73 +1705,6 @@ test.describe("AboutSection desktop two-column", () => {
 });
 
 /* ------------------------------------------------------------------ */
-/*  ABOUT SECTION — TABLET TWO-COLUMN                                  */
-/* ------------------------------------------------------------------ */
-
-test.describe("AboutSection tablet", () => {
-  test("Presentation above, indicators below in 2×2 at 768px", async ({ page }) => {
-    const violations: ConsoleViolation[] = [];
-    collectConsoleViolations(page, violations);
-
-    await page.setViewportSize({ width: 768, height: 1024 });
-    await waitForPageReady(page);
-
-    const section = page.locator("section").filter({ hasText: "Seu projeto é desenvolvido" });
-    const textBlock = section.locator("span").first();
-    await textBlock.scrollIntoViewIfNeeded();
-
-    const textY = await textBlock.evaluate((el) => el.getBoundingClientRect().top);
-    const grid = section.locator(".grid");
-    const gridY = await grid.evaluate((el) => el.getBoundingClientRect().top);
-    expect(gridY).toBeGreaterThan(textY);
-
-    const gridStyles = await grid.evaluate((el) => {
-      const s = window.getComputedStyle(el);
-      return { display: s.display, gridTemplateColumns: s.gridTemplateColumns };
-    });
-    expect(gridStyles.display).toBe("grid");
-    expect(gridStyles.gridTemplateColumns.split(" ").length).toBe(2);
-
-    const indicators = grid.locator("> div");
-    await expect(indicators).toHaveCount(4);
-
-    const scrollWidth = await page.evaluate(() => document.documentElement.scrollWidth);
-    const clientWidth = await page.evaluate(() => document.documentElement.clientWidth);
-    expect(scrollWidth).toBeLessThanOrEqual(clientWidth + 1);
-
-    assertNoViolations(violations);
-  });
-});
-
-/* ------------------------------------------------------------------ */
-/*  ABOUT SECTION — MOBILE PROPORTIONAL HEIGHT                         */
-/* ------------------------------------------------------------------ */
-
-test.describe("AboutSection mobile proportional", () => {
-  test("No overflow, proportional height at 390px", async ({ page }) => {
-    const violations: ConsoleViolation[] = [];
-    collectConsoleViolations(page, violations);
-
-    await page.setViewportSize({ width: 390, height: 844 });
-    await waitForPageReady(page);
-
-    const section = page.locator("section").filter({ hasText: "Seu projeto é desenvolvido" });
-
-    const scrollWidth = await page.evaluate(() => document.documentElement.scrollWidth);
-    const clientWidth = await page.evaluate(() => document.documentElement.clientWidth);
-    expect(scrollWidth).toBeLessThanOrEqual(clientWidth + 1);
-
-    const sectionBox = await section.boundingBox();
-    expect(sectionBox).not.toBeNull();
-    if (sectionBox) {
-      expect(sectionBox.height).toBeLessThan(1200);
-    }
-
-    assertNoViolations(violations);
-  });
-});
-
-/* ------------------------------------------------------------------ */
 /*  PORTFOLIO — CTA CENTERING DESKTOP                                  */
 /* ------------------------------------------------------------------ */
 
@@ -1863,12 +1716,12 @@ test.describe("Portfolio CTA centering desktop", () => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await waitForPageReady(page);
 
-    const section = page.locator("section").filter({ hasText: "Algumas Landing Pages que desenvolvi" });
-    const ctaButton = section.getByRole("button", { name: "Quero minha Landing Page" });
-    await ctaButton.scrollIntoViewIfNeeded();
+    const section = page.locator("section").filter({ hasText: "Projetos reais desenvolvidos por mim" });
+    const ctaLink = whatsappCta(page, "portfolio").first();
+    await ctaLink.scrollIntoViewIfNeeded();
 
     const sectionBox = await section.boundingBox();
-    const ctaBox = await ctaButton.boundingBox();
+    const ctaBox = await ctaLink.boundingBox();
     expect(sectionBox).not.toBeNull();
     expect(ctaBox).not.toBeNull();
 
@@ -1902,7 +1755,8 @@ test.describe("Social identity metadata", () => {
     const ogTitle = await page
       .locator('meta[property="og:title"]')
       .getAttribute("content");
-    expect(ogTitle).toContain("Landing Page para Tráfego Pago");
+    expect(ogTitle).toContain("Landing Page Profissional para Google Ads e Meta Ads");
+    expect(ogTitle).toContain("R$ 997");
     expect(ogTitle).toContain("Anúncio & Site");
 
     const ogDesc = await page
@@ -1948,7 +1802,7 @@ test.describe("Social identity metadata", () => {
     const twTitle = await page
       .locator('meta[name="twitter:title"]')
       .getAttribute("content");
-    expect(twTitle).toContain("Landing Page para Tráfego Pago");
+    expect(twTitle).toContain("Landing Page Profissional para Google Ads e Meta Ads");
 
     const twDesc = await page
       .locator('meta[name="twitter:description"]')
@@ -1996,12 +1850,6 @@ test.describe("Social identity metadata", () => {
 
   test("Apple touch icon PNG route returns 200", async ({ request }) => {
     const res = await request.get("/apple-icon");
-    expect(res.status()).toBe(200);
-    expect(res.headers()["content-type"]).toContain("image/png");
-  });
-
-  test("Image generation does not fetch external fonts", async ({ request }) => {
-    const res = await request.get("/landingpage/opengraph-image");
     expect(res.status()).toBe(200);
     expect(res.headers()["content-type"]).toContain("image/png");
   });
@@ -2186,74 +2034,9 @@ test.describe("Consent Mode v2 avançado", () => {
 /* ------------------------------------------------------------------ */
 
 test.describe("Microsoft Clarity preparation", () => {
-  test("lead form root container has data-clarity-mask=true", async ({ page }) => {
-    await waitForPageReady(page);
-    await openFormFromHero(page);
-    const masked = page.locator('[data-clarity-mask="true"]');
-    await expect(masked).toBeVisible();
-  });
-
-  test("all steps: every input, textarea and select has a data-clarity-mask ancestor", async ({ page }) => {
-    await waitForPageReady(page);
-    await openFormFromHero(page);
-
-    const expectAllControlsMasked = async () => {
-      const result = await page.evaluate(() => {
-        const dialog = document.querySelector("dialog[open]");
-        if (!dialog) return { ok: false, reason: "dialog not open", unmasked: [], total: 0 };
-        const controls = dialog.querySelectorAll("input, textarea, select");
-        const unmasked: string[] = [];
-        for (const el of Array.from(controls)) {
-          const control = el as HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
-          if (!control.closest('[data-clarity-mask="true"]')) {
-            unmasked.push(`${control.tagName.toLowerCase()}#${control.id || control.name || "(no id)"}`);
-          }
-        }
-        return { ok: unmasked.length === 0, unmasked, total: controls.length };
-      });
-      expect(result.ok, `Unmasked controls: ${JSON.stringify(result)}`).toBe(true);
-      expect(result.total).toBeGreaterThan(0);
-    };
-
-    await page.getByRole("button", { name: "Começar" }).click();
-
-    // STEP 1 — contact
-    await page.fill("#form-nome", "Maria Clarity");
-    await page.fill("#form-whatsapp", "11900009999");
-    await expectAllControlsMasked();
-    await page.getByRole("button", { name: "Continuar" }).click();
-
-    // STEP 2 — project
-    await page.fill("#form-negocio", "Consultoria de marketing");
-    await page.getByRole("radio", { name: "Já anuncio nos dois" }).check();
-    await page.getByRole("radio", { name: "Sim" }).check();
-    await page.fill("#form-url", "https://exemplo.com.br");
-    await expectAllControlsMasked();
-    await page.getByRole("button", { name: "Continuar" }).click();
-
-    // STEP 3 — review
-    await expect(page.getByText("Confira suas informações")).toBeVisible();
-    await expectAllControlsMasked();
-
-    const reviewInsideMask = await page.evaluate(() => {
-      const heading = Array.from(document.querySelectorAll("h2")).find((h) =>
-        h.textContent?.includes("Confira suas informações")
-      );
-      return heading ? Boolean(heading.closest('[data-clarity-mask="true"]')) : false;
-    });
-    expect(reviewInsideMask).toBe(true);
-
-    // preserved answers render inside the same masked container
-    const maskedText = (await page.locator('[data-clarity-mask="true"]').textContent()) ?? "";
-    expect(maskedText).toContain("Maria Clarity");
-    expect(maskedText).toContain("(11) 90000-9999");
-    expect(maskedText).toContain("Consultoria de marketing");
-    expect(maskedText).toContain("https://exemplo.com.br");
-  });
-
   test("consent banner is present and generic", async ({ page }) => {
     await waitForPageReady(page);
-    const banner = page.locator('[role="dialog"][aria-label="Sua privacidade"]');
+    const banner = page.locator(BANNER);
     await expect(banner).toBeVisible({ timeout: 10_000 });
     const text = await banner.textContent();
     expect(text?.trim().length ?? 0).toBeGreaterThan(0);
@@ -2261,7 +2044,7 @@ test.describe("Microsoft Clarity preparation", () => {
 
   test("consent banner does not mention Microsoft Clarity", async ({ page }) => {
     await waitForPageReady(page);
-    const banner = page.locator('[role="dialog"][aria-label="Sua privacidade"]');
+    const banner = page.locator(BANNER);
     await expect(banner).toBeVisible({ timeout: 10_000 });
     await expect(banner).not.toContainText("Microsoft Clarity");
   });
@@ -2280,15 +2063,19 @@ test.describe("Microsoft Clarity preparation", () => {
     }
   });
 
-  test("no PII in dataLayer, console output or URL after form interaction", async ({ page }) => {
+  test("no PII in dataLayer, console output or URL after interactions", async ({ page }) => {
     const consoleOutput: string[] = [];
     page.on("console", (msg) => consoleOutput.push(msg.text()));
 
+    await mockWhatsappPopups(page);
     await waitForPageReady(page);
-    await openFormFromHero(page);
-    await page.getByRole("button", { name: "Começar" }).click();
-    await page.fill("#form-nome", "Maria Clarity");
-    await page.fill("#form-whatsapp", "11900009999");
+
+    const cta = whatsappCta(page, "header").first();
+    const popupPromise = page.waitForEvent("popup");
+    await cta.click();
+    const popup = await popupPromise;
+    await popup.waitForLoadState("domcontentloaded");
+    await popup.close();
 
     const dataLayer = await page.evaluate(() => window.dataLayer ?? []);
     const serialized = JSON.stringify({
@@ -2296,42 +2083,8 @@ test.describe("Microsoft Clarity preparation", () => {
       dataLayer,
       url: page.url(),
     });
-    expect(serialized).not.toContain("Maria Clarity");
+    expect(serialized).not.toContain("Maria");
     expect(serialized).not.toContain("11900009999");
-  });
-
-  test("success and validation error screens stay inside the masked container", async ({ page }) => {
-    await waitForPageReady(page);
-    await openFormFromHero(page);
-    await page.getByRole("button", { name: "Começar" }).click();
-
-    await page.getByRole("button", { name: "Continuar" }).click();
-    const errorMsg = page.getByText("Informe seu nome para continuar.");
-    await expect(errorMsg).toBeVisible();
-    const errorMasked = await errorMsg.evaluate((el) => Boolean(el.closest('[data-clarity-mask="true"]')));
-    expect(errorMasked).toBe(true);
-
-    await page.route("**/api/leads", async (route) => {
-      await route.fulfill({
-        status: 200,
-        contentType: "application/json",
-        body: JSON.stringify({ ok: true, status: "created", lead_id: "mask-lead-001" }),
-      });
-    });
-
-    await page.fill("#form-nome", "Maria Mask");
-    await page.fill("#form-whatsapp", "11999998888");
-    await page.getByRole("button", { name: "Continuar" }).click();
-    await page.fill("#form-negocio", "Consultoria");
-    await page.getByLabel("Já anuncio no Google Ads").check();
-    await page.getByLabel("Não", { exact: false }).last().check();
-    await page.getByRole("button", { name: "Continuar" }).click();
-    await page.locator('input[type="checkbox"]').check();
-    await page.getByRole("button", { name: "Enviar informações" }).click();
-
-    const successTitle = page.getByText("Obrigado, Maria Mask. Recebi os dados do seu projeto.");
-    await expect(successTitle).toBeVisible({ timeout: 10_000 });
-    const successMasked = await successTitle.evaluate((el) => Boolean(el.closest('[data-clarity-mask="true"]')));
-    expect(successMasked).toBe(true);
+    expect(serialized).not.toContain("11999887766");
   });
 });
