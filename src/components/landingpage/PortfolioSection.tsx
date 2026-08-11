@@ -10,17 +10,19 @@ interface PortfolioSectionProps {
   onOpenProject: (project: (typeof PROJECTS)[number]) => void;
 }
 
-function PortfolioCard({
-  project,
-  onOpenProject,
-  className,
-  mobile = false,
-}: {
+export interface PortfolioCardProps {
   project: (typeof PROJECTS)[number];
   onOpenProject: (project: (typeof PROJECTS)[number]) => void;
   className?: string;
   mobile?: boolean;
-}) {
+}
+
+export function PortfolioCard({
+  project,
+  onOpenProject,
+  className,
+  mobile = false,
+}: PortfolioCardProps) {
   return (
     <div
       className={className}

@@ -1,9 +1,10 @@
-# Rastreamento — `/landingpage`
+# Rastreamento — `/landingpage` e `/landingpage-essencial`
 
 > Status: GTM instalado, Microsoft Clarity previsto via GTM (pendente de configuração), demais tags pendentes
-> Rota: `/landingpage`  
-> Fluxo de conversão: clique no CTA → abertura direta do WhatsApp  
-> Formulário: removido em 05/08/2026 (ver `docs/LEADS.md`)  
+> Rota principal: `/landingpage`
+> Rota essencial: `/landingpage-essencial`
+> Fluxo de conversão: clique no CTA → abertura direta do WhatsApp
+> Formulário: removido em 05/08/2026 (ver `docs/LEADS.md`)
 > Versão dos eventos: `1`
 
 ## 1. Objetivo
@@ -42,7 +43,7 @@ A medição deve responder:
 
 ### Arquitetura
 
-O Google Tag Manager está instalado no root layout via `@next/third-parties/google` e cobre todas as rotas (`/`, `/landingpage`, `/politica-de-privacidade`, `/termos`).
+O Google Tag Manager está instalado no root layout via `@next/third-parties/google` e cobre todas as rotas (`/`, `/landingpage`, `/landingpage-essencial`, `/politica-de-privacidade`, `/termos`).
 
 O GTM é renderizado condicionalmente: somente quando `NEXT_PUBLIC_GTM_ID` está presente.
 
@@ -132,6 +133,21 @@ event_version: 1
 
 > `form_id` é mantido como valor fixo por compatibilidade histórica. Não corresponde mais a um formulário existente.
 
+### Rota `/landingpage-essencial`
+
+Na rota essencial, `cta_click` e `whatsapp_click` usam **obrigatoriamente**:
+
+```text
+offer_variant: essential_399
+```
+
+- `offer_variant` identifica a oferta a que o clique pertence.
+- `portfolio_open`, `portfolio_view_change` e `faq_open` mantêm o formato compartilhado atual, **sem** `offer_variant`.
+- **Não** enviar `form_id`, `cta_id`, `cta_text` nem `event_version` no rastreamento específico da rota essencial.
+- Não alterar o rastreamento da rota `/landingpage`.
+- Não existe `sticky-mobile` nesta rota (CTA fixo mobile proibido).
+- Não existe `generate_lead` nem evento de conversão nesta rota.
+
 ### Localizações dos CTAs
 
 | Seção | `cta_location` |
@@ -139,6 +155,7 @@ event_version: 1
 | Cabeçalho | `header` |
 | Hero | `hero` |
 | Projetos desenvolvidos | `portfolio` |
+| Projetos desenvolvidos (rota essencial) | `pricing` |
 | Investimento | `investment` |
 | CTA final | `final` |
 | CTA fixo mobile | `sticky-mobile` |
@@ -186,7 +203,10 @@ Quando o visitante acionar um CTA comercial da página.
 | `cta_location` | string | `hero` |
 | `cta_text` | string | `Quero minha Landing Page por R$ 997` |
 | `form_id` | string | `landingpage_lead_form` |
+| `offer_variant` | string | `essential_399` (somente rota essencial) |
 | `event_version` | string | `1` |
+
+> Rota essencial: `cta_click` envia `event`, `offer_variant: "essential_399"`, `cta_location` e `cta_label`. Não envia `form_id`, `cta_id`, `cta_text` nem `event_version`.
 
 `cta_text` deve vir de uma lista fixa da interface. Não enviar texto digitado pelo visitante.
 
@@ -211,7 +231,10 @@ Quando o visitante acionar um CTA que abre o WhatsApp (mesma ação de `cta_clic
 |---|---|---|
 | `cta_location` | string | `hero` |
 | `form_id` | string | `landingpage_lead_form` |
+| `offer_variant` | string | `essential_399` (somente rota essencial) |
 | `event_version` | string | `1` |
+
+> Rota essencial: `whatsapp_click` envia `event`, `offer_variant: "essential_399"`, `cta_location` e `contact_method: "whatsapp"`. Não envia `form_id`, `cta_id`, `cta_text` nem `event_version`.
 
 ### Regras
 
@@ -399,12 +422,20 @@ Não disparar Meta `Lead` a partir de cliques, interações ou eventos da págin
 
 ## 18. WhatsApp
 
-### Mensagem pré-preenchida
+### Mensagem pré-preenchida — rota `/landingpage`
 
 Usar exatamente:
 
 ```text
 Olá, Willian. Vi a Landing Page completa por R$ 997 e quero iniciar meu projeto. Pode me explicar os próximos passos?
+```
+
+### Mensagem pré-preenchida — rota `/landingpage-essencial`
+
+Usar exatamente:
+
+```text
+Olá, Willian! Vi a Landing Page Essencial por R$ 399 e gostaria de entender melhor como funciona.
 ```
 
 A mensagem deve estar corretamente codificada na URL.
@@ -422,7 +453,7 @@ A mensagem deve estar corretamente codificada na URL.
 
 Sem formulário, não existe armazenamento de origem no servidor.
 
-Os parâmetros de campanha (UTMs, `gclid`, `fbclid` etc.) continuam sendo preservados pelo redirecionamento da rota `/` para `/landingpage`. A atribuição comercial é feita pelo atendimento externo.
+Os parâmetros de campanha (UTMs, `gclid`, `fbclid` etc.) continuam sendo preservados pelo redirecionamento da rota `/` para `/landingpage` e pela navegação direta nas rotas `/landingpage` e `/landingpage-essencial`. A atribuição comercial é feita pelo atendimento externo.
 
 Não enviar parâmetros de origem ou identificadores de campanha como dados pessoais ao `dataLayer`.
 
@@ -607,7 +638,7 @@ Nunca:
 
 ### CTAs e WhatsApp
 
-- Testar todos os CTAs (header, hero, portfolio, investment, final, sticky-mobile).
+- Testar todos os CTAs (header, hero, portfolio, pricing, investment, final, sticky-mobile).
 - Confirmar que todos abrem diretamente o WhatsApp.
 - Confirmar a mensagem pré-preenchida codificada na URL.
 - Confirmar que o navegador não é bloqueado ou atrasado pelo rastreamento.

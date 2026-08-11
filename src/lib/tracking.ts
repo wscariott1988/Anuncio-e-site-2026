@@ -1,4 +1,5 @@
 import { FORM_ID, EVENT_VERSION } from "./constants";
+import { ESSENTIAL_OFFER_VARIANT } from "./essential";
 import type { CtaLocation } from "@/types";
 
 declare global {
@@ -17,23 +18,53 @@ function push(data: Record<string, string | number | undefined>) {
   }
 }
 
-export function trackCtaClick(ctaLocation: CtaLocation, ctaText: string, ctaId: string) {
+export interface TrackEventOptions {
+  offerVariant?: string;
+  formId?: string;
+}
+
+export function trackCtaClick(
+  ctaLocation: CtaLocation,
+  ctaText: string,
+  ctaId: string,
+  options?: TrackEventOptions,
+) {
   push({
     event: "cta_click",
     cta_id: ctaId,
     cta_location: ctaLocation,
     cta_text: ctaText,
-    form_id: FORM_ID,
+    form_id: options?.formId ?? FORM_ID,
     event_version: EVENT_VERSION,
+    ...(options?.offerVariant ? { offer_variant: options.offerVariant } : {}),
   });
 }
 
-export function trackWhatsappClick(ctaLocation: CtaLocation) {
+export function trackWhatsappClick(ctaLocation: CtaLocation, options?: TrackEventOptions) {
   push({
     event: "whatsapp_click",
     cta_location: ctaLocation,
-    form_id: FORM_ID,
+    form_id: options?.formId ?? FORM_ID,
     event_version: EVENT_VERSION,
+    ...(options?.offerVariant ? { offer_variant: options.offerVariant } : {}),
+  });
+}
+
+export function trackEssentialCtaClick(ctaLocation: CtaLocation, ctaLabel: string) {
+  push({
+    event: "cta_click",
+    offer_variant: ESSENTIAL_OFFER_VARIANT,
+    cta_location: ctaLocation,
+    cta_label: ctaLabel,
+  });
+}
+
+export function trackEssentialWhatsappClick(ctaLocation: CtaLocation) {
+  push({
+    event: "whatsapp_click",
+    offer_variant: ESSENTIAL_OFFER_VARIANT,
+    cta_location: ctaLocation,
+    contact_method: "whatsapp",
   });
 }
 

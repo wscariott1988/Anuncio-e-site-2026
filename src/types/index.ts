@@ -4,7 +4,8 @@ export type CtaLocation =
   | "portfolio"
   | "investment"
   | "final"
-  | "sticky-mobile";
+  | "sticky-mobile"
+  | "pricing";
 
 export type ProjectId =
   | "mecanica_auto_brum"

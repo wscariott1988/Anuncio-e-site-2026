@@ -1,0 +1,67 @@
+import Image from "next/image";
+import { OWNER_NAME, BRAND_NAME } from "@/lib/constants";
+
+interface EssentialAboutSectionProps {
+  hasPhoto?: boolean;
+}
+
+export function EssentialAboutSection({ hasPhoto = false }: EssentialAboutSectionProps) {
+  const indicators = [
+    { label: "Mais de 5 anos", detail: "usando Google Ads em negócios locais" },
+    { label: "Cerca de R$ 40 mil", detail: "investidos em campanhas próprias" },
+    { label: "Mais de 7 mil clientes", detail: "atendidos em meus negócios a partir do Google" },
+    { label: "Execução direta", detail: "Estratégia, copy, design e desenvolvimento conduzidos diretamente por mim" },
+  ];
+
+  return (
+    <section className="bg-[var(--surface)]">
+      <div className="max-w-[1200px] mx-auto px-6 py-16 md:py-24 lg:grid lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:gap-12 xl:gap-16 lg:items-start space-y-12 lg:space-y-0">
+        <div className="max-w-[700px] space-y-4">
+          <span className="text-xs font-medium text-[var(--brand)] uppercase tracking-wider">
+            Execução direta
+          </span>
+          <h2 className="text-[28px] md:text-[40px] font-bold text-[var(--text-primary)] leading-tight">
+            Seu projeto é desenvolvido diretamente por mim
+          </h2>
+          <p className="text-base text-[var(--text-secondary)] leading-relaxed">
+            Sou {OWNER_NAME}. Há mais de cinco anos utilizo o Google Ads para
+            gerar clientes para meus próprios negócios, testar páginas e
+            acompanhar o que acontece depois do clique.
+          </p>
+          <p className="text-base text-[var(--text-secondary)] leading-relaxed">
+            Nesse período, investi cerca de R$ 40 mil em campanhas próprias e
+            atendi mais de sete mil clientes em meus negócios a partir de
+            contatos conquistados pelo Google.
+          </p>
+          <p className="text-base text-[var(--text-secondary)] leading-relaxed">
+            Essa experiência prática orienta cada projeto da {BRAND_NAME}:
+            mensagem clara, boa experiência no celular, contato simples e
+            rastreamento das ações importantes.
+          </p>
+        </div>
+
+        <div className="space-y-4 md:space-y-6">
+          {hasPhoto && (
+            <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border border-[var(--border)] bg-[var(--background)]">
+              <Image
+                src="/images/willian-souza.webp"
+                alt={OWNER_NAME}
+                fill
+                className="object-cover"
+                sizes="(max-width: 1023px) 100vw, 40vw"
+              />
+            </div>
+          )}
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 md:gap-6">
+            {indicators.map((ind) => (
+              <div key={ind.label} className="bg-[var(--background)] rounded-2xl border border-[var(--border)] p-4 sm:p-5 md:p-6 space-y-1 sm:space-y-2">
+                <p className="text-base sm:text-lg font-bold text-[var(--text-primary)]">{ind.label}</p>
+                <p className="text-xs sm:text-sm text-[var(--text-secondary)]">{ind.detail}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}

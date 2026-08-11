@@ -9,7 +9,7 @@ function buildUrl(number: string, message: string): string {
   return `https://wa.me/${digits}?text=${encodeMessage(message)}`;
 }
 
-export function getWhatsappCtaUrl(): string | null {
+export function getWhatsappCtaUrl(message: string = WHATSAPP_CTA_MESSAGE): string | null {
   if (!WHATSAPP_NUMBER) return null;
-  return buildUrl(WHATSAPP_NUMBER, WHATSAPP_CTA_MESSAGE);
+  return buildUrl(WHATSAPP_NUMBER, message);
 }

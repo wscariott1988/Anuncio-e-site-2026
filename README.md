@@ -2,21 +2,23 @@
 
 Projeto web da Anúncio & Site.
 
-A prioridade atual é a Landing Page comercial:
+A prioridade atual são as Landing Pages comerciais:
 
 ```text
-/landingpage
+/landingpage              (oferta completa — R$ 997)
+/landingpage-essencial    (oferta essencial — R$ 399)
 ```
 
 ## Status
 
 A estratégia, a copy, o design, o comportamento e o rastreamento estão documentados.
 
-A implementação deve começar somente depois da leitura de:
+A implementação deve ser feita somente depois da leitura de:
 
 - `AGENTS.md`;
 - `docs/CONTENT.md`;
 - `docs/LANDINGPAGE.md`;
+- `docs/ESSENCIAL.md`;
 - `docs/LEADS.md`;
 - `docs/DESIGN.md`;
 - `docs/TRACKING.md`;
@@ -24,18 +26,14 @@ A implementação deve começar somente depois da leitura de:
 
 ## Objetivo
 
-Apresentar e captar interessados no serviço de criação completa de Landing Pages para campanhas de Google Ads e Meta Ads.
+Apresentar e captar interessados no serviço de criação de Landing Pages para campanhas de Google Ads e Meta Ads.
 
 Decisões centrais:
 
 - serviço executado diretamente por Willian Souza;
-- projeto completo por R$ 997;
-- 50% na contratação;
-- 50% após a Landing Page ser publicada e estar funcionando;
-- prazo de até 7 dias úteis após entrada, briefing e materiais;
-- até duas rodadas de ajustes;
-- formulário como único caminho inicial de contato;
-- WhatsApp somente após o envio confirmado ou como contingência por falha técnica;
+- oferta completa: projeto completo por R$ 997, 50% na contratação e 50% após a publicação, prazo de até 7 dias úteis, até duas rodadas de ajustes;
+- oferta essencial: página única por R$ 399, entrada de R$ 199,50 na contratação e saldo de R$ 199,50 após a publicação e validação do funcionamento, prazo de até 5 dias úteis, 1 rodada de ajustes;
+- fluxo comercial WhatsApp-first: todos os CTAs comerciais abrem diretamente o WhatsApp com a mensagem oficial pré-preenchida;
 - nenhuma promessa de resultado comercial.
 
 ## Documentação
@@ -43,8 +41,9 @@ Decisões centrais:
 | Arquivo | Função |
 |---|---|
 | `AGENTS.md` | Regras permanentes do repositório |
-| `docs/CONTENT.md` | Copy oficial |
-| `docs/LANDINGPAGE.md` | Estrutura e comportamento |
+| `docs/CONTENT.md` | Copy oficial da oferta completa |
+| `docs/LANDINGPAGE.md` | Estrutura e comportamento da oferta completa |
+| `docs/ESSENCIAL.md` | Estrutura, comportamento e copy da oferta essencial |
 | `docs/LEADS.md` | Armazenamento, planilha e sincronização dos leads |
 | `docs/DESIGN.md` | Sistema visual |
 | `docs/TRACKING.md` | Eventos, conversões e consentimento |
@@ -131,6 +130,7 @@ Depois, abrir a rota informada pelo terminal:
 
 ```text
 /landingpage
+/landingpage-essencial
 ```
 
 ## Verificações
@@ -142,11 +142,11 @@ Com npm, os nomes mais comuns são:
 ```bash
 npm run lint
 npm run typecheck
-npm run test
+npm run test:e2e
 npm run build
 ```
 
-Se `typecheck` ou `test` não existirem:
+Se `typecheck` ou `test:e2e` não existirem:
 
 - não inventar o script;
 - executar os equivalentes disponíveis;
@@ -162,10 +162,11 @@ Se `typecheck` ou `test` não existirem:
 
 A raiz redireciona para `/landingpage` com preservação de parâmetros de campanha. Esse redirect será mantido até a criação da homepage institucional.
 
-### Rota comercial
+### Rotas comerciais
 
 ```text
-/landingpage
+/landingpage              (oferta completa — R$ 997)
+/landingpage-essencial    (oferta essencial — R$ 399)
 ```
 
 ### Rotas jurídicas
@@ -179,13 +180,14 @@ As rotas jurídicas implementadas são:
 
 O conteúdo é definido em `docs/PRIVACY.md` e `docs/TERMS.md`.
 
-### Rota que não deve existir
+### Rotas que não devem existir
 
 ```text
 /landingpage/obrigado
+/landingpage-essencial/obrigado
 ```
 
-O sucesso do formulário acontece dentro do modal.
+O fluxo comercial é WhatsApp-first: o contato acontece pela abertura direta do WhatsApp, sem página de obrigado.
 
 ### Rotas fora do escopo
 
@@ -208,6 +210,7 @@ Estrutura esperada:
 ├── docs/
 │   ├── CONTENT.md
 │   ├── LANDINGPAGE.md
+│   ├── ESSENCIAL.md
 │   ├── LEADS.md
 │   ├── DESIGN.md
 │   ├── TRACKING.md
@@ -271,7 +274,7 @@ Orientação:
 - 20% Bento Box;
 - 10% vidro, gradientes e efeitos.
 
-O formulário e a FAQ utilizam superfícies sólidas.
+A FAQ utiliza superfícies sólidas.
 
 Não implementar:
 
@@ -281,75 +284,43 @@ Não implementar:
 - rolagem presa;
 - vídeo automático;
 - cursor customizado;
-- CTA flutuante na primeira versão.
+- CTA flutuante na primeira versão (e em nenhuma versão na rota essencial).
 
-## Formulário
+## Fluxo comercial (WhatsApp-first)
 
-O formulário:
-
-- abre em modal;
-- apresenta uma pergunta por vez;
-- possui três etapas;
-- é o único caminho inicial de contato;
-- valida no cliente e no servidor;
-- preserva respostas durante a visita;
-- só apresenta sucesso após armazenamento real.
-
-Todos os CTAs comerciais abrem o mesmo formulário.
-
-Não existe botão direto para WhatsApp antes do envio.
-
-### Arquitetura de leads
-
-Seguir `docs/LEADS.md`.
-
-Fluxo oficial:
+O contato inicial acontece pelo WhatsApp:
 
 ```text
-Formulário
-→ endpoint Next.js no servidor
-→ envio ao Google Apps Script
-→ Apps Script escreve na planilha
-→ confirmação com lead_id
-→ notificação
+visitante → CTA → abertura direta do WhatsApp com mensagem oficial pré-preenchida
 ```
 
-Decisões:
+Regras:
 
-- o Google Sheets é o armazenamento único e confirma o lead;
-- o Google Apps Script é a camada de integração que escreve na planilha;
-- o esquema da planilha possui exatamente 24 colunas;
-- o navegador não envia diretamente para o Apps Script;
-- uma falha do Apps Script permite nova tentativa sem perder o lead;
-- `status_atendimento` e `observacoes` são mantidos manualmente na planilha na primeira versão;
-- não existe sincronização bidirecional na primeira versão.
+- todo CTA comercial abre diretamente o WhatsApp;
+- a mensagem é fixa e pré-preenchida, sem dados pessoais na URL;
+- a conversão acontece na conversa, fora da página;
+- não existe formulário, modal de formulário, página de obrigado nem `generate_lead`;
+- na rota essencial, não existe CTA fixo mobile.
 
-Ainda devem ser confirmados antes da implementação definitiva:
-
-- endpoint do Apps Script web app;
-- secret do Apps Script;
-- identificador e acesso da planilha;
-- canal de notificação.
-
-Não simular envio nem escolher fornecedor externo sem aprovação.
+O formulário foi removido em 05/08/2026 (commit `a91fdbc`) e não deve ser recriado.
 
 ## WhatsApp
 
-O WhatsApp aparece somente depois do envio confirmado.
+O WhatsApp é o único caminho inicial de contato comercial.
 
-Evento:
-
-```text
-whatsapp_after_lead
-```
-
-O evento antigo abaixo não deve ser usado:
+Mensagens oficiais:
 
 ```text
-whatsapp_click
+Rota /landingpage:
+Olá, Willian. Vi a Landing Page completa por R$ 997 e quero iniciar meu projeto. Pode me explicar os próximos passos?
+
+Rota /landingpage-essencial:
+Olá, Willian! Vi a Landing Page Essencial por R$ 399 e gostaria de entender melhor como funciona.
 ```
 
-O número deve vir de configuração central.
+O número deve vir de configuração central (`NEXT_PUBLIC_WHATSAPP_NUMBER`).
+
+Os eventos antigos `whatsapp_after_lead` e `generate_lead` não existem mais e não devem ser usados.
 
 ## Rastreamento
 
@@ -363,36 +334,37 @@ Ferramentas a configurar no GTM:
 - Microsoft Clarity;
 - Consent Mode v2.
 
-Conversão principal:
+Eventos implementados:
 
 ```text
-generate_lead
+cta_click
+whatsapp_click
+portfolio_open
+portfolio_view_change
+faq_open
 ```
 
-O evento dispara somente depois do armazenamento confirmado pelo servidor.
+Na rota essencial, `cta_click` e `whatsapp_click` levam `offer_variant: "essential_399"`, sem `form_id`, `cta_id`, `cta_text` nem `event_version`.
 
-Não contabilizar como lead:
+Não contabilizar como conversão:
 
-- abertura do formulário;
-- início;
-- conclusão de etapa;
-- tentativa;
-- erro;
+- clique em CTA;
 - clique no WhatsApp;
-- visualização de projeto;
-- abertura de FAQ.
+- abertura de projeto;
+- abertura de FAQ;
+- qualquer evento de interação.
 
-Não usar R$ 997 como valor de cada lead.
+Não usar R$ 997 (nem R$ 399) como valor de conversão de clique.
 
 Detalhes completos estão em `docs/TRACKING.md`.
 
-O Microsoft Clarity é instalado **exclusivamente pelo GTM**: não existe snippet do Clarity no código e não existe `NEXT_PUBLIC_CLARITY_PROJECT_ID`. O formulário inteiro é mascarado com `data-clarity-mask="true"`. A validação real (mapas de calor, gravações de sessão e mascaramento) é feita no painel do Clarity.
+O Microsoft Clarity é instalado **exclusivamente pelo GTM**: não existe snippet do Clarity no código e não existe `NEXT_PUBLIC_CLARITY_PROJECT_ID`. A validação real (mapas de calor, gravações de sessão e mascaramento) é feita no painel do Clarity.
 
 ## Consentimento e privacidade
 
 As tags devem respeitar as escolhas do visitante.
 
-O formulário deve funcionar quando a pessoa:
+O WhatsApp deve funcionar quando a pessoa:
 
 - aceita medição;
 - recusa recursos não essenciais;
@@ -406,8 +378,6 @@ Nunca enviar para analytics:
 - URL digitada;
 - respostas;
 - qualquer outro dado pessoal.
-
-O consentimento do formulário e o consentimento de medição são controles diferentes.
 
 ## Variáveis de ambiente
 
@@ -423,15 +393,6 @@ NEXT_PUBLIC_WHATSAPP_NUMBER=
 
 Quando GA4 e Meta forem instalados diretamente, o projeto pode exigir IDs públicos adicionais. Quando forem centralizados pelo GTM, não duplicar a configuração.
 
-Serviços do formulário podem exigir variáveis exclusivas do servidor.
-
-Exemplos previstos pela arquitetura de leads:
-
-```dotenv
-GOOGLE_APPS_SCRIPT_WEB_APP_URL=
-GOOGLE_APPS_SCRIPT_SECRET=
-```
-
 Nunca:
 
 - adicionar valores reais ao `.env.example`;
@@ -446,18 +407,19 @@ Canonical de produção:
 
 ```text
 https://www.anuncioesite.com.br/landingpage
+https://www.anuncioesite.com.br/landingpage-essencial
 ```
 
-Title:
+Title da oferta completa:
 
 ```text
 Landing Page para Tráfego Pago | Anúncio & Site
 ```
 
-Description:
+Title da oferta essencial:
 
 ```text
-Landing Page completa para Google Ads e Meta Ads, com estratégia, copy, design, desenvolvimento e rastreamento. Projeto por R$ 997.
+Landing Page Essencial para Google Ads e Meta Ads por R$ 399 | Anúncio & Site
 ```
 
 Preview e homologação devem usar `noindex`.
@@ -473,26 +435,18 @@ Ordem recomendada:
 5. Processar as imagens.
 6. Implementar a estrutura da página.
 7. Implementar os modais.
-8. Implementar a integração com Google Apps Script conforme `docs/LEADS.md`.
-9. Implementar notificação e recuperação de falhas.
-10. Implementar notificação e recuperação de falhas.
-11. Implementar rastreamento e consentimento.
-12. Validar acessibilidade e responsividade.
-13. Executar lint, tipos, testes e build.
-14. Executar `docs/CHECKLIST.md`.
-15. Apresentar o ambiente de revisão.
-16. Publicar somente após autorização.
+8. Implementar rastreamento e consentimento.
+9. Validar acessibilidade e responsividade.
+10. Executar lint, tipos, testes e build.
+11. Executar `docs/CHECKLIST.md`.
+12. Apresentar o ambiente de revisão.
+13. Publicar somente após autorização.
 
 ## Dependências antes da publicação
 
 Confirmar:
 
 - número oficial do WhatsApp;
-- endpoint e secret do Apps Script;
-- planilha e aba `Leads`;
-- esquema oficial das 24 colunas;
-- sincronização e reprocessamento;
-- notificação dos leads;
 - GTM;
 - GA4;
 - conversão do Google Ads;
@@ -506,7 +460,7 @@ Confirmar:
 - foto de Willian;
 - visual do hero;
 - imagem Open Graph;
-- dez capturas do portfólio;
+- capturas do portfólio;
 - autorização para apresentar os projetos.
 
 Não substituir itens pendentes por dados inventados.
@@ -532,7 +486,9 @@ Não implementar automaticamente:
 - Enhanced Conversions;
 - rastreamento server-side;
 - chat automático;
-- pop-up de saída.
+- pop-up de saída;
+- formulário;
+- página de obrigado.
 
 ## Publicação
 
@@ -550,13 +506,10 @@ Depois:
 
 - abrir o domínio real;
 - testar celular e desktop;
-- testar formulário;
-- confirmar armazenamento no Google Sheets;
-- confirmar uma única linha no Google Sheets;
-- simular falha do Sheets e validar recuperação;
-- testar WhatsApp;
+- testar os CTAs de WhatsApp em todas as localizações;
+- testar a mensagem pré-preenchida;
 - testar eventos;
-- testar conversões;
+- testar consentimento aceito e recusado;
 - verificar HTTPS;
 - verificar canonical e metadata.
 
@@ -565,15 +518,14 @@ Depois:
 Uma implementação somente pode ser considerada concluída quando:
 
 - `/landingpage` funciona;
+- `/landingpage-essencial` funciona;
 - a homepage permanece intacta;
-- a copy corresponde a `docs/CONTENT.md`;
-- o comportamento corresponde a `docs/LANDINGPAGE.md`;
-- o armazenamento e a planilha correspondem a `docs/LEADS.md`;
+- a copy corresponde a `docs/CONTENT.md` e `docs/ESSENCIAL.md`;
+- o comportamento corresponde a `docs/LANDINGPAGE.md` e `docs/ESSENCIAL.md`;
 - o visual corresponde a `docs/DESIGN.md`;
 - os eventos correspondem a `docs/TRACKING.md`;
 - o checklist foi executado;
-- o formulário foi testado de verdade;
-- o lead chegou ao Google Sheets via Apps Script;
+- todos os CTAs abrem o WhatsApp com a mensagem correta;
 - o build foi concluído;
 - não existem erros relevantes no console;
 - todas as pendências foram informadas.

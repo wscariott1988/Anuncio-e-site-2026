@@ -15,7 +15,30 @@ const C = {
 
 export const OG_SIZE = { width: 1200, height: 630 } as const;
 
-export function SocialBrandImageContent() {
+interface SocialBrandImageContentProps {
+  variant?: "complete" | "essential";
+}
+
+export function SocialBrandImageContent({ variant = "complete" }: SocialBrandImageContentProps) {
+  const copy =
+    variant === "essential"
+      ? {
+          badge: "Landing Page Essencial para tráfego pago",
+          headline: ["Landing Page Essencial", "para Google Ads e Meta Ads"],
+          sub: "Uma página única com estratégia, copy, design e publicação.",
+          pill: "Projeto por R$ 399",
+          url: "anuncioesite.com.br/landingpage-essencial",
+          frameUrl: "www.anuncioesite.com.br/landingpage-essencial",
+        }
+      : {
+          badge: "Landing Page para tráfego pago",
+          headline: ["Landing Pages completas", "para Google Ads e Meta Ads"],
+          sub: "Estratégia, copy, design, desenvolvimento e rastreamento.",
+          pill: "Projeto completo por R$ 997",
+          url: "anuncioesite.com.br/landingpage",
+          frameUrl: "www.anuncioesite.com.br/landingpage",
+        };
+
   return (
     <div
       style={{
@@ -75,7 +98,7 @@ export function SocialBrandImageContent() {
             alignSelf: "flex-start",
           }}
         >
-          Landing Page para tráfego pago
+          {copy.badge}
         </div>
 
         <div style={{ height: 40 }} />
@@ -90,8 +113,8 @@ export function SocialBrandImageContent() {
             lineHeight: 1.15,
           }}
         >
-          <span>Landing Pages completas</span>
-          <span>para Google Ads e Meta Ads</span>
+          <span>{copy.headline[0]}</span>
+          <span>{copy.headline[1]}</span>
         </div>
 
         <div style={{ height: 16 }} />
@@ -104,7 +127,7 @@ export function SocialBrandImageContent() {
             lineHeight: 1.4,
           }}
         >
-          Estratégia, copy, design, desenvolvimento e rastreamento.
+          {copy.sub}
         </div>
 
         <div style={{ height: 32 }} />
@@ -119,7 +142,7 @@ export function SocialBrandImageContent() {
           }}
         >
           <span style={{ fontSize: 20, fontWeight: 700, color: "#FFFFFF" }}>
-            Projeto completo por R$ 997
+            {copy.pill}
           </span>
         </div>
 
@@ -132,7 +155,7 @@ export function SocialBrandImageContent() {
             color: C.textTertiary,
           }}
         >
-          anuncioesite.com.br/landingpage
+          {copy.url}
         </div>
       </div>
 
@@ -206,7 +229,7 @@ export function SocialBrandImageContent() {
                 color: "#5F6368",
               }}
             >
-          www.anuncioesite.com.br/landingpage
+          {copy.frameUrl}
             </div>
           </div>
 

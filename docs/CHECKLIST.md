@@ -18,6 +18,7 @@
 - [ ] `README.md` está na raiz.
 - [ ] `docs/CONTENT.md` contém a copy oficial.
 - [ ] `docs/LANDINGPAGE.md` contém a especificação funcional atual.
+- [ ] `docs/ESSENCIAL.md` contém a especificação funcional e a copy da oferta essencial.
 - [ ] `docs/LEADS.md` está marcado como suspenso (o armazenamento de leads não está em uso).
 - [ ] `docs/DESIGN.md` contém o sistema visual.
 - [ ] `docs/TRACKING.md` contém os eventos atuais.
@@ -587,3 +588,37 @@ A Landing Page somente está pronta quando:
 - [ ] Homepage e outras rotas permaneceram intactas (redirect temporário `/` → `/landingpage` está ativo).
 - [ ] Build de produção foi concluído.
 - [ ] Testes no domínio real foram concluídos.
+
+---
+
+## 34. Oferta essencial (`/landingpage-essencial`)
+
+> Critérios específicos da rota essencial. A copy oficial está em `docs/ESSENCIAL.md`.
+
+- [ ] A rota `/landingpage-essencial` funciona.
+- [ ] As 12 partes aparecem na ordem de `docs/ESSENCIAL.md` (Cabeçalho, Hero, Faixa de clareza, Para quem é, O que está incluído, Projetos desenvolvidos, Como funciona, Quem é Willian Souza, Investimento, Perguntas frequentes, CTA final, Rodapé).
+- [ ] A seção "Para quem é" está presente na posição 4 com a copy oficial.
+- [ ] O H1 da hero é "Sua Landing Page profissional por R$ 399".
+- [ ] A hero não menciona parcela única nem explica as duas parcelas.
+- [ ] A hero mantém prazo (até 5 dias úteis) e 1 rodada de ajustes.
+- [ ] O preço total de R$ 399 está presente.
+- [ ] A entrada de R$ 199,50 está presente.
+- [ ] O saldo de R$ 199,50 está presente com "após a publicação e validação do funcionamento".
+- [ ] O processo — etapa 1 usa "pagamento da entrada de R$ 199,50".
+- [ ] O microtexto do CTA final usa "Entrada de R$ 199,50 para iniciar".
+- [ ] A FAQ 2 usa a resposta oficial de pagamento em duas etapas.
+- [ ] "parcela única" não aparece em nenhuma superfície da rota.
+- [ ] A mensagem antiga do WhatsApp não aparece.
+- [ ] Os textos antigos dos cinco CTAs não aparecem.
+- [ ] Os cinco CTAs oficiais estão presentes com os textos de `docs/ESSENCIAL.md`.
+- [ ] As cinco `cta_location` são `header`, `hero`, `pricing`, `investment` e `final`.
+- [ ] Não existe CTA fixo mobile (`sticky-mobile`) na rota essencial.
+- [ ] `cta_click` e `whatsapp_click` levam `offer_variant: "essential_399"`.
+- [ ] `cta_click` leva `cta_location` e `cta_label`.
+- [ ] `whatsapp_click` leva `cta_location` e `contact_method: "whatsapp"`.
+- [ ] Nenhum evento essencial envia `form_id`, `cta_id`, `cta_text` nem `event_version`.
+- [ ] `portfolio_open`, `portfolio_view_change` e `faq_open` seguem o formato compartilhado, sem `offer_variant`.
+- [ ] O rastreamento de `/landingpage` não foi alterado.
+- [ ] A mensagem do WhatsApp é exatamente a oficial de `docs/ESSENCIAL.md`.
+- [ ] A metadata usa a description oficial (sem "Pagamento em parcela única").
+- [ ] `docs/ESSENCIAL.md` foi lido antes da implementação.
