@@ -32,7 +32,7 @@ Decisões centrais:
 
 - serviço executado diretamente por Willian Souza;
 - oferta completa: projeto completo por R$ 997, 50% na contratação e 50% após a publicação, prazo de até 7 dias úteis, até duas rodadas de ajustes;
-- oferta essencial: página única por R$ 399, entrada de R$ 199,50 na contratação e saldo de R$ 199,50 após a publicação e validação do funcionamento, prazo de até 5 dias úteis, 1 rodada de ajustes;
+- oferta essencial: página única por R$ 399, prazo de até 5 dias úteis, 1 rodada de ajustes; a forma de pagamento não é definida na página e é alinhada diretamente pelo WhatsApp;
 - fluxo comercial WhatsApp-first: todos os CTAs comerciais abrem diretamente o WhatsApp com a mensagem oficial pré-preenchida;
 - nenhuma promessa de resultado comercial.
 

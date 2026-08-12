@@ -4,17 +4,13 @@ import {
   ESSENTIAL_PRICE,
   ESSENTIAL_DEADLINE,
   ESSENTIAL_ROUNDS,
-  ESSENTIAL_DOWN_PAYMENT,
-  ESSENTIAL_BALANCE_PAYMENT,
   ESSENTIAL_INVESTMENT_CTA_TEXT,
 } from "@/lib/essential";
 import { EssentialWhatsAppCta } from "./EssentialWhatsAppCta";
 
 export function EssentialPricingSection() {
   const highlights = [
-    { label: "Preço total", value: ESSENTIAL_PRICE },
-    { label: "Entrada para iniciar", value: ESSENTIAL_DOWN_PAYMENT },
-    { label: "Saldo após a publicação e validação do funcionamento", value: ESSENTIAL_BALANCE_PAYMENT },
+    { label: "Valor total", value: ESSENTIAL_PRICE },
     { label: "Prazo", value: ESSENTIAL_DEADLINE },
     { label: "Ajustes", value: ESSENTIAL_ROUNDS },
   ];

@@ -272,60 +272,66 @@ test.describe("Route tests", () => {
     expect(robots).toContain("noindex");
   });
 
-  test("Offer shows R$ 399 total and both installments, without parcela única", async () => {
+  test("Offer shows only the total value, without payment form info", async () => {
     await waitForPageReady(page);
     const body = await page.textContent("body");
 
     expect(body).toContain("R$ 399");
     expect(body).not.toContain("R$ 997");
     expect(body).not.toContain("498,50");
-
-    const occurrences = (body ?? "").match(/199,50/g) ?? [];
-    expect(occurrences.length).toBeGreaterThanOrEqual(2);
+    expect(body).not.toContain("199,50");
 
     const investmentSection = page
       .locator("section")
       .filter({ hasText: "Sua Landing Page Essencial por R$ 399" })
       .last();
-    await expect(investmentSection).toContainText("Entrada para iniciar");
-    await expect(investmentSection).toContainText("R$ 199,50");
-    await expect(investmentSection).toContainText("Saldo após a publicação e validação do funcionamento");
+    await expect(investmentSection).toContainText("Valor total");
+    await expect(investmentSection).toContainText("R$ 399");
+    await expect(investmentSection).toContainText("Prazo");
     await expect(investmentSection).toContainText("até 5 dias úteis");
+    await expect(investmentSection).toContainText("Ajustes");
     await expect(investmentSection).toContainText("1 rodada de ajustes");
 
+    expect(body).not.toMatch(/entrada/i);
+    expect(body).not.toMatch(/saldo/i);
+    expect(body).not.toMatch(/parcel/i);
+    expect(body).not.toMatch(/forma de pagamento/i);
+    expect(body).not.toMatch(/pagamento/i);
     expect(body).not.toMatch(/parcela\s+ú?nica/i);
-    expect(body).not.toMatch(/pagamento\s+único/i);
   });
 
-  test("FAQ payment answer explains both installments", async () => {
+  test("FAQ answer explains the total value and WhatsApp alignment", async () => {
     await waitForPageReady(page);
 
-    await page.locator("#trigger-faq_02").scrollIntoViewIfNeeded();
-    await page.locator("#trigger-faq_02").click();
-    await expect(page.locator("#trigger-faq_02")).toHaveAttribute("aria-expanded", "true");
+    const trigger = page.locator("#trigger-faq_02");
+    await trigger.scrollIntoViewIfNeeded();
+    await expect(trigger).toContainText("Quanto custa a Landing Page Essencial?");
+    await trigger.click();
+    await expect(trigger).toHaveAttribute("aria-expanded", "true");
 
     await expect(page.locator("#panel-faq_02")).toContainText(
-      "O projeto custa R$ 399. O pagamento é dividido em R$ 199,50 na contratação e R$ 199,50 após a Landing Page estar publicada e funcionando."
+      "O projeto custa R$ 399. Os detalhes da contratação são alinhados diretamente comigo pelo WhatsApp."
     );
   });
 
-  test("Process step 1 mentions the entry payment", async () => {
+  test("Process step 1 mentions confirming the project and sending materials", async () => {
     await waitForPageReady(page);
     const processSection = page
       .locator("section")
       .filter({ hasText: "Da contratação à publicação em quatro etapas" });
     await expect(processSection).toContainText(
-      "Você confirma o projeto e faz o pagamento da entrada de R$ 199,50."
+      "Você confirma o projeto e envia as informações e os materiais necessários para começar."
     );
+    await expect(processSection).not.toContainText("pagamento");
   });
 
-  test("Final CTA microtext mentions the entry payment", async () => {
+  test("Final CTA microtext mentions the briefing after confirmation", async () => {
     await waitForPageReady(page);
     const finalSection = page
       .locator("section")
       .filter({ hasText: "Tenha sua Landing Page Essencial publicada e preparada para anunciar" });
     await expect(finalSection).toContainText(
-      "Entrada de R$ 199,50 para iniciar. O briefing completo é enviado depois da contratação."
+      "O briefing completo é enviado depois da confirmação do projeto."
     );
   });
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { ESSENTIAL_DOWN_PAYMENT, ESSENTIAL_FINAL_CTA_TEXT } from "@/lib/essential";
+import { ESSENTIAL_FINAL_CTA_TEXT } from "@/lib/essential";
 import { EssentialWhatsAppCta } from "./EssentialWhatsAppCta";
 
 export function EssentialFinalCta() {
@@ -24,8 +24,7 @@ export function EssentialFinalCta() {
             className="h-14 px-8 text-base font-medium bg-[var(--brand)] text-white rounded-xl hover:bg-[var(--brand-hover)] transition-colors inline-flex items-center"
           />
           <p className="text-sm text-[var(--text-secondary)]">
-            Entrada de {ESSENTIAL_DOWN_PAYMENT} para iniciar. O briefing completo
-            é enviado depois da contratação.
+            O briefing completo é enviado depois da confirmação do projeto.
           </p>
         </div>
       </div>

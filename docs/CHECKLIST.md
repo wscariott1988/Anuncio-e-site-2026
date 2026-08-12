@@ -599,15 +599,16 @@ A Landing Page somente está pronta quando:
 - [ ] As 12 partes aparecem na ordem de `docs/ESSENCIAL.md` (Cabeçalho, Hero, Faixa de clareza, Para quem é, O que está incluído, Projetos desenvolvidos, Como funciona, Quem é Willian Souza, Investimento, Perguntas frequentes, CTA final, Rodapé).
 - [ ] A seção "Para quem é" está presente na posição 4 com a copy oficial.
 - [ ] O H1 da hero é "Sua Landing Page profissional por R$ 399".
-- [ ] A hero não menciona parcela única nem explica as duas parcelas.
+- [ ] A hero não menciona parcelas, entrada, saldo, pagamento à vista ou parcela única.
 - [ ] A hero mantém prazo (até 5 dias úteis) e 1 rodada de ajustes.
 - [ ] O preço total de R$ 399 está presente.
-- [ ] A entrada de R$ 199,50 está presente.
-- [ ] O saldo de R$ 199,50 está presente com "após a publicação e validação do funcionamento".
-- [ ] O processo — etapa 1 usa "pagamento da entrada de R$ 199,50".
-- [ ] O microtexto do CTA final usa "Entrada de R$ 199,50 para iniciar".
-- [ ] A FAQ 2 usa a resposta oficial de pagamento em duas etapas.
-- [ ] "parcela única" não aparece em nenhuma superfície da rota.
+- [ ] O bloco de investimento exibe "Valor total: R$ 399", "Prazo: até 5 dias úteis" e "Ajustes: 1 rodada".
+- [ ] Não existe bloco "Forma de pagamento" na rota.
+- [ ] A forma de pagamento não é definida na página; será alinhada diretamente pelo WhatsApp.
+- [ ] O processo — etapa 1 usa "Você confirma o projeto e envia as informações e os materiais necessários para começar".
+- [ ] O microtexto do CTA final usa "O briefing completo é enviado depois da confirmação do projeto".
+- [ ] A FAQ 2 é "Quanto custa a Landing Page Essencial?" com a resposta oficial.
+- [ ] "parcela única", "entrada", "saldo" e "199,50" não aparecem em nenhuma superfície da rota.
 - [ ] A mensagem antiga do WhatsApp não aparece.
 - [ ] Os textos antigos dos cinco CTAs não aparecem.
 - [ ] Os cinco CTAs oficiais estão presentes com os textos de `docs/ESSENCIAL.md`.

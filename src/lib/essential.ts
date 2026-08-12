@@ -4,8 +4,6 @@ export const ESSENTIAL_ROUTE = "/landingpage-essencial";
 export const ESSENTIAL_OFFER_VARIANT = "essential_399";
 
 export const ESSENTIAL_PRICE = "R$ 399";
-export const ESSENTIAL_DOWN_PAYMENT = "R$ 199,50";
-export const ESSENTIAL_BALANCE_PAYMENT = "R$ 199,50";
 export const ESSENTIAL_DEADLINE = "até 5 dias úteis";
 export const ESSENTIAL_ROUNDS = "1 rodada de ajustes";
 
@@ -35,9 +33,9 @@ export const ESSENTIAL_FAQ_ITEMS: FaqItem[] = [
   },
   {
     id: "faq_02",
-    question: "Quanto custa e como funciona o pagamento?",
+    question: "Quanto custa a Landing Page Essencial?",
     answer:
-      "O projeto custa R$ 399. O pagamento é dividido em R$ 199,50 na contratação e R$ 199,50 após a Landing Page estar publicada e funcionando.",
+      "O projeto custa R$ 399. Os detalhes da contratação são alinhados diretamente comigo pelo WhatsApp.",
   },
   {
     id: "faq_03",

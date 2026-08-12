@@ -12,14 +12,12 @@ Este documento define a estrutura, o comportamento e a copy oficial da **Landing
 ## 1. Oferta
 
 - Serviço: **Landing Page Essencial**, uma página única para campanhas de Google Ads e Meta Ads.
-- Preço total: **R$ 399**.
-- Entrada para iniciar: **R$ 199,50 na contratação**.
-- Saldo: **R$ 199,50 após a publicação e validação do funcionamento**.
+- Valor total publicamente informado: **R$ 399**.
 - Prazo: **até 5 dias úteis** após a contratação, o briefing completo e o recebimento dos materiais necessários.
 - Ajustes: **1 rodada de ajustes** dentro do escopo aprovado.
 - Comunicação em primeira pessoa do singular. Usar "eu"; nunca apresentar uma equipe inexistente.
 
-O pagamento é sempre descrito em **duas etapas**: entrada e saldo após a publicação e validação do funcionamento. A expressão "parcela única" não deve aparecer em nenhuma superfície da rota essencial.
+**Regra de pagamento:** a forma de pagamento **não é definida na página** e será alinhada diretamente com o interessado pelo WhatsApp. Não mencionar parcelas, entrada, saldo, pagamento à vista ou parcela única. Não definir meio, data ou condição de pagamento.
 
 Não exibir:
 
@@ -80,8 +78,8 @@ Não existe seção de formulário aberto. O contato acontece pelo WhatsApp.
 ### 4.2 Hero
 
 - H1: **Sua Landing Page profissional por R$ 399**.
-- Não mencionar parcela única.
-- Não explicar as duas parcelas no hero.
+- Não mencionar parcelas, entrada, saldo, pagamento à vista ou parcela única.
+- Não mencionar condição ou forma de pagamento.
 - Manter prazo e 1 rodada de ajustes.
 - CTA: **Conversar sobre minha página** (`hero`).
 
@@ -156,7 +154,7 @@ Uma oferta, uma página e uma ação principal.
 - Título: **Da contratação à publicação em quatro etapas**.
 
 ```text
-1. Contratação: Você confirma o projeto e faz o pagamento da entrada de R$ 199,50.
+1. Contratação: Você confirma o projeto e envia as informações e os materiais necessários para começar.
 2. Briefing simples: Depois da contratação, envio um briefing para reunir as informações da oferta, do público, dos diferenciais e os materiais disponíveis.
 3. Criação: Eu preparo a estratégia, os textos, o design e o desenvolvimento da página.
 4. Publicação: Você revisa, solicita os ajustes previstos e a página é publicada e testada.
@@ -181,21 +179,19 @@ A contagem começa após a confirmação da contratação e o recebimento do bri
 - Destaques:
 
 ```text
-Preço total: R$ 399
-Entrada para iniciar: R$ 199,50
-Saldo após a publicação e validação do funcionamento: R$ 199,50
+Valor total: R$ 399
 Prazo: até 5 dias úteis
 Ajustes: 1 rodada
 ```
 
-- Usar sempre "após a publicação e validação do funcionamento".
+- Não criar bloco "Forma de pagamento".
 - CTA: **Quero entender como funciona** (`investment`).
 - Microtexto: `Você fala diretamente comigo pelo WhatsApp. O briefing completo vem depois da contratação.`
 
 ### 4.10 Perguntas frequentes (6 itens)
 
 1. **O que está incluído na Landing Page Essencial?** — A Landing Page Essencial é uma página única, focada em receber o tráfego de uma campanha de Google Ads ou Meta Ads. O projeto inclui estratégia e copy, design responsivo, desenvolvimento e publicação. Você não precisa entregar os textos prontos: a copy faz parte do projeto.
-2. **Quanto custa e como funciona o pagamento?** — O projeto custa R$ 399. O pagamento é dividido em R$ 199,50 na contratação e R$ 199,50 após a Landing Page estar publicada e funcionando.
+2. **Quanto custa a Landing Page Essencial?** — O projeto custa R$ 399. Os detalhes da contratação são alinhados diretamente comigo pelo WhatsApp.
 3. **Em quanto tempo a página fica pronta?** — O prazo é de até 5 dias úteis após a contratação, o recebimento do briefing completo e dos materiais necessários.
 4. **Posso solicitar alterações?** — Sim. O projeto inclui 1 rodada de ajustes dentro do escopo aprovado.
 5. **Domínio e hospedagem estão incluídos?** — Domínio, hospedagem e ferramentas de terceiros não estão incluídos automaticamente. Quando necessários, os custos e as responsabilidades são informados antes da contratação.
@@ -206,7 +202,7 @@ Ajustes: 1 rodada
 - Título: **Tenha sua Landing Page Essencial publicada e preparada para anunciar**.
 - Texto: `Fale diretamente comigo pelo WhatsApp para confirmar o projeto e receber as orientações para contratação.`
 - CTA: **Conversar com Willian no WhatsApp** (`final`).
-- Microtexto: **Entrada de R$ 199,50 para iniciar. O briefing completo é enviado depois da contratação.**
+- Microtexto: **O briefing completo é enviado depois da confirmação do projeto.**
 
 ### 4.12 Rodapé
 
@@ -284,7 +280,8 @@ Nenhum evento é conversão. A conversão acontece na conversa do WhatsApp, fora
 
 Na rota essencial:
 
-- não usar "parcela única" nem "pagamento único";
+- não informar forma, meio, data ou condição de pagamento;
+- não usar "parcela única", "pagamento único", "entrada" ou "saldo";
 - não usar `offer_variant: "landingpage_essencial"` nem `form_id` no rastreamento;
 - não recriar a mensagem antiga `Olá, Willian. Vi a Landing Page Essencial por R$ 399 e quero iniciar meu projeto. Pode me explicar os próximos passos?`;
 - não usar os textos antigos dos cinco CTAs;
@@ -309,8 +306,8 @@ A rota está concluída quando:
 - os cinco CTAs usam os textos oficiais e abrem o WhatsApp com a mensagem oficial;
 - `cta_click` e `whatsapp_click` levam `offer_variant: "essential_399"` e nenhum `form_id`/`cta_id`/`cta_text`/`event_version`;
 - a seção "Para quem é" está presente na posição 4;
-- "parcela única" e a mensagem antiga não aparecem em nenhuma superfície;
-- o microtexto de investimento usa "após a publicação e validação do funcionamento";
+- o valor total R$ 399 está presente e nenhuma informação de forma ou condição de pagamento (entrada, saldo, parcelas, parcela única) aparece;
+- a FAQ 2 usa a resposta oficial sobre o valor;
 - o build, o lint, a verificação de tipos e os testes E2E foram concluídos;
 - não existem erros relevantes no console;
 - `/landingpage` permanece intacta.

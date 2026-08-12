@@ -117,15 +117,13 @@ Não recuperar decisões antigas de:
 
 ### Oferta essencial (`/landingpage-essencial`)
 
-- Preço total: **R$ 399**.
-- Entrada para iniciar: **R$ 199,50 na contratação**.
-- Saldo: **R$ 199,50 após a publicação e validação do funcionamento**.
+- Valor total publicamente informado: **R$ 399**.
 - Prazo: **até 5 dias úteis** após a contratação, o briefing completo e o recebimento dos materiais necessários.
 - Ajustes: **1 rodada de ajustes** dentro do escopo aprovado.
 - Página única, focada em receber o tráfego da campanha.
 - Contato direto pelo WhatsApp com a mensagem oficial pré-preenchida iniciando por "Olá, Willian! Vi a Landing Page Essencial por R$ 399".
 - Não inclui domínio, hospedagem, ferramentas de terceiros nem gestão de Google Ads / Meta Ads.
-- Não usar "parcela única" em nenhuma superfície da rota essencial.
+- Valor total publicamente informado: R$ 399. A forma de pagamento **não é definida na página** e será alinhada diretamente com o interessado pelo WhatsApp. Não mencionar parcelas, entrada, saldo, pagamento à vista ou parcela única. Não definir meio, data ou condição de pagamento.
 
 ### Regras comuns
 
@@ -811,12 +809,13 @@ Não esconder limitação nem declarar validação que não aconteceu.
 Base permanente de decisões:
 
 - 2026-05-08: formulário removido (commit `a91fdbc`), fluxo comercial passou a ser WhatsApp-first.
-- 2026-08-05: rota `/landingpage-essencial` criada para a oferta essencial (R$ 399 em parcela única).
+- 2026-08-05: rota `/landingpage-essencial` criada para a oferta essencial (R$ 399 em parcela única — condição de pagamento supersedida em 11/08/2026).
 - 2026-08-05: eventos de rastreamento da rota essencial levam `offer_variant: "landingpage_essencial"` e `form_id: "landingpage_essencial_contact"`.
 - 2026-08-05: o CTA fixo mobile (`StickyCtaMobile`) é proibido na rota essencial.
 - 2026-08-05: a foto `public/images/willian-souza.webp` não existe; a seção Sobre não deve renderizar espaços vazios.
 - 2026-08-05: o rodapé essencial contém `contato@grupows.com` e os links de Política de Privacidade, Termos de Uso e consentimento.
-- 2026-08-11: oferta essencial passa a ser em duas etapas (R$ 199,50 na contratação + R$ 199,50 após a publicação e validação do funcionamento). "Parcela única" é proibida na rota essencial.
+- 2026-08-11: oferta essencial passa a ser em duas etapas (R$ 199,50 na contratação + R$ 199,50 após a publicação e validação do funcionamento). "Parcela única" é proibida na rota essencial. (Supersedida em 11/08/2026.)
+- 2026-08-11: a forma de pagamento da oferta essencial deixa de ser informada publicamente. Valor total publicamente informado: R$ 399. A forma de pagamento não é definida na página e será alinhada diretamente com o interessado pelo WhatsApp. Removidas referências a entrada, saldo, parcelas e pagamento da rota essencial. **(Decisão vigente.)**
 - 2026-08-11: `offer_variant` da rota essencial passa a ser `"essential_399"`, sem `form_id`, `cta_id`, `cta_text` nem `event_version`. `portfolio_open`, `portfolio_view_change` e `faq_open` permanecem sem `offer_variant`. O rastreamento de `/landingpage` não muda.
 - 2026-08-11: mensagem oficial da oferta essencial passa a ser "Olá, Willian! Vi a Landing Page Essencial por R$ 399 e gostaria de entender melhor como funciona.".
 - 2026-08-11: os cinco CTAs da oferta essencial passam a ser "Conversar sobre minha página" (header/hero), "Falar sobre meu projeto" (pricing), "Quero entender como funciona" (investment) e "Conversar com Willian no WhatsApp" (final).

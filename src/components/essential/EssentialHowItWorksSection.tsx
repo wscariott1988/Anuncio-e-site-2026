@@ -1,11 +1,11 @@
-import { ESSENTIAL_DOWN_PAYMENT, ESSENTIAL_DEADLINE } from "@/lib/essential";
+import { ESSENTIAL_DEADLINE } from "@/lib/essential";
 
 export function EssentialHowItWorksSection() {
   const steps = [
     {
       num: "1",
       title: "Contratação",
-      text: `Você confirma o projeto e faz o pagamento da entrada de ${ESSENTIAL_DOWN_PAYMENT}.`,
+      text: "Você confirma o projeto e envia as informações e os materiais necessários para começar.",
     },
     {
       num: "2",
