@@ -3,6 +3,7 @@
 import { useState, useCallback } from "react";
 import { EssentialHeader } from "@/components/essential/EssentialHeader";
 import { EssentialHero } from "@/components/essential/EssentialHero";
+import { EssentialIntroSection } from "@/components/essential/EssentialIntroSection";
 import { EssentialClarityStrip } from "@/components/essential/EssentialClarityStrip";
 import { EssentialAudienceSection } from "@/components/essential/EssentialAudienceSection";
 import { EssentialIncludedSection } from "@/components/essential/EssentialIncludedSection";
@@ -39,6 +40,7 @@ export function EssentialClient({ hasPhoto }: EssentialClientProps) {
       <EssentialHeader />
       <main>
         <EssentialHero />
+        <EssentialIntroSection hasPhoto={hasPhoto} />
         <EssentialClarityStrip />
         <EssentialAudienceSection />
         <EssentialIncludedSection />

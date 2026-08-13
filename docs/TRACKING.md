@@ -154,6 +154,7 @@ offer_variant: essential_399
 |---|---|
 | Cabeçalho | `header` |
 | Hero | `hero` |
+| Apresentação pessoal (rota essencial) | `about` |
 | Projetos desenvolvidos | `portfolio` |
 | Projetos desenvolvidos (rota essencial) | `pricing` |
 | Investimento | `investment` |

@@ -12,6 +12,7 @@ export const ESSENTIAL_WHATSAPP_MESSAGE =
 
 export const ESSENTIAL_HEADER_CTA_TEXT = "Conversar sobre minha página";
 export const ESSENTIAL_HERO_CTA_TEXT = "Conversar sobre minha página";
+export const ESSENTIAL_INTRO_CTA_TEXT = "Quero conversar com o Willian";
 export const ESSENTIAL_PORTFOLIO_CTA_TEXT = "Falar sobre meu projeto";
 export const ESSENTIAL_INVESTMENT_CTA_TEXT = "Quero entender como funciona";
 export const ESSENTIAL_FINAL_CTA_TEXT = "Conversar com Willian no WhatsApp";

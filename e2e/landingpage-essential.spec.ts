@@ -13,15 +13,17 @@ const OFFER_VARIANT = "essential_399";
 const CTA_TEXTS: Record<string, string> = {
   header: "Conversar sobre minha página",
   hero: "Conversar sobre minha página",
+  about: "Quero conversar com o Willian",
   pricing: "Falar sobre meu projeto",
   investment: "Quero entender como funciona",
   final: "Conversar com Willian no WhatsApp",
 };
-const CTA_LOCATIONS = ["header", "hero", "pricing", "investment", "final"] as const;
+const CTA_LOCATIONS = ["header", "hero", "about", "pricing", "investment", "final"] as const;
 
 const PAGE_PARTS = [
   { part: "Cabeçalho", marker: "Anúncio & Site" },
-  { part: "Hero", marker: "Sua Landing Page profissional por R$ 399" },
+  { part: "Hero", marker: "Uma página profissional para apresentar sua oferta e levar mais pessoas até o seu WhatsApp" },
+  { part: "Apresentação pessoal", marker: "Sua página será feita por uma pessoa, não por uma ferramenta automática" },
   { part: "Faixa de clareza", marker: "Uma página única, pronta para receber o tráfego da campanha" },
   { part: "Para quem é", marker: "Uma página profissional sem transformar o projeto em algo complicado" },
   { part: "O que está incluído", marker: "Tudo o que está incluído no projeto Essencial" },
@@ -140,19 +142,19 @@ test.describe("Route tests", () => {
     await expect(h1).toHaveCount(1);
   });
 
-  test("Hero shows the official headline with price only", async () => {
+  test("Hero shows the official headline and total price only", async () => {
     await waitForPageReady(page);
     const h1 = page.locator("h1");
-    await expect(h1).toHaveText(/^Sua Landing Page profissional por R\$ 399$/);
+    await expect(h1).toHaveText(/^Uma página profissional para apresentar sua oferta e levar mais pessoas até o seu WhatsApp$/);
     const heroSection = page.locator("section").first();
     const heroText = await heroSection.textContent();
     expect(heroText).not.toContain("parcela única");
     expect(heroText).not.toContain("199,50");
-    expect(heroText).toContain("até 5 dias úteis");
-    expect(heroText).toContain("1 rodada de ajustes");
+    expect(heroText).toContain("R$ 399");
+    expect(heroText).toContain("Conversar sobre minha página");
   });
 
-  test("Page has exactly 12 parts in the official order", async () => {
+  test("Page has exactly 13 parts in the official order", async () => {
     await waitForPageReady(page);
     const parts = page.locator("header, main > section, footer");
     await expect(parts).toHaveCount(PAGE_PARTS.length);
@@ -361,11 +363,15 @@ test.describe("Route tests", () => {
     expect(dialogs).toBe(0);
   });
 
-  test("Hero composition: only WhatsApp external link in the hero", async () => {
+  test("Hero composition: neutral mockup and only WhatsApp external link in the hero", async () => {
     await waitForPageReady(page);
-    const desktopImage = page.locator('img[alt*="ZARQ Planejados"][alt*="desktop"]');
-    await expect(desktopImage).toBeVisible();
     const heroSection = page.locator("section").first();
+    await expect(heroSection).toContainText("Apresente sua oferta com clareza");
+    await expect(heroSection).toContainText("Falar pelo WhatsApp");
+    const heroText = await heroSection.textContent();
+    expect(heroText).not.toMatch(/móvei|planejad/gi);
+    expect(heroText).not.toContain("zarq");
+    expect(heroText).not.toContain("ZARQ");
     const heroLinks = heroSection.locator('a[target="_blank"]');
     await expect(heroLinks).toHaveCount(1);
     const href = await heroLinks.getAttribute("href");
@@ -667,6 +673,83 @@ test.describe("FAQ tests", () => {
     expect(ev).not.toBeNull();
     expect(ev!.faq_id).toBe("faq_01");
     expect(ev).not.toHaveProperty("offer_variant");
+  });
+});
+
+/* ------------------------------------------------------------------ */
+/*  APRESENTAÇÃO PESSOAL SECTION (PHOTO + CTA)                         */
+/* ------------------------------------------------------------------ */
+
+test.describe("Apresentação pessoal section (photo + CTA)", () => {
+  test("The section appears immediately after the hero and shows the photo with official alt", async ({ page }) => {
+    await waitForPageReady(page);
+    const sections = page.locator("main > section");
+    await expect(sections).toHaveCount(11);
+    const intro = sections.nth(1);
+    await expect(intro).toContainText("Atendimento direto");
+    await expect(intro).toContainText(
+      "Sua página será feita por uma pessoa, não por uma ferramenta automática"
+    );
+    await expect(intro).toContainText("Eu sou Willian Souza e desenvolvo landing pages");
+    await expect(intro).toContainText("Você conversa diretamente comigo durante o projeto.");
+
+    const img = intro.locator("img");
+    await expect(img).toHaveAttribute(
+      "alt",
+      "Willian Souza, responsável pelo desenvolvimento das landing pages"
+    );
+    await expect(img).toBeVisible();
+  });
+
+  test("The about CTA opens WhatsApp and carries the official tracking payload", async ({ page }) => {
+    await mockWhatsappPopups(page);
+    await waitForPageReady(page);
+
+    const cta = whatsappCta(page, "about").first();
+    await expect(cta).toHaveText("Quero conversar com o Willian");
+    const href = await cta.getAttribute("href");
+    expect(href).not.toBeNull();
+    expect(href!).toMatch(WHATSAPP_HREF_RE);
+
+    await cta.scrollIntoViewIfNeeded();
+    const popupPromise = page.waitForEvent("popup");
+    await cta.click();
+    const popup = await popupPromise;
+    await popup.waitForLoadState("domcontentloaded");
+    expect(popup.url()).toContain(WHATSAPP_ENCODED_MESSAGE);
+    await popup.close();
+
+    const clickEvent = await lastEvent(page, "cta_click");
+    expect(clickEvent!.offer_variant).toBe(OFFER_VARIANT);
+    expect(clickEvent!.cta_location).toBe("about");
+    expect(clickEvent!.cta_label).toBe("Quero conversar com o Willian");
+    expect(clickEvent).not.toHaveProperty("form_id");
+    expect(clickEvent).not.toHaveProperty("cta_id");
+    expect(clickEvent).not.toHaveProperty("cta_text");
+    expect(clickEvent).not.toHaveProperty("event_version");
+
+    const whatsappEvent = await lastEvent(page, "whatsapp_click");
+    expect(whatsappEvent!.offer_variant).toBe(OFFER_VARIANT);
+    expect(whatsappEvent!.cta_location).toBe("about");
+    expect(whatsappEvent!.contact_method).toBe("whatsapp");
+    expect(whatsappEvent).not.toHaveProperty("form_id");
+    expect(whatsappEvent).not.toHaveProperty("cta_id");
+    expect(whatsappEvent).not.toHaveProperty("cta_text");
+    expect(whatsappEvent).not.toHaveProperty("event_version");
+  });
+
+  test("Mobile: photo appears above the copy", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await waitForPageReady(page);
+    const intro = page.locator("main > section").nth(1);
+    const img = intro.locator("img");
+    const copy = intro.locator("h2");
+    await img.scrollIntoViewIfNeeded();
+    const imgBox = await img.boundingBox();
+    const copyBox = await copy.boundingBox();
+    expect(imgBox).not.toBeNull();
+    expect(copyBox).not.toBeNull();
+    expect(imgBox!.y).toBeLessThan(copyBox!.y);
   });
 });
 

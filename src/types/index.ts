@@ -1,6 +1,7 @@
 export type CtaLocation =
   | "header"
   | "hero"
+  | "about"
   | "portfolio"
   | "investment"
   | "final"

@@ -5,7 +5,7 @@
 > Marca: Anúncio & Site
 > Responsável: Willian Souza
 > Fonte oficial da oferta essencial: este documento.
-> Última atualização: 11/08/2026
+> Última atualização: 13/08/2026
 
 Este documento define a estrutura, o comportamento e a copy oficial da **Landing Page Essencial** (R$ 399). Em caso de conflito, ele prevalece sobre `README.md` e sobre a implementação, perdendo apenas para `AGENTS.md` e para solicitação explícita do proprietário.
 
@@ -49,22 +49,23 @@ Olá, Willian! Vi a Landing Page Essencial por R$ 399 e gostaria de entender mel
 - Abrir de forma compatível com celular e desktop.
 - Não usar `preventDefault`, `event_callback` nem `window.location` com atraso.
 
-## 3. Estrutura da página (12 partes)
+## 3. Estrutura da página (13 partes)
 
 Preservar esta ordem:
 
 1. Cabeçalho.
 2. Hero.
-3. Faixa de clareza.
-4. Para quem é.
-5. O que está incluído.
-6. Projetos desenvolvidos.
-7. Como funciona (4 etapas).
-8. Quem é Willian Souza.
-9. Investimento.
-10. Perguntas frequentes (6 itens).
-11. CTA final.
-12. Rodapé.
+3. Apresentação pessoal (foto real de Willian Souza).
+4. Faixa de clareza.
+5. Para quem é.
+6. O que está incluído.
+7. Projetos desenvolvidos.
+8. Como funciona (4 etapas).
+9. Quem é Willian Souza.
+10. Investimento.
+11. Perguntas frequentes (6 itens).
+12. CTA final.
+13. Rodapé.
 
 Não existe seção de formulário aberto. O contato acontece pelo WhatsApp.
 
@@ -77,31 +78,41 @@ Não existe seção de formulário aberto. O contato acontece pelo WhatsApp.
 
 ### 4.2 Hero
 
-- H1: **Sua Landing Page profissional por R$ 399**.
-- Não mencionar parcelas, entrada, saldo, pagamento à vista ou parcela única.
-- Não mencionar condição ou forma de pagamento.
-- Manter prazo e 1 rodada de ajustes.
+- Eyebrow: **LANDING PAGE ESSENCIAL**.
+- H1: **Uma página profissional para apresentar sua oferta e levar mais pessoas até o seu WhatsApp**.
+- Texto de apoio: **Landing page desenvolvida por Willian Souza, adaptada para celulares e pronta para você divulgar seu serviço ou começar seus anúncios.**
+- Preço: **R$ 399** (sem preço anterior, desconto, parcelamento, entrada, saldo ou condição de pagamento).
 - CTA: **Conversar sobre minha página** (`hero`).
-
-```text
-Uma página única, focada na sua oferta, para receber o tráfego da sua campanha. Eu cuido da estratégia, dos textos, do design, do desenvolvimento e da publicação.
-```
-
-Abaixo do H1, exibir apenas:
-
-```text
-até 5 dias úteis após briefing e materiais • 1 rodada de ajustes
-```
-
-Microtexto do CTA:
+- Microtexto do CTA:
 
 ```text
 Fale diretamente com Willian pelo WhatsApp e confirme a contratação.
 ```
 
-O mockup do hero usa capturas reais da ZARQ Planejados, com o endereço visual `zarqplanejados.com.br` sem ser um link.
+O mockup do hero é neutro, sem representar um segmento específico, dentro de uma janela de navegador ou dispositivo. Utiliza textos genéricos e curtos ("Sua empresa", "Apresente sua oferta com clareza", "Falar pelo WhatsApp") e não contém referência a móveis planejados nem a outro segmento.
 
-### 4.3 Faixa de clareza
+### 4.3 Apresentação pessoal
+
+- Eyebrow: **ATENDIMENTO DIRETO**.
+- Título: **Sua página será feita por uma pessoa, não por uma ferramenta automática**.
+- Parágrafo 1:
+
+```text
+Eu sou Willian Souza e desenvolvo landing pages para profissionais e empresas que precisam apresentar seus serviços com mais clareza e direcionar os visitantes para uma ação.
+```
+
+- Parágrafo 2:
+
+```text
+Você conversa diretamente comigo durante o projeto. Eu organizo as informações, desenvolvo a página e preparo tudo para que ela funcione bem no celular e esteja pronta para divulgação.
+```
+
+- CTA: **Quero conversar com o Willian** (`about`).
+- Desktop: foto à esquerda (aproximadamente 40% da largura) e copy à direita, com bom espaço em branco.
+- Mobile: foto acima, centralizada, e copy abaixo, com CTA em largura adequada para toque.
+- A foto real `public/images/willian-souza.webp` preserva a proporção original e possui `alt` "Willian Souza, responsável pelo desenvolvimento das landing pages".
+
+### 4.4 Faixa de clareza
 
 ```text
 Uma página única, pronta para receber o tráfego da campanha
@@ -109,7 +120,7 @@ Copy e estratégia incluídas no projeto
 Contato direto pelo WhatsApp, sem etapas desnecessárias
 ```
 
-### 4.4 Para quem é
+### 4.5 Para quem é
 
 - Label: **Uma opção para começar** (exibido em caixa alta pela tipografia).
 - Título: **Uma página profissional sem transformar o projeto em algo complicado**.
@@ -135,13 +146,13 @@ Quem ainda não possui uma página focada em contato.
 Uma oferta, uma página e uma ação principal.
 ```
 
-### 4.5 O que está incluído
+### 4.6 O que está incluído
 
 - Label: **O que está incluído**.
 - Título: **Tudo o que está incluído no projeto Essencial**.
 - Itens (6): Estratégia e copy; Design responsivo; Desenvolvimento; Contato pelo WhatsApp; Publicação e testes; Rodada de ajustes (`1 rodada de ajustes dentro do escopo aprovado`).
 
-### 4.6 Projetos desenvolvidos
+### 4.7 Projetos desenvolvidos
 
 - Título: **Projetos reais desenvolvidos por mim**.
 - Cinco projetos oficiais: Mecânica Auto Brum, ZARQ Planejados, Agafarma Mário Quintana, BS Montagem de Móveis, Artur Montador.
@@ -149,7 +160,7 @@ Uma oferta, uma página e uma ação principal.
 - CTA: **Falar sobre meu projeto** (`pricing`).
 - Microtexto: `Cada projeto recebe uma estrutura adequada à oferta e ao público do negócio.`
 
-### 4.7 Como funciona (4 etapas)
+### 4.8 Como funciona (4 etapas)
 
 - Título: **Da contratação à publicação em quatro etapas**.
 
@@ -167,13 +178,13 @@ Prazo de até 5 dias úteis
 A contagem começa após a confirmação da contratação e o recebimento do briefing completo e dos materiais necessários.
 ```
 
-### 4.8 Quem é Willian Souza
+### 4.9 Quem é Willian Souza
 
 - Título: **Seu projeto é desenvolvido diretamente por mim**.
 - Indicadores oficiais: Mais de 5 anos usando Google Ads em negócios locais; Cerca de R$ 40 mil investidos em campanhas próprias; Mais de 7 mil clientes atendidos a partir do Google; Execução direta.
-- A foto `public/images/willian-souza.webp` não existe; a seção não deve renderizar espaços vazios nem imagem quebrada.
+- A foto `public/images/willian-souza.webp` existe e também pode ser exibida nesta seção; se a foto estiver ausente, a seção não deve renderizar espaços vazios nem imagem quebrada.
 
-### 4.9 Investimento
+### 4.10 Investimento
 
 - Título: **Sua Landing Page Essencial por R$ 399**.
 - Destaques:
@@ -188,7 +199,7 @@ Ajustes: 1 rodada
 - CTA: **Quero entender como funciona** (`investment`).
 - Microtexto: `Você fala diretamente comigo pelo WhatsApp. O briefing completo vem depois da contratação.`
 
-### 4.10 Perguntas frequentes (6 itens)
+### 4.11 Perguntas frequentes (6 itens)
 
 1. **O que está incluído na Landing Page Essencial?** — A Landing Page Essencial é uma página única, focada em receber o tráfego de uma campanha de Google Ads ou Meta Ads. O projeto inclui estratégia e copy, design responsivo, desenvolvimento e publicação. Você não precisa entregar os textos prontos: a copy faz parte do projeto.
 2. **Quanto custa a Landing Page Essencial?** — O projeto custa R$ 399. Os detalhes da contratação são alinhados diretamente comigo pelo WhatsApp.
@@ -197,14 +208,14 @@ Ajustes: 1 rodada
 5. **Domínio e hospedagem estão incluídos?** — Domínio, hospedagem e ferramentas de terceiros não estão incluídos automaticamente. Quando necessários, os custos e as responsabilidades são informados antes da contratação.
 6. **A gestão dos anúncios está incluída?** — Não. O serviço inclui a criação e publicação da Landing Page. A gestão de Google Ads ou Meta Ads não faz parte deste projeto.
 
-### 4.11 CTA final
+### 4.12 CTA final
 
 - Título: **Tenha sua Landing Page Essencial publicada e preparada para anunciar**.
 - Texto: `Fale diretamente comigo pelo WhatsApp para confirmar o projeto e receber as orientações para contratação.`
 - CTA: **Conversar com Willian no WhatsApp** (`final`).
 - Microtexto: **O briefing completo é enviado depois da confirmação do projeto.**
 
-### 4.12 Rodapé
+### 4.13 Rodapé
 
 - Marca e `© {ano} Anúncio & Site. Todos os direitos reservados.`
 - Contato: `contato@grupows.com`.
@@ -219,6 +230,7 @@ Todos os CTAs comerciais abrem diretamente o WhatsApp com a mensagem oficial.
 |---|---|---|
 | Cabeçalho | `header` | Conversar sobre minha página |
 | Hero | `hero` | Conversar sobre minha página |
+| Apresentação pessoal | `about` | Quero conversar com o Willian |
 | Projetos desenvolvidos | `pricing` | Falar sobre meu projeto |
 | Investimento | `investment` | Quero entender como funciona |
 | CTA final | `final` | Conversar com Willian no WhatsApp |
@@ -293,6 +305,7 @@ Na rota essencial:
 ## 9. Regras de imagem e materiais
 
 - Usar capturas reais dos projetos.
+- A foto `public/images/willian-souza.webp` é exibida na seção "Apresentação pessoal" preservando a proporção original; não usar banco de imagens, avatar, ilustração nem imagem gerada por IA.
 - Não inventar marca, cliente, depoimento ou métrica.
 - Definir largura e altura; evitar CLS.
 - Carregar capturas completas somente sob demanda.
@@ -302,10 +315,11 @@ Na rota essencial:
 
 A rota está concluída quando:
 
-- as 12 partes aparecem na ordem deste documento;
-- os cinco CTAs usam os textos oficiais e abrem o WhatsApp com a mensagem oficial;
+- as 13 partes aparecem na ordem deste documento;
+- os seis CTAs usam os textos oficiais e abrem o WhatsApp com a mensagem oficial;
 - `cta_click` e `whatsapp_click` levam `offer_variant: "essential_399"` e nenhum `form_id`/`cta_id`/`cta_text`/`event_version`;
-- a seção "Para quem é" está presente na posição 4;
+- a seção "Apresentação pessoal" aparece imediatamente após a hero, com a foto real de Willian Souza;
+- a seção "Para quem é" está presente na posição 5;
 - o valor total R$ 399 está presente e nenhuma informação de forma ou condição de pagamento (entrada, saldo, parcelas, parcela única) aparece;
 - a FAQ 2 usa a resposta oficial sobre o valor;
 - o build, o lint, a verificação de tipos e os testes E2E foram concluídos;
