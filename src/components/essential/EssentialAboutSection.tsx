@@ -48,7 +48,7 @@ export function EssentialAboutSection({ hasPhoto = false }: EssentialAboutSectio
                 alt={OWNER_NAME}
                 fill
                 className="object-cover"
-                sizes="(max-width: 1023px) 100vw, 40vw"
+                sizes="(min-width: 1024px) 40vw, 100vw"
               />
             </div>
           )}

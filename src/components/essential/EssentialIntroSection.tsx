@@ -27,7 +27,7 @@ export function EssentialIntroSection({ hasPhoto = false }: EssentialIntroSectio
                   alt="Willian Souza, responsável pelo desenvolvimento das landing pages"
                   width={1376}
                   height={1926}
-                  sizes="(max-width: 1023px) 80vw, 40vw"
+                  sizes="(min-width: 1024px) 40vw, (min-width: 640px) 360px, 320px"
                   className="w-full h-auto"
                 />
               </div>
