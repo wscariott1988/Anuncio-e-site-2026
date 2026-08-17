@@ -22,6 +22,7 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className={`${geistSans.variable} antialiased`}>
       <head>
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
         <Script id="consent-init" strategy="beforeInteractive">{`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('consent','default',{ad_storage:'denied',analytics_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',wait_for_update:500});`}</Script>
         <Script id="consent-restore" strategy="beforeInteractive">{`try{var p=JSON.parse(localStorage.getItem('anuncio_e_site_consent_v1'));if(p&&p.version==='1'){gtag('consent','update',{ad_storage:p.advertising?'granted':'denied',analytics_storage:p.analytics?'granted':'denied',ad_user_data:p.advertising?'granted':'denied',ad_personalization:p.advertising?'granted':'denied'});}}catch(e){}`}</Script>
       </head>
